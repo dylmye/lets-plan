@@ -1,0 +1,8 @@
+.tripListContainer {
+  margin-top: 3rem;
+}
+
+.tripListTextContent {
+  display: flex;
+  flex-direction: column;
+}
