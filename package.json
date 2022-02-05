@@ -11,7 +11,7 @@
     "@mui/material": "^5.2.8",
     "@reduxjs/toolkit": "^1.5.1",
     "dayjs": "^1.10.7",
-    "firebase": "^9.6.4",
+    "firebase": "^9.6.5",
     "formik": "^2.2.9",
     "formik-mui": "^4.0.0-alpha.3",
     "formik-mui-lab": "^1.0.0-alpha.3",
