@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider } from "@mui/system";
-import { createTheme } from '@mui/material/styles';
+import { createTheme, CssBaseline } from "@mui/material";
+import { LocalizationProvider } from "@mui/lab";
+import DateAdapter from '@mui/lab/AdapterDayjs';
 
 import "./index.css";
 import App from "./App";
@@ -13,19 +15,19 @@ import * as serviceWorker from "./serviceWorker";
 const theme = createTheme({
   typography: {
     fontFamily: [
-      'Nunito',
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "Nunito",
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(","),
-  }
+  },
 });
 
 ReactDOM.render(
@@ -33,7 +35,10 @@ ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <ThemeProvider theme={theme}>
-          <App />
+          <CssBaseline />
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <App />
+          </LocalizationProvider>
         </ThemeProvider>
       </PersistGate>
     </Provider>

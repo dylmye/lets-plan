@@ -5,4 +5,14 @@
 .tripListTextContent {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.tripListTitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  width: 100%;
 }

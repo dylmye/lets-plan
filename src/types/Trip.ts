@@ -1,6 +1,7 @@
-export interface Trip {
+import { TripDraft } from "./TripDraft";
+
+export interface Trip extends TripDraft {
   id: string;
-  title: string;
-  location: string;
-  image: string;
+  createdAtUtc: string;
+  updatedAtUtc: string;
 }
