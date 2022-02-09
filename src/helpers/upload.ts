@@ -1,3 +1,5 @@
+import { FirebaseError } from "firebase/app";
+
 /** Translate the File type value to a file extension */
 export const getExtensionByMimetype = (
   mimetype: string
@@ -12,5 +14,15 @@ export const getExtensionByMimetype = (
     default:
       console.error("unsupported filetype:", mimetype);
       break;
+  }
+};
+
+/** Translate Firebase error names into useful text */
+export const getUploadErrorFriendlyText = (error: FirebaseError): string => {
+  switch (error?.code) {
+    case "storage/unauthorized":
+      return "Cover image must be < 1MB and a png, jpg or webp file";
+    default:
+      return `Unknown error: ${error.code}`;
   }
 };

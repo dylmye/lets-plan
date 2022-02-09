@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   MobileStepper,
@@ -20,7 +21,8 @@ import FormStepOne from "./FormStepOne";
 import FormStepTwo from "./FormStepTwo";
 import FormStepThree from "./FormStepThree";
 import { storage } from "../../firebase";
-import { getExtensionByMimetype } from "../../helpers/upload";
+import { getExtensionByMimetype, getUploadErrorFriendlyText } from "../../helpers/upload";
+import { SchemaOf, object as yObject, string as yString, mixed as yMixed } from "yup";
 
 export interface AddTripModalProps {
   open: boolean;
@@ -47,6 +49,7 @@ const AddTripModal = (props: AddTripModalProps) => {
 
   const today = useMemo(() => dayjs(), []);
 
+  const isFirstStep = activeStep === 0;
   const isLastStep = activeStep === TOTAL_STEPS - 1;
 
   const goBack = () => setActiveStep(activeStep - 1);
@@ -61,7 +64,7 @@ const AddTripModal = (props: AddTripModalProps) => {
         return <FormStepTwo />;
       }
       case 2: {
-        return <FormStepThree />;
+        return <FormStepThree isImageUploading={formImageUploading} />;
       }
       default: {
         return null;
@@ -69,12 +72,34 @@ const AddTripModal = (props: AddTripModalProps) => {
     }
   };
 
+  const validationSchema: SchemaOf<TripDraft> = yObject().shape({
+    title: yString().required(),
+    location: yString().optional(),
+    locationData: yObject().shape({
+      label: yString(),
+      value: yObject(),
+    }).required(),
+    startsAt: yString().required(),
+    endsAt: yString().required(),
+    // keep these rules in sync with your storage rules in Firebase
+    coverImageBlob: yMixed().test("fileSize", "The cover image needs to be under 1MB", (value: File[]) => {
+      if (!value?.length) return true; // no file required
+      return value[0].size < 1000000;
+    }).test("fileMimeType", "The cover image needs to be in png, jpg or webp format", (value: File[]) => {
+      if (!value?.length) return true; // no file required
+      console.debug(value[0].type);
+      return ["image/png", "image/jpg", "image/webp"].includes(value[0].type);
+    })
+  });
+
   const onFormSubmit = async (values: TripDraft) => {
     let coverImageUri: string;
+
+    setFormError(null);
     if (values.coverImageBlob) {
       const extension = getExtensionByMimetype(values.coverImageBlob.type);
       const filename = uuidv5(
-        "https://lets-plan.projects.dylmye.me/",
+        process.env.REACT_APP_UUID_NAMESPACE || "http://localhost",
         uuidv5.URL
       );
       console.debug(`uploading trip-thumbs/${filename}.${extension}...`);
@@ -89,7 +114,7 @@ const AddTripModal = (props: AddTripModalProps) => {
         }
       } catch (e) {
         if (e instanceof FirebaseError) {
-          setFormError(e.code);
+          setFormError(getUploadErrorFriendlyText(e));
           console.error("trip thumb upload failed:", e.code);
         }
       }
@@ -108,14 +133,15 @@ const AddTripModal = (props: AddTripModalProps) => {
           initialValues={{
             title: "",
             location: "",
-            image: null,
             startsAt: today.format("YYYY-MM-DD"),
             endsAt: today.add(7, "day").format("YYYY-MM-DD"),
             coverImageBlob: null,
           }}
           onSubmit={onFormSubmit}
+          validationSchema={validationSchema}
         >
           <Form>
+            {formError && <Alert severity="error">{formError}</Alert>}
             {renderFormStep()}
             <MobileStepper
               variant="dots"
@@ -123,11 +149,7 @@ const AddTripModal = (props: AddTripModalProps) => {
               position="static"
               activeStep={activeStep}
               backButton={
-                <Button
-                  size="small"
-                  onClick={goBack}
-                  disabled={activeStep === 0}
-                >
+                <Button size="small" onClick={goBack} disabled={isFirstStep}>
                   Back
                   <KeyboardArrowLeft />
                 </Button>

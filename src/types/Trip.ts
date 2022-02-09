@@ -4,4 +4,5 @@ export interface Trip extends TripDraft {
   id: string;
   createdAtUtc: string;
   updatedAtUtc: string;
+  image: string | null;
 }

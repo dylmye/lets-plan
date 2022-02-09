@@ -24,6 +24,8 @@ const UploadImageField = ({
     maxFiles: 1,
   });
 
+  // @TODO: preview image or text
+
   return (
     <div {...getRootProps({ className: "dropzone" })}>
       <label>Upload a cover picture (optional)</label>
