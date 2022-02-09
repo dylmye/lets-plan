@@ -20,7 +20,7 @@ Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 
 ## Build
 
-If you want to use Firebase Hosting, this project will deploy to your hosting URL on every push to main branch.
+If you want to use Firebase Hosting, this project will deploy to your hosting URL on every push to main branch. Follow the [instructions here](https://create-react-app.dev/docs/deployment/#firebase) for setup.
 
 To manually build, run `yarn build`.
 
