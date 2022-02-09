@@ -93,7 +93,7 @@ const AddTripModal = (props: AddTripModalProps) => {
   });
 
   const onFormSubmit = async (values: TripDraft) => {
-    let coverImageUri: string;
+    let coverImageUri: string | null = null;
 
     setFormError(null);
     if (values.coverImageBlob) {
@@ -120,6 +120,7 @@ const AddTripModal = (props: AddTripModalProps) => {
       }
       setFormImageUploading(false);
     }
+    console.log(coverImageUri);
     // @TODO: use action to save trip including url above
   };
 
