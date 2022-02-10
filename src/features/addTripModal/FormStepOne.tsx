@@ -30,7 +30,6 @@ const FormStepOne = () => {
           onChange: onMapFieldChange,
           placeholder: "Where is this trip?",
         }}
-        apiKey={process.env.REACT_APP_GMAP_JS_API_KEY}
       />
     ),
     [onMapFieldChange]
