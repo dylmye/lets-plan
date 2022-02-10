@@ -16,7 +16,6 @@ jobs:
           envkey_REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           envkey_REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           envkey_REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          envkey_REACT_APP_UUID_NAMESPACE: ${{ secrets.UUID_NAMESPACE }}
       - name: install yarn dependencies
         uses: borales/actions-yarn@v2.3.0
         with:

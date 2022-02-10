@@ -14,7 +14,7 @@ import { Form, Formik } from "formik";
 import dayjs from "dayjs";
 import { ref, uploadBytes, UploadResult } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
-import { v5 as uuidv5 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { TripDraft } from "../../types/TripDraft";
 import FormStepOne from "./FormStepOne";
@@ -98,10 +98,7 @@ const AddTripModal = (props: AddTripModalProps) => {
     setFormError(null);
     if (values.coverImageBlob) {
       const extension = getExtensionByMimetype(values.coverImageBlob.type);
-      const filename = uuidv5(
-        process.env.REACT_APP_UUID_NAMESPACE || "http://localhost",
-        uuidv5.URL
-      );
+      const filename = uuidv4();
       console.debug(`uploading trip-thumbs/${filename}.${extension}...`);
       const storageRef = ref(storage, `trip-thumbs/${filename}.${extension}`);
 
