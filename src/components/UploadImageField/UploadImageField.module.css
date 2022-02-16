@@ -1,0 +1,16 @@
+.dropzoneLabel {
+  padding: .5rem 0;
+  border-radius: 4px;
+  background-color: #efefef;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.dropzonePreview {
+  padding: .5rem 0;
+  border-radius: 4px;
+  background-color: #efefef;
+  max-height: 100px;
+  display: flex;
+  margin: 0 auto;
+}

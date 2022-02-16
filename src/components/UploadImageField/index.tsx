@@ -1,20 +1,18 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FieldProps } from "formik";
 
-interface Props extends FieldProps {
-  previewUri?: string | null;
-}
+import styles from "./UploadImageField.module.css";
+
+interface Props extends FieldProps {}
 
 /** Wrapper for Dropzone, for a single picture */
-const UploadImageField = ({
-  previewUri,
-  field,
-  form: { setFieldValue },
-}: Props) => {
+const UploadImageField = ({ field, form: { setFieldValue } }: Props) => {
+  const [previewUri, setPreviewUri] = useState<string | null>(null);
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setFieldValue(field.name, acceptedFiles[0]);
+      setPreviewUri(URL.createObjectURL(acceptedFiles[0]));
     },
     [field.name, setFieldValue]
   );
@@ -24,18 +22,23 @@ const UploadImageField = ({
     maxFiles: 1,
   });
 
-  // @TODO: preview image or text
-
   return (
     <div {...getRootProps({ className: "dropzone" })}>
       <label>Upload a cover picture (optional)</label>
       <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the picture here ...</p>
+      {!previewUri ? (
+        <div className={styles.dropzoneLabel}>
+          {isDragActive ? (
+            <span>Drop the picture here...</span>
+          ) : (
+            <span>
+              Drag 'n' drop the picture here, or click to select files
+            </span>
+          )}
+        </div>
       ) : (
-        <p>Drag 'n' drop the picture here, or click to select files</p>
+        <img src={previewUri} alt="Preview of your cover" className={styles.dropzonePreview} />
       )}
-      <p>{previewUri}</p>
     </div>
   );
 };

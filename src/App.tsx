@@ -23,7 +23,7 @@ function App() {
     try {
       init();
     } catch (error) {
-      console.error("Unable to load Google Maps API", error);
+      console.error("Unable to load Google Maps API: ", error);
     }
   });
   return (

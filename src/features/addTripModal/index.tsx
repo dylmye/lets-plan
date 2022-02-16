@@ -1,15 +1,12 @@
-import React, { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   Alert,
   Box,
-  Button,
-  MobileStepper,
   Modal,
   SxProps,
   Theme,
   Typography,
 } from "@mui/material";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { Form, Formik } from "formik";
 import dayjs from "dayjs";
 import { ref, uploadBytes, UploadResult } from "firebase/storage";
@@ -21,8 +18,17 @@ import FormStepOne from "./FormStepOne";
 import FormStepTwo from "./FormStepTwo";
 import FormStepThree from "./FormStepThree";
 import { storage } from "../../firebase";
-import { getExtensionByMimetype, getUploadErrorFriendlyText } from "../../helpers/upload";
-import { SchemaOf, object as yObject, string as yString, mixed as yMixed } from "yup";
+import {
+  getExtensionByMimetype,
+  getUploadErrorFriendlyText,
+} from "../../helpers/upload";
+import {
+  SchemaOf,
+  object as yObject,
+  string as yString,
+  mixed as yMixed,
+} from "yup";
+import FormPagination from "./FormPagination";
 
 export interface AddTripModalProps {
   open: boolean;
@@ -49,11 +55,11 @@ const AddTripModal = (props: AddTripModalProps) => {
 
   const today = useMemo(() => dayjs(), []);
 
-  const isFirstStep = activeStep === 0;
-  const isLastStep = activeStep === TOTAL_STEPS - 1;
-
-  const goBack = () => setActiveStep(activeStep - 1);
-  const goForward = () => setActiveStep(activeStep + 1);
+  const goBack = useCallback(() => setActiveStep(activeStep - 1), [activeStep]);
+  const goForward = useCallback(
+    () => setActiveStep(activeStep + 1),
+    [activeStep]
+  );
 
   const renderFormStep = () => {
     switch (activeStep) {
@@ -75,24 +81,39 @@ const AddTripModal = (props: AddTripModalProps) => {
   const validationSchema: SchemaOf<TripDraft> = yObject().shape({
     title: yString().required(),
     location: yString().optional(),
-    locationData: yObject().shape({
-      label: yString(),
-      value: yObject(),
-    }).required(),
+    locationData: yObject()
+      .shape({
+        label: yString(),
+        value: yObject(),
+      })
+      .required(),
     startsAt: yString().required(),
     endsAt: yString().required(),
     // keep these rules in sync with your storage rules in Firebase
-    coverImageBlob: yMixed().test("fileSize", "The cover image needs to be under 1MB", (value: File[]) => {
-      if (!value?.length) return true; // no file required
-      return value[0].size < 1000000;
-    }).test("fileMimeType", "The cover image needs to be in png, jpg or webp format", (value: File[]) => {
-      if (!value?.length) return true; // no file required
-      console.debug(value[0].type);
-      return ["image/png", "image/jpg", "image/webp"].includes(value[0].type);
-    })
+    coverImageBlob: yMixed()
+      .test(
+        "fileSize",
+        "The cover image needs to be under 1MB",
+        (value: File[]) => {
+          if (!value?.length) return true; // no file required
+          return value[0].size < 1000000;
+        }
+      )
+      .test(
+        "fileMimeType",
+        "The cover image needs to be in png, jpg or webp format",
+        (value: File[]) => {
+          if (!value?.length) return true; // no file required
+          console.debug("typetest", value[0].type);
+          return ["image/png", "image/jpg", "image/webp"].includes(
+            value[0].type
+          );
+        }
+      ),
   });
 
   const onFormSubmit = async (values: TripDraft) => {
+    console.log("ofs called");
     let coverImageUri: string | null = null;
 
     setFormError(null);
@@ -141,29 +162,11 @@ const AddTripModal = (props: AddTripModalProps) => {
           <Form>
             {formError && <Alert severity="error">{formError}</Alert>}
             {renderFormStep()}
-            <MobileStepper
-              variant="dots"
-              steps={3}
-              position="static"
+            <FormPagination
               activeStep={activeStep}
-              backButton={
-                <Button size="small" onClick={goBack} disabled={isFirstStep}>
-                  Back
-                  <KeyboardArrowLeft />
-                </Button>
-              }
-              nextButton={
-                !isLastStep ? (
-                  <Button size="small" onClick={goForward}>
-                    Next
-                  </Button>
-                ) : (
-                  <Button size="small" type="submit">
-                    Create
-                    <KeyboardArrowRight />
-                  </Button>
-                )
-              }
+              totalSteps={TOTAL_STEPS}
+              onPressBack={goBack}
+              onPressNext={goForward}
             />
           </Form>
         </Formik>
