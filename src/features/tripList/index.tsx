@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Container,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
-import { Add, Public } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import dayjs from "dayjs";
 
 import styles from "./TripList.module.css";
 import { Trip } from "../../types/Trip";
 import AddTripModal from "../addTripModal";
+import TripListItem from "../../components/TripListItem";
+import TripListAction, {
+  TripListActions,
+} from "../../components/TripListAction";
 
 const TripList = () => {
   const loading = false;
@@ -49,40 +51,6 @@ const TripList = () => {
     },
   ];
 
-  const renderTrip = (trip: Trip) => (
-    <Card key={trip.id}>
-      <CardActionArea sx={{ display: "flex", justifyContent: "flex-start" }}>
-        <CardMedia
-          component="img"
-          sx={{ width: 200 }}
-          image={trip.image || "http://placehold.it/600x400"}
-          alt={trip.title}
-        />
-        <Box className={styles.tripListTextContent}>
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography
-              variant="h5"
-              textAlign="left"
-              className={styles.tripListTitle}
-            >
-              <strong>{trip.title}</strong>
-            </Typography>
-            {trip.location && (
-              <Typography
-                variant="body2"
-                textAlign="left"
-                sx={{ display: "flex", marginTop: 0.25 }}
-              >
-                <Public fontSize="small" sx={{ marginRight: 0.5 }} />
-                {trip.location}
-              </Typography>
-            )}
-          </CardContent>
-        </Box>
-      </CardActionArea>
-    </Card>
-  );
-
   return (
     <Container maxWidth="md" className={styles.tripListContainer}>
       <Stack spacing={2}>
@@ -94,17 +62,17 @@ const TripList = () => {
             <Placeholder />
           </>
         ) : (
-          <>{trips.map(renderTrip)}</>
+          <>
+            {trips.map((trip) => (
+              <TripListItem trip={trip} key={`trip-${trip.id}`} />
+            ))}
+          </>
         )}
-        <Card key="card-add" sx={{ boxShadow: 0, border: "2px dashed #000" }}>
-          <CardActionArea onClick={() => toggleModalVisibility(true)}>
-            <CardContent>
-              <Typography variant="h3">
-                <Add fontSize="large" /> Add Trip
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        <TripListAction
+          key="trip-action-add"
+          onPress={() => toggleModalVisibility(true)}
+          actionType={TripListActions.ACTION_ADD}
+        />
       </Stack>
       <AddTripModal
         open={addModalVisible}

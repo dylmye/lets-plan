@@ -4,6 +4,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
 import TripList from "./features/tripList";
+import Legal from "./features/legal";
 
 function App() {
   useEffect(() => {
@@ -38,12 +39,16 @@ function App() {
           <Routes>
             <Route path="/" element={<TripList />} />
             <Route path="trips" element={<TripList />} />
+            <Route path="legal" element={<Legal />} />
             {/* <Route path="trip/:tripId" element={<TripList />} /> */}
             {/* <Route path="trip/:tripId/edit" element={<TripList />} /> */}
             <Route path="*" element={<TripList />} />
           </Routes>
         </BrowserRouter>
       </main>
+      <footer>
+        <a href="/legal">Terms & Privacy</a>
+      </footer>
     </div>
   );
 }

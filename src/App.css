@@ -40,3 +40,11 @@ header a span::before {
   clip-path: polygon(0 0, 0 0, 0% 100%, 0 100%);
   transition: clip-path 250ms ease;
 }
+
+main {
+  min-height: 90vh;
+}
+
+footer {
+  margin-top: 2rem;
+}
