@@ -1,6 +1,7 @@
 import { ActionMeta } from "react-select";
 
 export interface TripDraft {
+  id: string;
   title: string;
   location?: string;
   locationData?: {
@@ -10,4 +11,5 @@ export interface TripDraft {
   startsAt: string | null;
   endsAt: string | null;
   coverImageBlob?: File | null;
+  image?: string | null;
 }

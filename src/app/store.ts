@@ -16,7 +16,11 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import counterReducer from "../features/counter/counterSlice";
+import tripsReducer, { TripState } from "../features/tripList/tripSlice";
+
+interface State {
+  trips: TripState;
+}
 
 const persistConfig: PersistConfig<any> = {
   key: "root",
@@ -24,10 +28,10 @@ const persistConfig: PersistConfig<any> = {
   storage,
 };
 
-const rootReducer = persistReducer(
+const rootReducer = persistReducer<State>(
   persistConfig,
   combineReducers({
-    counter: counterReducer,
+    trips: tripsReducer,
   })
 );
 

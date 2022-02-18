@@ -3,7 +3,7 @@ import { Alert } from "@mui/material";
 import { Field } from "formik";
 
 import styles from "./AddTripModal.module.css";
-import UploadImageField from "../../components/UploadImageField";
+import UploadImageField from "../UploadImageField";
 
 interface StepThreeProps {
   /** Controls loading status indicator for image upload */

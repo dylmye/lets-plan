@@ -1,15 +1,13 @@
 import { useCallback, useMemo, useState } from "react";
-import {
-  Alert,
-  Box,
-  Modal,
-  SxProps,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import dayjs from "dayjs";
-import { ref, uploadBytes, UploadResult } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  UploadResult,
+} from "firebase/storage";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 
@@ -29,6 +27,8 @@ import {
   mixed as yMixed,
 } from "yup";
 import FormPagination from "./FormPagination";
+import { useAppDispatch } from "../../app/hooks";
+import { saveTrip } from "../../features/tripList/tripSlice";
 
 export interface AddTripModalProps {
   open: boolean;
@@ -49,6 +49,7 @@ const dialogStyle: SxProps<Theme> = {
 
 const AddTripModal = (props: AddTripModalProps) => {
   const TOTAL_STEPS = 3;
+  const dispatch = useAppDispatch();
   const [activeStep, setActiveStep] = useState(0);
   const [formImageUploading, setFormImageUploading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -79,6 +80,7 @@ const AddTripModal = (props: AddTripModalProps) => {
   };
 
   const validationSchema: SchemaOf<TripDraft> = yObject().shape({
+    id: yString().required(),
     title: yString().required(),
     location: yString().optional(),
     locationData: yObject()
@@ -89,6 +91,7 @@ const AddTripModal = (props: AddTripModalProps) => {
       .required(),
     startsAt: yString().required(),
     endsAt: yString().required(),
+    image: yString().optional(),
     // keep these rules in sync with your storage rules in Firebase
     coverImageBlob: yMixed()
       .test(
@@ -119,27 +122,28 @@ const AddTripModal = (props: AddTripModalProps) => {
     setFormError(null);
     if (values.coverImageBlob) {
       const extension = getExtensionByMimetype(values.coverImageBlob.type);
-      const filename = uuidv4();
-      console.debug(`uploading trip-thumbs/${filename}.${extension}...`);
-      const storageRef = ref(storage, `trip-thumbs/${filename}.${extension}`);
+      console.debug(`uploading trip-thumbs/${values.id}.${extension}...`);
+      const storageRef = ref(storage, `trip-thumbs/${values.id}.${extension}`);
 
       setFormImageUploading(true);
-      let res: UploadResult;
+      let res: UploadResult | null = null;
       try {
         res = await uploadBytes(storageRef, values.coverImageBlob);
-        if (res?.metadata.fullPath) {
-          coverImageUri = res.metadata.fullPath;
-        }
+        delete values.coverImageBlob;
+        console.debug("uploaded successfully", res?.metadata);
       } catch (e) {
         if (e instanceof FirebaseError) {
           setFormError(getUploadErrorFriendlyText(e));
-          console.error("trip thumb upload failed:", e.code);
+          console.error("trip thumb upload failed:", e.code, res?.metadata);
         }
       }
       setFormImageUploading(false);
+
+      coverImageUri = await getDownloadURL(storageRef);
     }
-    console.log(coverImageUri);
-    // @TODO: use action to save trip including url above
+    dispatch(saveTrip({ ...values, image: coverImageUri }));
+    setActiveStep(0);
+    props.onClose();
   };
 
   return (
@@ -150,6 +154,7 @@ const AddTripModal = (props: AddTripModalProps) => {
         </Typography>
         <Formik<TripDraft>
           initialValues={{
+            id: uuidv4(),
             title: "",
             location: "",
             startsAt: today.format("YYYY-MM-DD"),

@@ -45,6 +45,10 @@ const Legal = () => {
             <a href="https://cloud.google.com/terms/">
               Google Cloud Platform Terms of Service
             </a>
+            . More information available{" "}
+            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase">
+              here
+            </a>
             .
           </p>
         </li>
@@ -58,6 +62,10 @@ const Legal = () => {
             United States and is governed by the{" "}
             <a href="https://firebase.google.com/terms/data-processing-terms">
               Firebase Data Processing and Security Terms
+            </a>
+            . More information available{" "}
+            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase">
+              here
             </a>
             .
           </p>

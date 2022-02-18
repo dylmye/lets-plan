@@ -1,55 +1,31 @@
 import React, { useState } from "react";
 import {
-  Card,
-  CardActionArea,
-  CardContent,
   Container,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
 import dayjs from "dayjs";
 
 import styles from "./TripList.module.css";
 import { Trip } from "../../types/Trip";
-import AddTripModal from "../addTripModal";
+import AddTripModal from "../../components/AddTripModal";
 import TripListItem from "../../components/TripListItem";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
+import { useAppSelector } from "../../app/hooks";
+import { rootTripSelector, selectTrips } from "./tripSlice";
 
 const TripList = () => {
   const loading = false;
+  const trips = useAppSelector(selectTrips);
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
   const Placeholder = () => (
     <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 1 }} />
   );
-
-  const trips: Trip[] = [
-    {
-      id: "placeholder-1",
-      title: "[[TRIP_TITLE]]",
-      location: "[[TRIP_LOCATION]]",
-      image: "https://placebeard.it/600x400?1",
-      startsAt: dayjs("2022-01-01").toISOString(),
-      endsAt: dayjs("2022-01-01").toISOString(),
-      createdAtUtc: dayjs("2022-01-01").toISOString(),
-      updatedAtUtc: dayjs("2022-01-01").toISOString(),
-    },
-    {
-      id: "placeholder-2",
-      title: "Bury Tour, Very Long Title, Wow It's So Long!! Incredible!!!",
-      location: "Bury St Edmunds, UK",
-      image: "https://placebeard.it/600x400?2",
-      startsAt: dayjs("2022-01-01").toISOString(),
-      endsAt: dayjs("2022-01-01").toISOString(),
-      createdAtUtc: dayjs("2022-01-01").toISOString(),
-      updatedAtUtc: dayjs("2022-01-01").toISOString(),
-    },
-  ];
 
   return (
     <Container maxWidth="md" className={styles.tripListContainer}>
@@ -63,9 +39,9 @@ const TripList = () => {
           </>
         ) : (
           <>
-            {trips.map((trip) => (
+            {trips?.length ? trips.map((trip) => (
               <TripListItem trip={trip} key={`trip-${trip.id}`} />
-            ))}
+            )) : <Typography variant="h4">Add a trip to get started :)</Typography>}
           </>
         )}
         <TripListAction
