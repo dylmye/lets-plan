@@ -1,6 +1,6 @@
-import { createAsyncThunk, createDraftSafeSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createDraftSafeSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import { RootState, AppThunk } from "../../app/store";
+import { RootState } from "../../app/store";
 import SliceNames from "../../types/SliceNames";
 import { Trip } from "../../types/Trip";
 import { TripDraft } from "../../types/TripDraft";

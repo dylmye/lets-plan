@@ -5,17 +5,15 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 import styles from "./TripList.module.css";
-import { Trip } from "../../types/Trip";
 import AddTripModal from "../../components/AddTripModal";
 import TripListItem from "../../components/TripListItem";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
 import { useAppSelector } from "../../app/hooks";
-import { rootTripSelector, selectTrips } from "./tripSlice";
+import { selectTrips } from "./tripSlice";
 
 const TripList = () => {
   const loading = false;
