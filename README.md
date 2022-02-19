@@ -36,3 +36,5 @@ To manually build, run `yarn build`.
 ## Credits
 
 > This project was bootstrapped with [Create React App](https://create-react-app.dev/), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+
+> Logo - Travel by Iconstock from NounProject.com
