@@ -48,6 +48,7 @@ function App() {
       </main>
       <footer>
         <a href="/legal">Terms & Privacy</a>
+        <p>Logo - Travel by Iconstock from NounProject.com</p>
       </footer>
     </div>
   );
