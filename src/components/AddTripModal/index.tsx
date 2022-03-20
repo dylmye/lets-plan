@@ -116,7 +116,6 @@ const AddTripModal = (props: AddTripModalProps) => {
   });
 
   const onFormSubmit = async (values: TripDraft) => {
-    console.log("ofs called");
     let coverImageUri: string | null = null;
 
     setFormError(null);

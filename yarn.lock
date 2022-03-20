@@ -1098,6 +1098,11 @@
   dependencies:
     "@date-io/core" "^2.11.0"
 
+"@dylmye/flight-designator@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@dylmye/flight-designator/-/flight-designator-4.1.3.tgz#fd4aad3f4bcca5cfc29bb657fc7a6937a35f61b3"
+  integrity sha512-mfii+Rs+mDTsStymognumIyS7sEJVBIyw/P/EYwcpXnOgmdlhCKc3Lgx2rU5ohrCZcbM2BouG9CPwIcAyT1BOw==
+
 "@emotion/babel-plugin@^11.3.0":
   version "11.7.2"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.7.2.tgz#fec75f38a6ab5b304b0601c74e2a5e77c95e5fa0"

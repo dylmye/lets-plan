@@ -1,7 +1,7 @@
 .tripListTextContent {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 75%;
   flex-wrap: wrap;
 }
 
@@ -11,4 +11,18 @@
   -webkit-line-clamp: 1;
   overflow: hidden;
   width: 100%;
+}
+
+.tripListThumbContainer {
+  background-color: #dedede;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 25%;
+  align-self: stretch;
+}
+
+.tripListThumb {
+  max-height: 7rem;
+  aspect-ratio: 16 / 9;
 }

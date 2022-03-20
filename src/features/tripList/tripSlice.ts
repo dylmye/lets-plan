@@ -38,7 +38,7 @@ export const tripSlice = createSlice({
         endsAt: payload.endsAt,
         createdAtUtc: dayjs().toISOString(),
         updatedAtUtc: dayjs().toISOString(),
-        image: null,
+        image: payload.image,
       };
 
       return {

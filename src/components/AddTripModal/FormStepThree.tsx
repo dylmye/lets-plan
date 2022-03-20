@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import { Field } from "formik";
 
 import styles from "./AddTripModal.module.css";
@@ -20,6 +20,7 @@ const FormStepThree = ({ isImageUploading }: StepThreeProps) => {
         name="coverImageBlob"
         label="Upload a cover picture (optional)"
       />
+      <Typography variant="body2"><strong>Recommended size:</strong> 600x400px / 3:2 ratio</Typography>
     </div>
   );
 };
