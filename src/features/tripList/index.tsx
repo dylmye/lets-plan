@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Container, Skeleton, Stack, Typography } from "@mui/material";
 
 import styles from "./TripList.module.css";
 import AddTripModal from "../../components/AddTripModal";
@@ -13,11 +8,12 @@ import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
 import { useAppSelector } from "../../app/hooks";
-import { selectTrips } from "./tripSlice";
+import { selectCurrentTrips, selectPastTrips } from "./tripSlice";
 
 const TripList = () => {
   const loading = false;
-  const trips = useAppSelector(selectTrips);
+  const currentTrips = useAppSelector(selectCurrentTrips);
+  const pastTrips = useAppSelector(selectPastTrips);
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
@@ -30,16 +26,22 @@ const TripList = () => {
       <Stack spacing={2}>
         {loading ? (
           <>
-            <Placeholder />
-            <Placeholder />
-            <Placeholder />
-            <Placeholder />
+            <Placeholder key="placeholder-1" />
+            <Placeholder key="placeholder-2" />
+            <Placeholder key="placeholder-3" />
+            <Placeholder key="placeholder-4" />
           </>
         ) : (
           <>
-            {trips?.length ? trips.map((trip) => (
-              <TripListItem trip={trip} key={`trip-${trip.id}`} />
-            )) : <Typography variant="h4">Add a trip to get started :)</Typography>}
+            {currentTrips?.length ? (
+              currentTrips.map((trip) => (
+                <TripListItem trip={trip} key={`trip-${trip.id}`} />
+              ))
+            ) : (
+              <Typography key="header-no-current-items" variant="h4">
+                Add a trip to get started :)
+              </Typography>
+            )}
           </>
         )}
         <TripListAction
@@ -47,6 +49,16 @@ const TripList = () => {
           onPress={() => toggleModalVisibility(true)}
           actionType={TripListActions.ACTION_ADD}
         />
+        {pastTrips?.length && (
+          <>
+            <Typography key="header-past-trips" variant="h4" fontWeight="bold">
+              Past Trips
+            </Typography>
+            {pastTrips.map((trip) => (
+              <TripListItem trip={trip} key={`trip-${trip.id}`} />
+            ))}
+          </>
+        )}
       </Stack>
       <AddTripModal
         open={addModalVisible}

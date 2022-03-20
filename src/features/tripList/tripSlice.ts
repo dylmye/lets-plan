@@ -1,6 +1,11 @@
-import { createDraftSafeSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createDraftSafeSelector,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 import { RootState } from "../../app/store";
+import { tripIsInState } from "../../helpers/dates";
 import SliceNames from "../../types/SliceNames";
 import { Trip } from "../../types/Trip";
 import { TripDraft } from "../../types/TripDraft";
@@ -55,12 +60,20 @@ export const rootTripSelector = (state: RootState) => state.trips;
 
 export const selectTrips = createDraftSafeSelector(
   rootTripSelector,
-  (state) => state.list,
+  (state) => state.list
 );
 
 export const selectTripById = createDraftSafeSelector(
   [selectTrips, (state: TripState, id: string) => id],
-  (state, id) => state?.find(x => x.id === id),
-)
+  (state, id) => state?.find((x) => x.id === id)
+);
+
+export const selectCurrentTrips = createDraftSafeSelector(selectTrips, (state) =>
+  state.filter((trip) => tripIsInState(trip, "future"))
+);
+
+export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
+  state.filter((trip) => tripIsInState(trip, "past"))
+);
 
 export default tripSlice.reducer;

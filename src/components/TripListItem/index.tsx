@@ -1,5 +1,5 @@
 import React from "react";
-import { Public } from "@mui/icons-material";
+import { CalendarToday, Public } from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -11,6 +11,7 @@ import {
 
 import { Trip } from "../../types/Trip";
 import styles from "./TripListItem.module.css";
+import { formatDate } from "../../helpers/dates";
 
 export interface TripListItemProps {
   trip: Trip;
@@ -49,6 +50,18 @@ const TripListItem = ({ trip }: TripListItemProps) => (
             >
               <Public fontSize="small" sx={{ marginRight: 0.5 }} />
               {trip.location}
+            </Typography>
+          )}
+          {trip.startsAt && (
+            <Typography
+              variant="body2"
+              textAlign="left"
+              sx={{ display: "flex", marginTop: 0.25 }}
+              aria-label="Location"
+            >
+              <CalendarToday fontSize="small" sx={{ marginRight: 0.5 }} />
+              {formatDate(trip.startsAt)} -{" "}
+              {trip.endsAt ? formatDate(trip.endsAt) : ""}
             </Typography>
           )}
         </CardContent>
