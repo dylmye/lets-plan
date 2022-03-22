@@ -6,7 +6,7 @@ import {
 import dayjs from "dayjs";
 import { RootState } from "../../app/store";
 import { tripIsInState } from "../../helpers/dates";
-import SliceNames from "../../types/SliceNames";
+import SliceNames from "../../enums/SliceNames";
 import { Trip } from "../../types/Trip";
 import { TripDraft } from "../../types/TripDraft";
 
