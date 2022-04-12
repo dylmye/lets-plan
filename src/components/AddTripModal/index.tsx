@@ -145,8 +145,13 @@ const AddTripModal = (props: AddTripModalProps) => {
     props.onClose();
   };
 
+  const onModalClose = () => {
+    setActiveStep(0);
+    props.onClose();
+  }
+
   return (
-    <Modal {...props} aria-labelledby="modal-addtrip-title">
+    <Modal {...props} onClose={onModalClose} aria-labelledby="modal-addtrip-title">
       <Box sx={dialogStyle}>
         <Typography variant="h5">
           <strong id="modal-addtrip-title">Add A Trip</strong>
@@ -171,6 +176,7 @@ const AddTripModal = (props: AddTripModalProps) => {
               totalSteps={TOTAL_STEPS}
               onPressBack={goBack}
               onPressNext={goForward}
+              onClose={props.onClose}
             />
           </Form>
         </Formik>

@@ -23,7 +23,7 @@ const TripListAction = ({ onPress, actionType }: TripListActionProps) => (
   <Card key="card-add" sx={{ boxShadow: 0, border: "2px dashed #000" }}>
     <CardActionArea onClick={onPress}>
       <CardContent>
-        <Typography variant="h3">
+        <Typography variant="h4" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           {actionIcons[actionType]} {actionLabels[actionType] ?? 'Click Here'}
         </Typography>
       </CardContent>

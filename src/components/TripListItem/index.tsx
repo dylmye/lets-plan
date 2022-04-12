@@ -1,5 +1,5 @@
 import React from "react";
-import { CalendarToday, Public } from "@mui/icons-material";
+import { CalendarToday, Place } from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -48,7 +48,7 @@ const TripListItem = ({ trip }: TripListItemProps) => (
               sx={{ display: "flex", marginTop: 0.25 }}
               aria-label="Location"
             >
-              <Public fontSize="small" sx={{ marginRight: 0.5 }} />
+              <Place fontSize="small" sx={{ marginRight: 0.5 }} />
               {trip.location}
             </Typography>
           )}

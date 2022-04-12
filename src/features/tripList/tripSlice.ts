@@ -24,6 +24,7 @@ const exampleTrip: Trip = {
   endsAt: dayjs().add(7, "day").toISOString(),
   createdAtUtc: dayjs().toISOString(),
   updatedAtUtc: dayjs().toISOString(),
+  image: "https://firebasestorage.googleapis.com/v0/b/lets-plan-firebase.appspot.com/o/default-trip-thumbs%2Fdefault-yorkshire-1555795622.webp?alt=media"
 };
 
 const initialState: TripState = {

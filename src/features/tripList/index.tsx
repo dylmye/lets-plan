@@ -38,7 +38,7 @@ const TripList = () => {
                 <TripListItem trip={trip} key={`trip-${trip.id}`} />
               ))
             ) : (
-              <Typography key="header-no-current-items" variant="h4">
+              <Typography key="header-no-current-items" variant="h4" sx={{ marginY: 4 }}>
                 Add a trip to get started :)
               </Typography>
             )}
@@ -49,17 +49,19 @@ const TripList = () => {
           onPress={() => toggleModalVisibility(true)}
           actionType={TripListActions.ACTION_ADD}
         />
-        {pastTrips?.length && (
-          <>
-            <Typography key="header-past-trips" variant="h4" fontWeight="bold">
-              Past Trips
-            </Typography>
+      </Stack>
+      {pastTrips?.length ? (
+        <>
+          <Typography key="header-past-trips" variant="h4" sx={{ fontWeight: "bold", marginTop: 6, marginBottom: 2 }}>
+            Past Trips
+          </Typography>
+          <Stack spacing={2}>
             {pastTrips.map((trip) => (
               <TripListItem trip={trip} key={`trip-${trip.id}`} />
             ))}
-          </>
-        )}
-      </Stack>
+          </Stack>
+        </>
+      ) : null}
       <AddTripModal
         open={addModalVisible}
         onClose={() => toggleModalVisibility(false)}

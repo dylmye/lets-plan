@@ -8,13 +8,19 @@ interface Props {
   totalSteps: number;
   onPressBack: () => void;
   onPressNext: () => void;
+  onClose: () => void;
 }
 
 const FormPagination = memo(
-  ({ activeStep, totalSteps, onPressBack, onPressNext }: Props) => {
+  ({ activeStep, totalSteps, onPressBack, onPressNext, onClose }: Props) => {
     const isFirstStep = activeStep === 0;
     const isLastStep = activeStep === totalSteps - 1;
-    const { submitForm } = useFormikContext();
+    const { submitForm, resetForm } = useFormikContext();
+
+    const onDismiss = () => {
+      resetForm();
+      onClose();
+    };
 
     return (
       <MobileStepper
@@ -23,14 +29,20 @@ const FormPagination = memo(
         position="static"
         activeStep={activeStep}
         backButton={
-          <Button size="small" onClick={onPressBack} disabled={isFirstStep}>
-            <KeyboardArrowLeft />
-            Back
+          <Button size="small" onClick={isFirstStep ? onDismiss : onPressBack}>
+            {isFirstStep ? (
+              "Cancel"
+            ) : (
+              <>
+                <KeyboardArrowLeft />
+                Back
+              </>
+            )}
           </Button>
         }
         nextButton={
           <Button size="small" onClick={isLastStep ? submitForm : onPressNext}>
-            Next
+            {isLastStep ? "Submit" : "Next"}
             <KeyboardArrowRight />
           </Button>
         }

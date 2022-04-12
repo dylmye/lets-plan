@@ -20,7 +20,7 @@ const FormStepThree = ({ isImageUploading }: StepThreeProps) => {
         name="coverImageBlob"
         label="Upload a cover picture (optional)"
       />
-      <Typography variant="body2"><strong>Recommended size:</strong> 600x400px / 3:2 ratio</Typography>
+      <Typography variant="body2"><strong>Recommended size:</strong> 600x400px / 3:2 ratio<br /><strong>Max size:</strong> 1MB</Typography>
     </div>
   );
 };
