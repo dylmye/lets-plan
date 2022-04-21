@@ -1,6 +1,6 @@
-import { TripItineraryTravelItem } from "../TripItineraryTravelItem";
+import TripItineraryTravelItem from "../TripItineraryTravelItem";
 
-export interface MiscItem extends TripItineraryTravelItem {
+export default interface MiscItem extends TripItineraryTravelItem {
   /** The name providing the travel */
   operatorName?: string;
   /** Freeform input */

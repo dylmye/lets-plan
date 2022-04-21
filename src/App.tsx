@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
 import TripList from "./features/tripList";
 import Legal from "./features/legal";
+import TripDetailsContainer from "./features/tripDetailsContainer";
+import TripDetails from "./features/tripDetails";
 
 function App() {
   useEffect(() => {
@@ -29,27 +31,29 @@ function App() {
   });
   return (
     <div className="App">
-      <header className="header">
-        <a href="/trips">
-          <span>Let's Plan</span>
-        </a>
-      </header>
-      <main>
-        <BrowserRouter>
+      <BrowserRouter>
+        <header className="header">
+          <Link to="/trips">
+            <span>Let's Plan</span>
+          </Link>
+        </header>
+        <main>
           <Routes>
             <Route path="/" element={<TripList />} />
             <Route path="trips" element={<TripList />} />
+            <Route path="trip" element={<TripDetailsContainer />}>
+              <Route path=":tripId" element={<TripDetails />} />
+              <Route path=":tripId/edit" element={<TripDetails />} />
+            </Route>
             <Route path="legal" element={<Legal />} />
-            {/* <Route path="trip/:tripId" element={<TripList />} /> */}
-            {/* <Route path="trip/:tripId/edit" element={<TripList />} /> */}
             <Route path="*" element={<TripList />} />
           </Routes>
-        </BrowserRouter>
-      </main>
-      <footer>
-        <a href="/legal">Terms & Privacy</a>
-        <p>Logo - Travel by Iconstock from NounProject.com</p>
-      </footer>
+        </main>
+        <footer>
+          <Link to="/legal">Terms & Privacy</Link>
+          <p>Logo - Travel by Iconstock from NounProject.com</p>
+        </footer>
+      </BrowserRouter>
     </div>
   );
 }

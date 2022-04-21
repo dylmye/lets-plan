@@ -1,6 +1,6 @@
-import { TripItineraryTravelItem } from "../TripItineraryTravelItem";
+import TripItineraryTravelItem from "../TripItineraryTravelItem";
 
-export interface FlightItem extends TripItineraryTravelItem {
+export default interface FlightItem extends TripItineraryTravelItem {
   /** eg U25021 */
   flightDesignator?: string;
   /** The name of the business selling the flight */

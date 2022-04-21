@@ -12,6 +12,7 @@ import {
 import { Trip } from "../../types/Trip";
 import styles from "./TripListItem.module.css";
 import { formatDate } from "../../helpers/dates";
+import { Link } from "react-router-dom";
 
 export interface TripListItemProps {
   trip: Trip;
@@ -20,7 +21,7 @@ export interface TripListItemProps {
 /** Index item with a preview of the trip */
 const TripListItem = ({ trip }: TripListItemProps) => (
   <Card>
-    <CardActionArea sx={{ display: "flex", justifyContent: "flex-start" }}>
+    <CardActionArea sx={{ display: "flex", justifyContent: "flex-start" }} component={Link} to={`/trip/${trip.id}`}>
       <Box className={styles.tripListThumbContainer}>
         {!!trip?.image && (
           <CardMedia

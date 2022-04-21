@@ -39,9 +39,12 @@ const Legal = () => {
             deleted, related imagery is also deleted. Your IP address may be
             retained for anti-abuse purposes.
             <br />
-            This data is controlled by
-            <strong> Google LLC</strong> in Europe (europe-west) and is governed
-            by the{" "}
+            This data is controlled by <strong>Dylan Myers</strong> acting as{" "}
+            <em>Let's Plan</em> and processed by{" "}
+            <a href="https://about.google">
+              <strong>Google LLC</strong>
+            </a>{" "}
+            in Europe (europe-west) and is governed by the{" "}
             <a href="https://cloud.google.com/terms/">
               Google Cloud Platform Terms of Service
             </a>
@@ -58,8 +61,11 @@ const Legal = () => {
             uses stores IP address data for anti-abuse purposes. This data is
             minimised and retained for "a few months."
             <br />
-            This data is controlled by <strong> Google LLC</strong> in the
-            United States and is governed by the{" "}
+            This data is controlled by{" "}
+            <a href="https://about.google">
+              <strong>Google LLC</strong>
+            </a>{" "}
+            in the United States and is governed by the{" "}
             <a href="https://firebase.google.com/terms/data-processing-terms">
               Firebase Data Processing and Security Terms
             </a>
@@ -76,8 +82,11 @@ const Legal = () => {
             API used in the trip creation process stores an anonymous history of
             search results to allow Google to improve its services.
             <br />
-            This data is controlled by <strong> Google LLC</strong> and is
-            governed by the{" "}
+            This data is controlled by{" "}
+            <a href="https://about.google">
+              <strong>Google LLC</strong>
+            </a>{" "}
+            and is governed by the{" "}
             <a href="https://policies.google.com/privacy">
               Google Privacy Policy
             </a>
@@ -95,8 +104,10 @@ const Legal = () => {
             only loaded when required.
             <br />
             This data is controlled by{" "}
-            <strong> Intuition Machines, Inc.</strong> in the United States and
-            is governed by the{" "}
+            <a href="https://www.imachines.com/about">
+              <strong>Intuition Machines, Inc.</strong>
+            </a>{" "}
+            in the United States and is governed by the{" "}
             <a href="https://www.hcaptcha.com/privacy">
               hCaptcha Privacy Policy
             </a>
@@ -106,15 +117,20 @@ const Legal = () => {
         <li>
           <p>
             <strong>Limited general data about your visit:</strong> For analysis
-            purposes (to help make this website better, and to understand the
-            behaviour of users), a limited set of anonymised data is collected,
-            not including any IP addresses or other personal identifiable
-            information. A list of this information is available{" "}
-            <a href="https://docs.simpleanalytics.com/data-points">here</a>. If
-            you have Do Not Track enabled, this information is not collected.
+            purposes (to help make this website better for its users), a limited
+            set of anonymised data is collected, not including any IP addresses
+            or other personal identifiable information. A list of this
+            information is available{" "}
+            <a href="https://docs.simpleanalytics.com/data-points">here</a>. You
+            can opt-out of this anonymous data analysis by{" "}
+            <a href="https://allaboutdnt.com">enabling Do Not Track</a> in your
+            browser.
             <br />
-            This data is controlled by <strong>Simple Analytics</strong> in the
-            Netherlands and is governed by the{" "}
+            This data is controlled by{" "}
+            <a href="https://simpleanalytics.com/">
+              <strong>Simple Analytics</strong>
+            </a>{" "}
+            in the Netherlands and is governed by the{" "}
             <a href="https://docs.simpleanalytics.com/what-we-collect">
               Privacy Policy
             </a>
@@ -124,13 +140,15 @@ const Legal = () => {
         <li>
           <p>
             <strong>Limited access logs related to your visit:</strong> For
-            security analysis, limited logs are kept about your visit to this
-            website. This data is collected to protect this website from
-            unauthorised access by non-human users.
+            security analysis, the DNS provider of this website keeps limited
+            logs about your visit. This data is collected to protect this
+            website from unauthorised access by non-human users.
             <br />
             This data is controlled and processed by{" "}
-            <strong>Cloudflare, Inc.</strong> in the United States and Europe
-            and is governed by the{" "}
+            <a href="https://www.cloudflare.com/about-overview/">
+              <strong>Cloudflare, Inc.</strong>
+            </a>{" "}
+            in the United States and Europe and is governed by the{" "}
             <a href="https://www.cloudflare.com/privacypolicy/">
               Cloudflare Privacy Policy
             </a>{" "}
@@ -150,18 +168,38 @@ const Legal = () => {
         permanently - there is no backup kept remotely.
       </p>
       <p>
-        All trip images are deleted 12 months after they are uploaded. It's not
-        possible to delete a trip image if you've cleared your local storage
-        because images are not tied to your identity. (That being said, Google
-        stores the IP address of the uploader for anti-abuse purposes, as
-        outlined above.)
+        All trip images are deleted 12 months after they are uploaded, or when
+        the trip is deleted, whichever is earliest. It's not possible to delete
+        a trip image if you've cleared your local storage because images are not
+        tied to your identity.
       </p>
       <p>
         To view your trip data, please consult{" "}
         <a href="https://developer.chrome.com/docs/devtools/storage/localstorage/">
           this guide
         </a>{" "}
-        on how to access your local storage.
+        on how to manually access and delete your local storage.
+      </p>
+      <p>
+        To request the data Google, LLC holds on you, please{" "}
+        <a href="https://support.google.com/accounts/answer/3024190?hl=en">
+          consult this article
+        </a>
+        .
+      </p>
+      <p>
+        To request the data Intuition Machines, Inc. holds on you, please
+        contact them using the email in the "Notice to EU Data Subjects" section
+        in their <a href="https://www.hcaptcha.com/privacy">privacy policy</a>.
+      </p>
+      <p>
+        To request the data Simple Analytics holds on you, please contact them{" "}
+        <a href="https://simpleanalytics.com/contact">here</a>.
+      </p>
+      <p>
+        To request the data Cloudflare, Inc. holds on you, please contact them
+        using the email in section 8 of their{" "}
+        <a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>.
       </p>
       <Typography variant="h3" className={styles.legalHeader} id="terms">
         Terms and Conditions
@@ -203,10 +241,28 @@ const Legal = () => {
         Revisions
       </Typography>
       <p>
-        This is the first version of these legal documents. It was modified{" "}
-        <time dateTime="2022-02-17">17th Feb 2022</time>. This section will
-        detail any changes made in the future.
+        This is the second version of these legal documents. It was modified{" "}
+        <time dateTime="2022-04-13">13th April 2022</time>.
       </p>
+      <ul className={styles.legalList}>
+        <li>
+          <p>
+            <strong>
+              <time dateTime="2022-04-13">13th April 2022</time>
+            </strong>{" "}
+            - Clarified processor/controller of trip images, some clarification
+            of essential purposes, links to data processors/controllers
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>
+              <time dateTime="2022-02-17">17th Feb 2022</time>
+            </strong>{" "}
+            - Initial version
+          </p>
+        </li>
+      </ul>
     </div>
   );
 };

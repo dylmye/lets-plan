@@ -1,6 +1,6 @@
-import { TripItineraryTravelItem } from "../TripItineraryTravelItem";
+import TripItineraryTravelItem from "../TripItineraryTravelItem";
 
-export interface TaxiItem extends TripItineraryTravelItem {
+export default interface TaxiItem extends TripItineraryTravelItem {
   /** The name of the taxi's operating company */
   taxiOperator?: string;
   /** If the operator provides different services, enter it here */

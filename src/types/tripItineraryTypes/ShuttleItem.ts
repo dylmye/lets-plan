@@ -1,6 +1,6 @@
-import { TripItineraryTravelItem } from "../TripItineraryTravelItem";
+import TripItineraryTravelItem from "../TripItineraryTravelItem";
 
-export interface ShuttleItem extends TripItineraryTravelItem {
+export default interface ShuttleItem extends TripItineraryTravelItem {
   /** The name of the business operating the shuttle */
   shuttleOperator?: string;
 }
