@@ -16,7 +16,7 @@ export enum TripItemType {
   "Meet-up" = "activity_meetup",
   "Tour" = "activity_tour",
   "Theatre" = "activity_theatre",
-  "Opera" = "activity_opera",
+  "Cinema" = "activity_cinema",
   "Concert" = "activity_concert",
   "Shopping" = "activity_shopping",
   "Sports" = "activity_sports",
