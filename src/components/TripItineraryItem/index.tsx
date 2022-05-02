@@ -1,9 +1,15 @@
 import React from "react";
 import { Grid, Paper } from "@mui/material";
 import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Assignment, Directions } from "@mui/icons-material";
 
-import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { getTripItemColour, getTripItemIcon } from "../../helpers/tripItems";
+import styles from "./styles.module.css";
+import { ActivityTypes, TravelTypes } from "../../types/TripItemType";
+import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
+import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
+import TripItineraryItemBase from "../../types/TripItineraryItemBase";
+import { formatTime } from "../../helpers/dates";
 
 export interface TripItineraryItemProps {
   item: TripItineraryItemBase;
@@ -14,16 +20,56 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
   const Icon = () => getTripItemIcon(item.type);
   const iconBackgroundColour = getTripItemColour(item.type);
 
+  const renderItemText = (item: TripItineraryItemBase): JSX.Element | null => {
+    if (!item.type) {
+      return null;
+    }
+
+    if (TravelTypes.includes(item.type)) {
+      return (
+        <>
+          <Typography variant="h5" className={styles.tripItemTitle}>
+            {(item as TripItineraryTravelItem).title}
+          </Typography>
+          <Typography variant="body1" className={styles.tripItemText}>
+            <Directions fontSize="inherit" className={styles.tripItemIcon} />
+            {(item as TripItineraryTravelItem).originLocation} to
+            {" " + (item as TripItineraryTravelItem).destinationLocation}
+          </Typography>
+          {item.details && (
+            <Typography variant="body1" className={styles.tripItemText}>
+              <Assignment fontSize="inherit" className={styles.tripItemIcon} />
+              {(item as TripItineraryTravelItem).details}
+            </Typography>
+          )}
+        </>
+      );
+    }
+
+    if (ActivityTypes.includes(item.type)) {
+      return (
+        <>
+          <Typography variant="h5" className={styles.tripItemTitle}>
+            {(item as TripItineraryActivityItem)?.title ??
+              (item as TripItineraryActivityItem).location}
+          </Typography>
+          {item.details && (
+            <Typography variant="body1" className={styles.tripItemText}>
+              <Assignment fontSize="inherit" className={styles.tripItemIcon} />
+              {(item as TripItineraryTravelItem).details}
+            </Typography>
+          )}
+        </>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Grid container>
-      <Grid item xs sx={{ display: "flex", justifyContent: "center" }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+      <Grid item xs className={styles.tripItemIconContainer}>
+        <Box className={styles.tripItemIconBox}>
           <Paper
             variant="outlined"
             sx={{
@@ -42,15 +88,13 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
         <Card sx={{ paddingY: 2 }}>
           <Box>
             <CardContent>
-              <Typography
-                variant="h5"
-                sx={{ textAlign: "left", fontWeight: "bold" }}
-              >
-                {item.title}
+              <Typography variant="body2" className={styles.tripItemTitle}>
+                {formatTime(item.startsAt, true, false, item.startsAtTimezone)}
+                {(item as TripItineraryActivityItem | TripItineraryTravelItem)
+                  ?.endsAt &&
+                  ` - ${formatTime((item as any)?.endsAt, true, false, (item as any)?.endsAtTimeZone)}`}
               </Typography>
-              <Typography variant="body1" sx={{ textAlign: "left" }}>
-                {item.details}
-              </Typography>
+              {renderItemText(item)}
             </CardContent>
           </Box>
         </Card>

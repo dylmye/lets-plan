@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Typography } from "@mui/material";
 import { Field } from "formik";
 
-import styles from "./AddTripModal.module.css";
+import styles from "./styles.module.css";
 import UploadImageField from "../UploadImageField";
 
 interface StepThreeProps {

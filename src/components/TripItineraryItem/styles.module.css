@@ -1,0 +1,23 @@
+.tripItemIconContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.tripItemIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tripItemText, .tripItemTitle {
+  text-align: left;
+}
+
+.tripItemTitle {
+  font-weight: bold;
+}
+
+.tripItemIcon {
+  margin-right: .25rem;
+  vertical-align: text-top;
+}

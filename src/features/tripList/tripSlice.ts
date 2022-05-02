@@ -20,17 +20,17 @@ export interface TripState {
   list: Trip[];
 }
 
-const exampleStartDate = dayjs().startOf('day');
+const exampleStartDate = dayjs().local().startOf('day');
 
 const exampleTrip: Trip = {
   id: "example",
   title: "Your First Trip",
   details: "Meeting up with Hanna and Janelle for a beach vacay!!",
   location: "Whitby, Yorkshire, UK",
-  startsAt: exampleStartDate.toISOString(),
-  endsAt: exampleStartDate.endOf("day").add(1, "day").toISOString(),
-  createdAtUtc: dayjs().toISOString(),
-  updatedAtUtc: dayjs().toISOString(),
+  startsAt: exampleStartDate.format(),
+  endsAt: exampleStartDate.endOf("day").add(1, "day").format(),
+  createdAtUtc: dayjs().format(),
+  updatedAtUtc: dayjs().format(),
   image:
     "https://firebasestorage.googleapis.com/v0/b/lets-plan-firebase.appspot.com/o/default-trip-thumbs%2Fdefault-yorkshire-1555795622.webp?alt=media",
   items: [
@@ -40,26 +40,26 @@ const exampleTrip: Trip = {
       details: "Mum's okay with us borrowing the Transporter for the week",
       originLocation: "Walthamstow, London, UK",
       destinationLocation: "Whitby, Yorkshire, UK",
-      startsAt: exampleStartDate.add(7, "hour").toISOString(),
+      startsAt: exampleStartDate.add(7, "hour").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(11, "hour").add(49, "minute").toISOString(),
+      endsAt: exampleStartDate.add(11, "hour").add(49, "minute").format(),
       endsAtTimezone: "Europe/London",
     } as CarItem,
     {
       type: TripItemType["Eating Out"],
       location: "Hadleys Fish Restaurant & Accommodation, 11 Bridge St, Whitby YO22 4BG, England",
       details: "Fish and chips by the bridge!",
-      startsAt: exampleStartDate.add(12, "hour").toISOString(),
+      startsAt: exampleStartDate.add(12, "hour").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(13, "hour").toISOString(),
+      endsAt: exampleStartDate.add(13, "hour").format(),
       endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
       type: TripItemType.Museum,
       location: "Captain Cook Memorial Museum, Grape Ln, Whitby YO22 4BA, England",
-      startsAt: exampleStartDate.add(15, "hour").toISOString(),
+      startsAt: exampleStartDate.add(15, "hour").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(16, "hour").toISOString(),
+      endsAt: exampleStartDate.add(16, "hour").format(),
       endsAtTimezone: "Europe/London",
       urls: {
         "Website": "https://www.cookmuseumwhitby.co.uk/",
@@ -72,9 +72,9 @@ const exampleTrip: Trip = {
       type: TripItemType["Meet-up"],
       location: "Upgang Beach, Whitby, England",
       details: "Let's meet Janelle and Hanna by the rocks.",
-      startsAt: exampleStartDate.add(16, "hour").add(30, "minute").toISOString(),
+      startsAt: exampleStartDate.add(16, "hour").add(30, "minute").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(19, "hour").toISOString(),
+      endsAt: exampleStartDate.add(19, "hour").format(),
       endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
@@ -82,9 +82,9 @@ const exampleTrip: Trip = {
       title: "Driving back home",
       originLocation: "Whitby, Yorkshire, UK",
       destinationLocation: "Walthamstow, London, UK",
-      startsAt: exampleStartDate.add(1, "day").add(12, "hour").toISOString(),
+      startsAt: exampleStartDate.add(1, "day").add(12, "hour").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(1, "day").add(16, "hour").add(49, "minute").toISOString(),
+      endsAt: exampleStartDate.add(1, "day").add(16, "hour").add(49, "minute").format(),
       endsAtTimezone: "Europe/London",
     } as CarItem,
   ],
@@ -105,8 +105,8 @@ export const tripSlice = createSlice({
         location: payload.locationData?.label,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
-        createdAtUtc: dayjs().toISOString(),
-        updatedAtUtc: dayjs().toISOString(),
+        createdAtUtc: dayjs().format(),
+        updatedAtUtc: dayjs().format(),
         image: payload.image,
         items: [],
       };

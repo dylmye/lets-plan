@@ -16,3 +16,7 @@
   overflow: hidden;
   width: 100%;
 }
+
+.tripListItemPlaceholder {
+  border-radius: 4px;
+}

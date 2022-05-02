@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Field } from "formik";
 import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
 
-import styles from "./AddTripModal.module.css";
+import styles from "./styles.module.css";
 
 const FormStepTwo = () => {
   const DateField = useCallback(

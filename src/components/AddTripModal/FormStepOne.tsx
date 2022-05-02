@@ -4,7 +4,7 @@ import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { ActionMeta } from "react-select";
 
-import styles from "./AddTripModal.module.css";
+import styles from "./styles.module.css";
 import { TripDraft } from "../../types/TripDraft";
 
 const FormStepOne = () => {

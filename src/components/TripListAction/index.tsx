@@ -2,6 +2,8 @@ import React from "react";
 import { Add } from "@mui/icons-material";
 import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
 
+import styles from "./styles.module.css";
+
 export enum TripListActions {
   'ACTION_ADD'
 }
@@ -20,7 +22,7 @@ export interface TripListActionProps {
 }
 
 const TripListAction = ({ onPress, actionType }: TripListActionProps) => (
-  <Card key="card-add" sx={{ boxShadow: 0, border: "2px dashed #000" }}>
+  <Card key="card-add" className={styles.tripListActionCard}>
     <CardActionArea onClick={onPress}>
       <CardContent>
         <Typography variant="h4" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

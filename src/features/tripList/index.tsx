@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Skeleton, Stack, Typography } from "@mui/material";
 
-import styles from "./TripList.module.css";
+import styles from "./styles.module.css";
 import AddTripModal from "../../components/AddTripModal";
 import TripListItem from "../../components/TripListItem";
 import TripListAction, {
@@ -18,8 +18,16 @@ const TripList = () => {
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
   const Placeholder = () => (
-    <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 1 }} />
+    <Skeleton
+      variant="rectangular"
+      height={150}
+      className={styles.tripListItemPlaceholder}
+    />
   );
+
+  useEffect(() => {
+    document.title = "Let's Plan!"
+  }, []);
 
   return (
     <Container maxWidth="md" className={styles.tripListContainer}>
@@ -28,8 +36,6 @@ const TripList = () => {
           <>
             <Placeholder key="placeholder-1" />
             <Placeholder key="placeholder-2" />
-            <Placeholder key="placeholder-3" />
-            <Placeholder key="placeholder-4" />
           </>
         ) : (
           <>
@@ -37,11 +43,15 @@ const TripList = () => {
               currentTrips.map((trip) => (
                 <TripListItem trip={trip} key={`trip-${trip.id}`} />
               ))
-            ) : (
-              <Typography key="header-no-current-items" variant="h4" sx={{ marginY: 4 }}>
+            ) : !pastTrips?.length ? (
+              <Typography
+                key="header-no-current-items"
+                variant="h4"
+                sx={{ marginY: 4 }}
+              >
                 Add a trip to get started :)
               </Typography>
-            )}
+            ) : null}
           </>
         )}
         <TripListAction
@@ -50,9 +60,13 @@ const TripList = () => {
           actionType={TripListActions.ACTION_ADD}
         />
       </Stack>
-      {pastTrips?.length ? (
+      {!loading && pastTrips?.length ? (
         <>
-          <Typography key="header-past-trips" variant="h4" sx={{ fontWeight: "bold", marginTop: 6, marginBottom: 2 }}>
+          <Typography
+            key="header-past-trips"
+            variant="h4"
+            sx={{ fontWeight: "bold", marginTop: 6, marginBottom: 2 }}
+          >
             Past Trips
           </Typography>
           <Stack spacing={2}>

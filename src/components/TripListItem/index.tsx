@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import { Trip } from "../../types/Trip";
-import styles from "./TripListItem.module.css";
+import styles from "./styles.module.css";
 import { formatDate } from "../../helpers/dates";
 import { Link } from "react-router-dom";
 

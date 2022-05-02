@@ -22,3 +22,29 @@ export enum TripItemType {
   "Sports" = "activity_sports",
   "Other Activity" = "activity_misc",
 }
+
+export const TravelTypes: TripItemType[] = [
+  TripItemType.Plane,
+  TripItemType.Ferry,
+  TripItemType.Bus,
+  TripItemType.Train,
+  TripItemType.Subway,
+  TripItemType.Shuttle,
+  TripItemType.Taxi,
+  TripItemType["Car Rental"],
+  TripItemType.Car,
+  TripItemType["Other Mode of Transport"],
+];
+
+export const ActivityTypes: TripItemType[] = [
+  TripItemType.Museum,
+  TripItemType["Eating Out"],
+  TripItemType["Meet-up"],
+  TripItemType.Tour,
+  TripItemType.Theatre,
+  TripItemType.Cinema,
+  TripItemType.Concert,
+  TripItemType.Shopping,
+  TripItemType.Sports,
+  TripItemType["Other Activity"],
+];

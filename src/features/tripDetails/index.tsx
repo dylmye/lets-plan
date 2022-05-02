@@ -1,7 +1,6 @@
 import React, { useEffect, Fragment } from "react";
 import { Box, Container, Stack, SxProps, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import dayjs from "dayjs";
 
 import TripItineraryItem from "../../components/TripItineraryItem";
 import {
@@ -12,6 +11,7 @@ import {
 import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { COLOURS } from "../../helpers/colours";
+import { formatDate } from "../../helpers/dates";
 
 const TripDetails = () => {
   const { tripId } = useParams();
@@ -29,7 +29,7 @@ const TripDetails = () => {
         variant="h5"
         sx={{ fontWeight: "bold", marginY: 4, textAlign: "left" }}
       >
-        {dayjs.utc(day).format("LL")}
+        {formatDate(day, "long")}
       </Typography>
       <Stack spacing={2}>{items.map(renderItem)}</Stack>
     </Fragment>
@@ -37,11 +37,13 @@ const TripDetails = () => {
 
   const titleBackgroundImageStyle: SxProps | undefined = !!trip?.image
     ? ({
-        background: `linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url('${trip.image}')`,
+        background: `linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url('${trip.image}') no-repeat scroll 50% 50%`,
+        backgroundSize: "cover",
         aspectRatio: "16 / 9",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
       } as SxProps)
     : undefined;
 
@@ -49,7 +51,10 @@ const TripDetails = () => {
     if (!tripId || !tripIds.includes(tripId)) {
       throw Error("Trip not found or has been deleted");
     }
-  }, [tripId, tripIds]);
+    document.title = trip?.title
+      ? `${trip?.title} - Let's Plan!`
+      : "Trip Details - Let's Plan!";
+  }, [trip?.title, tripId, tripIds]);
   return (
     <Container>
       <Typography variant="body1" textAlign="left">
@@ -65,6 +70,17 @@ const TripDetails = () => {
           }}
         >
           {trip?.title}
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: "bold",
+            marginBottom: 2,
+            color: titleBackgroundImageStyle && COLOURS.white,
+          }}
+        >
+          {trip?.startsAt ? formatDate(trip?.startsAt, "long", false) : ""} -{" "}
+          {trip?.endsAt ? formatDate(trip?.endsAt, "long", false) : ""}
         </Typography>
       </Box>
       {Object.keys(groupedItems).map((k) => renderItemDay(k, groupedItems[k]))}
