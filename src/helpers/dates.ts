@@ -93,11 +93,9 @@ export const tripIsInState = (
   { endsAt, startsAt }: Trip,
   state: "past" | "future"
 ) => {
-  const todayPlusOne = dayjs().add(1, "day");
-
   if (state === "past") {
-    return dayjs(endsAt ?? startsAt).isBefore(todayPlusOne, "day");
+    return dayjs(endsAt ?? startsAt).isBefore(dayjs().endOf("day"), "day");
   }
 
-  return dayjs(endsAt ?? startsAt).isSameOrAfter(todayPlusOne, "day");
+  return dayjs(endsAt ?? startsAt).isSameOrAfter(dayjs().endOf("day"), "day");
 };

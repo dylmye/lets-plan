@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment } from "react";
-import { Box, Container, Stack, SxProps, Typography } from "@mui/material";
+import { Box, Container, Stack, SxProps, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 
 import TripItineraryItem from "../../components/TripItineraryItem";
@@ -18,16 +18,32 @@ const TripDetails = () => {
   const tripIds = useAppSelector(selectTripIds);
   const trip = useAppSelector(selectTripById(tripId as string));
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
+  const theme = useTheme();
+  const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up('sm'));
 
   const renderItem = (item: TripItineraryItemBase) => (
     <TripItineraryItem item={item} key={item.startsAt} />
   );
 
+  const xsItemHeaderStyles: SxProps<Theme> = {
+    position: "sticky",
+    top: 0,
+    marginX: "-5px",
+    paddingY: 2,
+    paddingX: 2,
+    backgroundColor: "rgba(255, 248, 243, 1)"
+  };
+
   const renderItemDay = (day: string, items: TripItineraryItemBase[]) => (
     <Fragment key={day}>
       <Typography
         variant="h5"
-        sx={{ fontWeight: "bold", marginY: 4, textAlign: "left" }}
+        sx={{
+          fontWeight: "bold",
+          marginY: 4,
+          textAlign: "left",
+          ...(!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}),
+        }}
       >
         {formatDate(day, "long")}
       </Typography>
