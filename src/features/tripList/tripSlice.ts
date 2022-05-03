@@ -29,8 +29,8 @@ const exampleTrip: Trip = {
   location: "Whitby, Yorkshire, UK",
   startsAt: exampleStartDate.format(),
   endsAt: exampleStartDate.endOf("day").add(1, "day").format(),
-  createdAtUtc: dayjs().format(),
-  updatedAtUtc: dayjs().format(),
+  createdAtUtc: dayjs.utc().format(),
+  updatedAtUtc: dayjs.utc().format(),
   image:
     "https://firebasestorage.googleapis.com/v0/b/lets-plan-firebase.appspot.com/o/default-trip-thumbs%2Fdefault-yorkshire-1555795622.webp?alt=media",
   items: [

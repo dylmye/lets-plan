@@ -1,5 +1,14 @@
 import React, { useEffect, Fragment } from "react";
-import { Box, Container, Stack, SxProps, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 
 import TripItineraryItem from "../../components/TripItineraryItem";
@@ -19,7 +28,7 @@ const TripDetails = () => {
   const trip = useAppSelector(selectTripById(tripId as string));
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
   const theme = useTheme();
-  const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up('sm'));
+  const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
 
   const renderItem = (item: TripItineraryItemBase) => (
     <TripItineraryItem item={item} key={item.startsAt} />
@@ -31,7 +40,7 @@ const TripDetails = () => {
     marginX: "-5px",
     paddingY: 2,
     paddingX: 2,
-    backgroundColor: "rgba(255, 248, 243, 1)"
+    backgroundColor: "rgba(255, 248, 243, 1)",
   };
 
   const renderItemDay = (day: string, items: TripItineraryItemBase[]) => (
@@ -45,7 +54,7 @@ const TripDetails = () => {
           ...(!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}),
         }}
       >
-        {formatDate(day, "long")}
+        <time dateTime={day}>{formatDate(day, "long")}</time>
       </Typography>
       <Stack spacing={2}>{items.map(renderItem)}</Stack>
     </Fragment>
@@ -71,6 +80,7 @@ const TripDetails = () => {
       ? `${trip?.title} - Let's Plan!`
       : "Trip Details - Let's Plan!";
   }, [trip?.title, tripId, tripIds]);
+
   return (
     <Container>
       <Typography variant="body1" textAlign="left">
