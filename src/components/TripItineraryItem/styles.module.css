@@ -22,3 +22,8 @@
   vertical-align: text-top;
   margin-top: 2px;
 }
+
+.tripItemReference {
+  text-align: left;
+  font-family: monospace;
+}

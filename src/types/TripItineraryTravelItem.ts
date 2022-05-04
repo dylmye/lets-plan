@@ -1,3 +1,4 @@
+import CURRENCIES from "../helpers/currency";
 import TripItineraryItemBase from "./TripItineraryItemBase";
 
 export default interface TripItineraryTravelItem extends TripItineraryItemBase {
@@ -12,5 +13,5 @@ export default interface TripItineraryTravelItem extends TripItineraryItemBase {
   /** The timezone to display the end time in */
   endsAtTimezone: string;
   price?: number;
-  priceCurrency?: string;
+  priceCurrency?: keyof typeof CURRENCIES | null;
 }

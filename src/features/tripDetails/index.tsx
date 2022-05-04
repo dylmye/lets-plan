@@ -105,8 +105,23 @@ const TripDetails = () => {
             color: titleBackgroundImageStyle && COLOURS.white,
           }}
         >
-          {trip?.startsAt ? formatDate(trip?.startsAt, "long", false) : ""} -{" "}
-          {trip?.endsAt ? formatDate(trip?.endsAt, "long", false) : ""}
+          {trip?.startsAt ? (
+            <time dateTime={trip.startsAt}>
+              {formatDate(trip.startsAt, "long", false)}
+            </time>
+          ) : (
+            ""
+          )}{" "}
+          -{" "}
+          {trip?.endsAt ? (
+            <time dateTime={trip.endsAt}>
+              {formatDate(trip.endsAt, "long", false)}
+            </time>
+          ) : (
+            ""
+          )}
+          <br />
+          {trip?.location}
         </Typography>
       </Box>
       {Object.keys(groupedItems).map((k) => renderItemDay(k, groupedItems[k]))}

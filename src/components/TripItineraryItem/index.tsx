@@ -5,6 +5,7 @@ import {
   Assignment,
   Directions,
   Link as LinkIcon,
+  MonetizationOn,
   Tag,
 } from "@mui/icons-material";
 
@@ -14,7 +15,7 @@ import { ActivityTypes, TravelTypes } from "../../types/TripItemType";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
-import { formatTime } from "../../helpers/dates";
+import { formatTime, userLanguage } from "../../helpers/dates";
 
 export interface TripItineraryItemProps {
   item: TripItineraryItemBase;
@@ -26,28 +27,38 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
   const iconBackgroundColour = getTripItemColour(item.type);
 
   const renderUrls = (urls: Record<string, string>): JSX.Element => (
-    <Typography variant="body1" className={styles.tripItemText}>
-      <Tooltip title="Links">
-        <LinkIcon fontSize="inherit" className={styles.tripItemIcon} />
-      </Tooltip>
-      Related links:
-      <ul style={{ margin: 0 }}>
+    <>
+      <Typography variant="body1" className={styles.tripItemText}>
+        <Tooltip title="Links">
+          <LinkIcon fontSize="inherit" className={styles.tripItemIcon} />
+        </Tooltip>
+        Related links:
+      </Typography>
+      <ul style={{ margin: 0 }} className={styles.tripItemText}>
         {Object.keys(urls).map((k) => (
-          <li>
-            <p style={{ marginTop: 2, marginBottom: 2 }}>
+          <li key={k ?? "link"}>
+            <span style={{ marginTop: 2, marginBottom: 2 }}>
               <a href={urls[k]} target="_blank" rel="noreferrer">
                 {k ?? "link"}
               </a>
-            </p>
+            </span>
           </li>
         ))}
       </ul>
-    </Typography>
+    </>
   );
 
   const renderItemText = (item: TripItineraryItemBase): JSX.Element | null => {
     if (!item.type) {
       return null;
+    }
+
+    let formattedPrice: string | null = null;
+    if ((item as TripItineraryTravelItem | TripItineraryActivityItem)?.price) {
+      formattedPrice = new Intl.NumberFormat([userLanguage, "en-GB"], {
+        style: "currency",
+        currency: (item as any)?.priceCurrency,
+      }).format((item as any).price);
     }
 
     if (TravelTypes.includes(item.type)) {
@@ -75,6 +86,17 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             </Typography>
           )}
           {item.urls && renderUrls(item.urls)}
+          {(item as TripItineraryTravelItem).price && (
+            <Typography variant="body1" className={styles.tripItemText}>
+              <Tooltip title="Price">
+                <MonetizationOn
+                  fontSize="inherit"
+                  className={styles.tripItemIcon}
+                />
+              </Tooltip>
+              {formattedPrice}
+            </Typography>
+          )}
         </>
       );
     }
@@ -110,7 +132,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             </Typography>
           )}
           {(item as TripItineraryActivityItem).reference && (
-            <Typography variant="body1" className={styles.tripItemText}>
+            <Typography variant="body1" className={styles.tripItemReference}>
               <Tooltip title="Reference">
                 <Tag fontSize="inherit" className={styles.tripItemIcon} />
               </Tooltip>
@@ -118,6 +140,17 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             </Typography>
           )}
           {item.urls && renderUrls(item.urls)}
+          {(item as TripItineraryActivityItem).price && (
+            <Typography variant="body1" className={styles.tripItemText}>
+              <Tooltip title="Price">
+                <MonetizationOn
+                  fontSize="inherit"
+                  className={styles.tripItemIcon}
+                />
+              </Tooltip>
+              {formattedPrice}
+            </Typography>
+          )}
         </>
       );
     }
@@ -155,7 +188,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
         >
           <Box>
             <CardContent>
-              <Typography variant="body2" className={styles.tripItemTitle}>
+              <Typography variant="body2" className={styles.tripItemText}>
                 <time dateTime={item.startsAt}>
                   {formatTime(
                     item.startsAt,
