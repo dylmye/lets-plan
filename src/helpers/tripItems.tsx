@@ -18,8 +18,11 @@ import {
   MusicNote,
   ShoppingBag,
   SportsSoccer,
+  DirectionsWalk,
+  DirectionsBike,
 } from "@mui/icons-material";
 import { COLOURS } from "./colours";
+import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (item?: TripItemType): JSX.Element | null => {
@@ -39,9 +42,13 @@ export const getTripItemIcon = (item?: TripItemType): JSX.Element | null => {
     case TripItemType.Taxi:
       return <Hail titleAccess="Taxi item" />;
     case TripItemType["Car Rental"]:
-      return <CarRental titleAccess="Rental car item" />;
+      return <CarRental titleAccess="Rental Car item" />;
     case TripItemType.Car:
       return <DirectionsCar titleAccess="Car item" />;
+    case TripItemType["By Foot"]:
+      return <DirectionsWalk titleAccess="By Foot item" />;
+    case TripItemType.Cycle:
+      return <DirectionsBike titleAccess="Bicycling item" />;
     case TripItemType.Museum:
       return <Museum titleAccess="Museum item" />;
     case TripItemType["Eating Out"]:
@@ -76,4 +83,29 @@ export const getTripItemColour = (item?: TripItemType): string | null => {
     return COLOURS.tertiary;
   }
   return COLOURS.white;
+};
+
+/** Determine google maps direction api travel mode from trip item type */
+export const convertTripItemTypeToGoogleMapsTravelMode = (
+  travelType: TripItemType
+): GoogleMapsTravelMode | null => {
+  switch (travelType) {
+    case TripItemType.Bus:
+    case TripItemType.Train:
+    case TripItemType.Shuttle:
+    case TripItemType.Subway: {
+      return "transit";
+    }
+    case TripItemType["By Foot"]: {
+      return "walking";
+    }
+    case TripItemType.Cycle: {
+      return "bicycling";
+    }
+    case TripItemType.Car:
+    case TripItemType["Car Rental"]: {
+      return "driving";
+    }
+  }
+  return null;
 };

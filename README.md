@@ -22,6 +22,7 @@ Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 - `REACT_APP_FIREBASE_*`: Please plug in the values from the `firebaseConfig` provided when you make a web app. You can find them in the "your apps" section of the project settings.
 - `REACT_APP_SIMPLE_ANALYTICS_URL`: You can disregard this if you're not using [Simple Analytics](https://simpleanalytics.com/). If you're not using a custom domain, set this to `scripts.simpleanalyticscdn.com`. Otherwise set it to your `custom.domain.com`.
 - `REACT_APP_SIMPLE_ANALYTICS_PIXEL_URL`: You can disregard this if you're not using [Simple Analytics](https://simpleanalytics.com/). If you're not using a custom domain, set this to `queue.simpleanalyticscdn.com`. Otherwise set it to your `custom.domain.com`.
+- `REACT_APP_UBER_API_CLIENT_ID`: This is for the "CLIENT_ID" parameter for Uber's Ride Requests API, which is used to link to Uber in taxi itinerary items ([see here](https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction#ride-requests).)
 
 To make this project your own, you also need to:
 

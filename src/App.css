@@ -49,6 +49,6 @@ footer {
   margin-top: 2rem;
 }
 
-main p a, main p a:visited {
+main p a, main p a:visited, main li > span > a, main li > span > a:visited {
   color: black;
 }

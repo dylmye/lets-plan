@@ -9,13 +9,26 @@ import {
   Tag,
 } from "@mui/icons-material";
 
-import { getTripItemColour, getTripItemIcon } from "../../helpers/tripItems";
+import {
+  convertTripItemTypeToGoogleMapsTravelMode,
+  getTripItemColour,
+  getTripItemIcon,
+} from "../../helpers/tripItems";
 import styles from "./styles.module.css";
-import { ActivityTypes, TravelTypes } from "../../types/TripItemType";
+import {
+  ActivityTypes,
+  TravelTypes,
+  TripItemType,
+} from "../../types/TripItemType";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { formatTime, userLanguage } from "../../helpers/dates";
+import {
+  generateGoogleMapsDirectionsUrl,
+  generateGoogleMapsQueryUrl,
+  generateUberUniversalLink,
+} from "../../helpers/url";
 
 export interface TripItineraryItemProps {
   item: TripItineraryItemBase;
@@ -62,6 +75,18 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
     }
 
     if (TravelTypes.includes(item.type)) {
+      const journeyLink =
+        item.type === TripItemType.Taxi
+          ? generateUberUniversalLink(
+              (item as TripItineraryTravelItem).originLocation,
+              (item as TripItineraryTravelItem).destinationLocation
+            )
+          : generateGoogleMapsDirectionsUrl(
+              (item as TripItineraryTravelItem).originLocation,
+              (item as TripItineraryTravelItem).destinationLocation,
+              convertTripItemTypeToGoogleMapsTravelMode(item.type)
+            );
+
       return (
         <>
           <Typography variant="h5" className={styles.tripItemTitle}>
@@ -71,8 +96,19 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             <Tooltip title="Directions">
               <Directions fontSize="inherit" className={styles.tripItemIcon} />
             </Tooltip>
-            {(item as TripItineraryTravelItem).originLocation} to
-            {" " + (item as TripItineraryTravelItem).destinationLocation}
+            <a
+              href={journeyLink}
+              target="_blank"
+              rel="noreferrer"
+              title={
+                item.type === TripItemType.Taxi
+                  ? "Ride there with Uber"
+                  : "View on Google Maps"
+              }
+            >
+              {(item as TripItineraryTravelItem).originLocation} to
+              {" " + (item as TripItineraryTravelItem).destinationLocation}
+            </a>
           </Typography>
           {item.details && (
             <Typography variant="body1" className={styles.tripItemText}>
@@ -109,7 +145,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
               (item as TripItineraryActivityItem).location}
           </Typography>
           {/* Show location if a title is provided */}
-          {item?.title && (
+          {item?.title && (item as TripItineraryActivityItem)?.location && (
             <Typography variant="body1" className={styles.tripItemText}>
               <Tooltip title="Directions">
                 <Directions
@@ -117,7 +153,36 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                   className={styles.tripItemIcon}
                 />
               </Tooltip>
-              {(item as TripItineraryActivityItem)?.location}
+              <a
+                href={generateGoogleMapsQueryUrl(
+                  (item as TripItineraryActivityItem).location
+                )}
+                target="_blank"
+                rel="noreferrer"
+                title="View on Google Maps"
+              >
+                {(item as TripItineraryActivityItem)?.location}
+              </a>
+            </Typography>
+          )}
+          {/* Show location link if no title */}
+          {!item?.title && (item as TripItineraryActivityItem)?.location && (
+            <Typography variant="body1" className={styles.tripItemText}>
+              <Tooltip title="Directions">
+                <Directions
+                  fontSize="inherit"
+                  className={styles.tripItemIcon}
+                />
+              </Tooltip>
+              <a
+                href={generateGoogleMapsQueryUrl(
+                  (item as TripItineraryActivityItem).location
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on Google Maps
+              </a>
             </Typography>
           )}
           {item.details && (

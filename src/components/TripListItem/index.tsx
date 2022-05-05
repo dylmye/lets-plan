@@ -61,8 +61,8 @@ const TripListItem = ({ trip }: TripListItemProps) => (
               aria-label="Location"
             >
               <CalendarToday fontSize="small" sx={{ marginRight: 0.5 }} />
-              {formatDate(trip.startsAt)} -{" "}
-              {trip.endsAt ? formatDate(trip.endsAt) : ""}
+              {formatDate(trip.startsAt, "short", false)} -{" "}
+              {trip.endsAt ? formatDate(trip.endsAt, "short", false) : ""}
             </Typography>
           )}
         </CardContent>
