@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Stack, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 /** Combined display for trips with no items */
 const EmptyTripCard = () => (
