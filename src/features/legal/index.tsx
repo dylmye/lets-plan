@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 
-import styles from "./Legal.module.css";
+import styles from "./styles.module.css";
 
 const Legal = () => {
   return (
@@ -41,15 +41,15 @@ const Legal = () => {
             <br />
             This data is controlled by <strong>Dylan Myers</strong> acting as{" "}
             <em>Let's Plan</em> and processed by{" "}
-            <a href="https://about.google">
+            <a href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
             </a>{" "}
             in Europe (europe-west) and is governed by the{" "}
-            <a href="https://cloud.google.com/terms/">
+            <a href="https://cloud.google.com/terms/" target="_blank" rel="noreferrer">
               Google Cloud Platform Terms of Service
             </a>
             . More information available{" "}
-            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase">
+            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase" target="_blank" rel="noreferrer">
               here
             </a>
             .
@@ -62,15 +62,15 @@ const Legal = () => {
             minimised and retained for "a few months."
             <br />
             This data is controlled by{" "}
-            <a href="https://about.google">
+            <a href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
             </a>{" "}
             in the United States and is governed by the{" "}
-            <a href="https://firebase.google.com/terms/data-processing-terms">
+            <a href="https://firebase.google.com/terms/data-processing-terms" target="_blank" rel="noreferrer">
               Firebase Data Processing and Security Terms
             </a>
             . More information available{" "}
-            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase">
+            <a href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase" target="_blank" rel="noreferrer">
               here
             </a>
             .
@@ -83,11 +83,11 @@ const Legal = () => {
             search results to allow Google to improve its services.
             <br />
             This data is controlled by{" "}
-            <a href="https://about.google">
+            <a href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
             </a>{" "}
             and is governed by the{" "}
-            <a href="https://policies.google.com/privacy">
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">
               Google Privacy Policy
             </a>
             .
@@ -104,11 +104,11 @@ const Legal = () => {
             only loaded when required.
             <br />
             This data is controlled by{" "}
-            <a href="https://www.imachines.com/about">
+            <a href="https://www.imachines.com/about" target="_blank" rel="noreferrer">
               <strong>Intuition Machines, Inc.</strong>
             </a>{" "}
             in the United States and is governed by the{" "}
-            <a href="https://www.hcaptcha.com/privacy">
+            <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noreferrer">
               hCaptcha Privacy Policy
             </a>
             .
@@ -121,17 +121,17 @@ const Legal = () => {
             set of anonymised data is collected, not including any IP addresses
             or other personal identifiable information. A list of this
             information is available{" "}
-            <a href="https://docs.simpleanalytics.com/data-points">here</a>. You
+            <a href="https://docs.simpleanalytics.com/data-points" target="_blank" rel="noreferrer">here</a>. You
             can opt-out of this anonymous data analysis by{" "}
-            <a href="https://allaboutdnt.com">enabling Do Not Track</a> in your
+            <a href="https://allaboutdnt.com" target="_blank" rel="noreferrer">enabling Do Not Track</a> in your
             browser.
             <br />
             This data is controlled by{" "}
-            <a href="https://simpleanalytics.com/">
+            <a href="https://simpleanalytics.com/" target="_blank" rel="noreferrer">
               <strong>Simple Analytics</strong>
             </a>{" "}
             in the Netherlands and is governed by the{" "}
-            <a href="https://docs.simpleanalytics.com/what-we-collect">
+            <a href="https://docs.simpleanalytics.com/what-we-collect" target="_blank" rel="noreferrer">
               Privacy Policy
             </a>
             .
@@ -145,14 +145,47 @@ const Legal = () => {
             website from unauthorised access by non-human users.
             <br />
             This data is controlled and processed by{" "}
-            <a href="https://www.cloudflare.com/about-overview/">
+            <a href="https://www.cloudflare.com/about-overview/" target="_blank" rel="noreferrer">
               <strong>Cloudflare, Inc.</strong>
             </a>{" "}
             in the United States and Europe and is governed by the{" "}
-            <a href="https://www.cloudflare.com/privacypolicy/">
+            <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">
               Cloudflare Privacy Policy
             </a>{" "}
             (wherein you apply as an "End User".)
+          </p>
+        </li>
+        <li id="tracked-links">
+          <p>
+            <strong>When you click on external paid links:</strong> The website
+            occasionally provides links to services that may be useful for
+            planning your trip. These services are strictly vetted and chosen
+            for their reputation for data protection.
+            <br />
+            Some of these external links ("tracked links") are provided by an
+            "affiliate marketing network" ("AM"), which provides this website a
+            commission should you decide to buy anything through it. Please read
+            the privacy policies of the AMs which act as the data controller,
+            linked below, to understand what data they collect when you click on
+            their tracked links.
+            <br />
+            None of your personal information, including any of your trip
+            information, is included. If you don't click on tracked links, no
+            information is collected or stored.{" "}
+            <strong>
+              Tracked links are marked with the text "AD:" preceding it.
+            </strong>
+            <br />
+            Provided by{" "}
+            <a href="https://www.awin.com/privacy" target="_blank" rel="noreferrer">
+              <strong>AWIN Ltd</strong> or <strong>AWIN AG</strong>
+            </a>
+            , wherein you are an "End User" and this website is a "Publisher",
+            and{" "}
+            <a href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy" target="_blank" rel="noreferrer">
+              <strong>Go Travel Un Limited</strong>
+            </a>
+            .
           </p>
         </li>
       </ul>
@@ -175,14 +208,14 @@ const Legal = () => {
       </p>
       <p>
         To view your trip data, please consult{" "}
-        <a href="https://developer.chrome.com/docs/devtools/storage/localstorage/">
+        <a href="https://developer.chrome.com/docs/devtools/storage/localstorage/" target="_blank" rel="noreferrer">
           this guide
         </a>{" "}
         on how to manually access and delete your local storage.
       </p>
       <p>
         To request the data Google, LLC holds on you, please{" "}
-        <a href="https://support.google.com/accounts/answer/3024190?hl=en">
+        <a href="https://support.google.com/accounts/answer/3024190?hl=en" target="_blank" rel="noreferrer">
           consult this article
         </a>
         .
@@ -190,7 +223,7 @@ const Legal = () => {
       <p>
         To request the data Intuition Machines, Inc. holds on you, please
         contact them using the email in the "Notice to EU Data Subjects" section
-        in their <a href="https://www.hcaptcha.com/privacy">privacy policy</a>.
+        in their <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noreferrer">privacy policy</a>.
       </p>
       <p>
         To request the data Simple Analytics holds on you, please contact them{" "}
@@ -199,7 +232,21 @@ const Legal = () => {
       <p>
         To request the data Cloudflare, Inc. holds on you, please contact them
         using the email in section 8 of their{" "}
-        <a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>.
+        <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">privacy policy</a>.
+      </p>
+      <p>
+        To request the data AWIN Ltd and/or AWIN AG holds on you, please contact
+        them using the email under the "Questions?" section of their{" "}
+        <a href="https://www.awin.com/gb/privacy" target="_blank" rel="noreferrer">fair processing notice and privacy policy</a>.
+      </p>
+      <p>
+        To request the data Go Travel Un Limited holds on you, please contact
+        them using the email under the "Identity of The Data Controller" section
+        of their{" "}
+        <a href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy" target="_blank" rel="noreferrer">
+          privacy policy
+        </a>
+        .
       </p>
       <Typography variant="h3" className={styles.legalHeader} id="terms">
         Terms and Conditions
@@ -242,9 +289,17 @@ const Legal = () => {
       </Typography>
       <p>
         This is the second version of these legal documents. It was modified{" "}
-        <time dateTime="2022-04-13">13th April 2022</time>.
+        <time dateTime="2022-05-05">5th May 2022</time>.
       </p>
       <ul className={styles.legalList}>
+        <li>
+          <p>
+            <strong>
+              <time dateTime="2022-05-05">5th May 2022</time>
+            </strong>{" "}
+            - Added information about tracked links
+          </p>
+        </li>
         <li>
           <p>
             <strong>

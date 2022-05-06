@@ -21,6 +21,8 @@ import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { COLOURS } from "../../helpers/colours";
 import { formatDate } from "../../helpers/dates";
+import EmptyTripCard from "../../components/EmptyTripCard";
+import SuggestionsCard from "../../components/SuggestionsCard";
 
 const TripDetails = () => {
   const { tripId } = useParams();
@@ -81,6 +83,8 @@ const TripDetails = () => {
       : "Trip Details - Let's Plan!";
   }, [trip?.title, tripId, tripIds]);
 
+  const isEmptyTrip = Object.keys(groupedItems).length < 1;
+
   return (
     <Container>
       <Typography variant="body1" textAlign="left">
@@ -124,7 +128,18 @@ const TripDetails = () => {
           {trip?.location}
         </Typography>
       </Box>
-      {Object.keys(groupedItems).map((k) => renderItemDay(k, groupedItems[k]))}
+      <Stack spacing={2}>
+        {isEmptyTrip ? (
+          <EmptyTripCard />
+        ) : (
+          <Box>
+            {Object.keys(groupedItems).map((k) =>
+              renderItemDay(k, groupedItems[k])
+            )}
+          </Box>
+        )}
+        <SuggestionsCard />
+      </Stack>
     </Container>
   );
 };

@@ -1,0 +1,13 @@
+.emptyTripSuggestionTitle, .emptyTripSuggestionSubtitle {
+  text-align: left;
+}
+
+.emptyTripSuggestionTitleIcon {
+  margin-right: .5rem;
+  vertical-align: text-top;
+  margin-top: 2px;
+}
+
+.emptyTripSuggestionLinksContainer {
+  margin: 0.5rem 0;
+}
