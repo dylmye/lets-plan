@@ -3,7 +3,6 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import dayjs from "dayjs";
 import { RootState } from "../../app/store";
 import SliceNames from "../../enums/SliceNames";
 
