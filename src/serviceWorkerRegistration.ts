@@ -26,7 +26,21 @@ type Config = {
 };
 
 export function register(config?: Config) {
-  console.debug("[Service Worker] Beginning registration with PUBLIC_URL", process.env.PUBLIC_URL, "serviceWorker" in navigator);
+  if (!window.isSecureContext || !("serviceWorker" in navigator)) {
+    // Service workers don't work on insecure contexts (non-https)
+    // and you get the same error if you're testing in incognito
+    console.error(
+      "[Service Worker] Error during registration: In incognito or insecure context"
+    );
+    return;
+  }
+  if (process.env.NODE_ENV !== "production") {
+    // It's better not to use SWs in development because caching sucks
+    console.info(
+      "[Service Worker] Error during registration: Disabled in development and CI"
+    );
+    return;
+  }
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
@@ -94,8 +108,10 @@ function registerValidSW(swUrl: string, config?: Config) {
     })
     .catch((error) => {
       console.error(
-        "[Service Worker] Error during service worker registration:",
-        error
+        "[Service Worker] Error during registration:",
+        error,
+        error?.name === "NS_ERROR_CONTENT_BLOCKED" &&
+          "Your service worker may be blocked by your CSP."
       );
     });
 }
