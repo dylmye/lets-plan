@@ -26,6 +26,7 @@ type Config = {
 };
 
 export function register(config?: Config) {
+  console.debug("[Service Worker] Beginning registration with node_env", process.env.NODE_ENV);
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
