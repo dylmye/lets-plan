@@ -10,7 +10,7 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import "./index.css";
 import App from "./App";
 import { persistor, store } from "./app/store";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const theme = createTheme({
   typography: {
@@ -49,4 +49,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorkerRegistration.register();

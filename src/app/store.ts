@@ -15,7 +15,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from 'redux-persist-indexeddb-storage';
 import suggestionsReducer, { SuggestionsState } from "../features/suggestions/suggestionsSlice";
 import tripsReducer, { TripState } from "../features/tripList/tripSlice";
 
@@ -27,7 +27,7 @@ interface State {
 const persistConfig: PersistConfig<any> = {
   key: "root",
   version: 1,
-  storage,
+  storage: storage("letsPlan"),
 };
 
 const rootReducer = persistReducer<State>(
