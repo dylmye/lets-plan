@@ -107,16 +107,19 @@ function registerValidSW(swUrl: string, config?: Config) {
       };
     })
     .catch((error) => {
-      console.error(
-        "[Service Worker] Error during registration:",
-        error,
-        error?.name === "NS_ERROR_CONTENT_BLOCKED" &&
-          "Your service worker may be blocked by your CSP."
-      );
+      if (error?.name === "NS_ERROR_CONTENT_BLOCKED") {
+        console.error(
+          "[Service Worker] Error during registration, it might be due to your CSP:",
+          error
+        );
+      } else {
+        console.error("[Service Worker] Error during registration:", error);
+      }
     });
 }
 
 function checkValidServiceWorker(swUrl: string, config?: Config) {
+  console.debug("[Service Worker] Setting up with URL:", swUrl);
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl, {
     headers: { "Service-Worker": "script" },
