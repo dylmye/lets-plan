@@ -27,6 +27,7 @@ Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 To make this project your own, you also need to:
 
 - Remove the scripts and HTML comments from public/index.html
+- Set the `homepage` field in the package.json to the URL you'll be hosting the website on (to make the service worker work)
 
 ## Build
 
