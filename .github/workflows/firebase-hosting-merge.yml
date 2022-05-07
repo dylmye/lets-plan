@@ -18,6 +18,7 @@ jobs:
           envkey_REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           envkey_REACT_APP_SIMPLE_ANALYTICS_URL: ${{ secrets.SIMPLE_ANALYTICS_URL }}
           envkey_REACT_APP_SIMPLE_ANALYTICS_PIXEL_URL: ${{ secrets.SIMPLE_ANALYTICS_PIXEL_URL }}
+          envkey_NODE_ENV: 'production'
       - name: install yarn dependencies
         uses: borales/actions-yarn@v2.3.0
         with:
@@ -26,7 +27,7 @@ jobs:
         uses: borales/actions-yarn@v2.3.0
         with:
           cmd: build
-      - name: deploy production build to firebase hosting
+      - name: deploy production build to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
