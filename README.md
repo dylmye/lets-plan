@@ -4,7 +4,13 @@
   </a>
 </p>
 
-A React based trip planner, stored in your local storage. Images are stored in Firebase and the project is set up to be hosted in Firebase.
+A simple React/Redux based trip planner. Let's Plan is designed to be mobile- and offline- first, with added support for sync and sharing with friends. Cloud services (sync, image hosting) are provided through Firebase.
+
+## Current roadmap/to-do
+
+- [ ] Sync epic - making a firebase functions-based API
+- [ ] `redux-offline` implementation
+- [ ] Edit trip functionality
 
 ## Development
 
