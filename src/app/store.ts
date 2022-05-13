@@ -18,6 +18,7 @@ import {
 import storage from 'redux-persist-indexeddb-storage';
 import suggestionsReducer, { SuggestionsState } from "../features/suggestions/suggestionsSlice";
 import tripsReducer, { TripState } from "../features/tripList/tripSlice";
+import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {
   trips: TripState;
@@ -45,7 +46,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    });
+    }).concat(eventAnalyticsLogMiddleware.middleware);
 
     return middleware;
   },

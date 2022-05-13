@@ -20,7 +20,7 @@ export interface TripState {
   list: Trip[];
 }
 
-const exampleStartDate = dayjs().local().startOf('day');
+const exampleStartDate = dayjs().local().startOf("day");
 
 const exampleTrip: Trip = {
   id: "example",
@@ -47,7 +47,8 @@ const exampleTrip: Trip = {
     } as CarItem,
     {
       type: TripItemType["Eating Out"],
-      location: "Hadleys Fish Restaurant & Accommodation, 11 Bridge St, Whitby YO22 4BG, England",
+      location:
+        "Hadleys Fish Restaurant & Accommodation, 11 Bridge St, Whitby YO22 4BG, England",
       details: "Fish and chips by the bridge!",
       startsAt: exampleStartDate.add(12, "hour").format(),
       startsAtTimezone: "Europe/London",
@@ -56,13 +57,14 @@ const exampleTrip: Trip = {
     } as TripItineraryActivityItem,
     {
       type: TripItemType.Museum,
-      location: "Captain Cook Memorial Museum, Grape Ln, Whitby YO22 4BA, England",
+      location:
+        "Captain Cook Memorial Museum, Grape Ln, Whitby YO22 4BA, England",
       startsAt: exampleStartDate.add(15, "hour").format(),
       startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(16, "hour").format(),
       endsAtTimezone: "Europe/London",
       urls: {
-        "Website": "https://www.cookmuseumwhitby.co.uk/",
+        Website: "https://www.cookmuseumwhitby.co.uk/",
       },
       reference: "CK0094410",
       price: 15,
@@ -84,7 +86,11 @@ const exampleTrip: Trip = {
       destinationLocation: "Walthamstow, London, UK",
       startsAt: exampleStartDate.add(1, "day").add(12, "hour").format(),
       startsAtTimezone: "Europe/London",
-      endsAt: exampleStartDate.add(1, "day").add(16, "hour").add(49, "minute").format(),
+      endsAt: exampleStartDate
+        .add(1, "day")
+        .add(16, "hour")
+        .add(49, "minute")
+        .format(),
       endsAtTimezone: "Europe/London",
     } as CarItem,
   ],
@@ -98,7 +104,8 @@ export const tripSlice = createSlice({
   name,
   initialState,
   reducers: {
-    saveTrip: (state, { payload }: PayloadAction<TripDraft>) => {
+    addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
+      console.log("yesss");
       let trip: Trip = {
         id: payload.id,
         title: payload.title,
@@ -116,10 +123,22 @@ export const tripSlice = createSlice({
         list: [...state.list, trip],
       };
     },
+    deleteTrip: (state, { payload: idToDelete }: PayloadAction<string>) => {
+      const ids = state.list.map(({ id }) => id);
+      // @TODO: API request to delete linked image?
+      if (ids.includes(idToDelete)) {
+        const newList = [...state.list].filter(({ id }) => id !== idToDelete);
+        return {
+          ...state,
+          list: newList,
+        };
+      }
+      return state;
+    },
   },
 });
 
-export const { saveTrip } = tripSlice.actions;
+export const { addTrip, deleteTrip } = tripSlice.actions;
 
 export const rootTripSelector = (state: RootState) => state.trips;
 
@@ -128,13 +147,12 @@ export const selectTrips = createDraftSafeSelector(
   (state) => state.list
 );
 
-export const selectTripIds = createDraftSafeSelector(
-  selectTrips,
-  (state) => state.map(x => x.id)
+export const selectTripIds = createDraftSafeSelector(selectTrips, (state) =>
+  state.map((x) => x.id)
 );
 
 export const selectTripById = (id: string) => (store: RootState) => {
-  return store.trips.list.find(x => x.id === id);
+  return store.trips.list.find((x) => x.id === id);
 };
 
 export const selectTripItemsByDay = (id: string) => (store: RootState) => {
@@ -145,7 +163,7 @@ export const selectTripItemsByDay = (id: string) => (store: RootState) => {
   }
 
   return trip?.items.reduce((r, a) => {
-    const date = dayjs(a.startsAt).format('YYYY-MM-DD');
+    const date = dayjs(a.startsAt).format("YYYY-MM-DD");
     r[date] = [...(r[date] ?? []), a];
     return r;
   }, {} as Record<string, TripItineraryItemBase[]>);

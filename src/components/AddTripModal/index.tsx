@@ -28,7 +28,7 @@ import {
 } from "yup";
 import FormPagination from "./FormPagination";
 import { useAppDispatch } from "../../app/hooks";
-import { saveTrip } from "../../features/tripList/tripSlice";
+import { addTrip } from "../../features/tripList/tripSlice";
 
 export interface AddTripModalProps {
   open: boolean;
@@ -140,7 +140,7 @@ const AddTripModal = (props: AddTripModalProps) => {
 
       coverImageUri = await getDownloadURL(storageRef);
     }
-    dispatch(saveTrip({ ...values, image: coverImageUri }));
+    dispatch(addTrip({ ...values, image: coverImageUri }));
     setActiveStep(0);
     props.onClose();
   };

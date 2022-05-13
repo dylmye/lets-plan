@@ -34,12 +34,15 @@ To make this project your own, you also need to:
 
 - Remove the scripts and HTML comments from public/index.html
 - Set the `homepage` field in the package.json to the URL you'll be hosting the website on (to make the service worker work)
+- Remove helpers/analytics.ts + any references to it, or change it to use the analytics package you use
 
 ## Build
 
 If you want to use Firebase Hosting, this project will deploy to your hosting URL on every push to main branch. Follow the [instructions here](https://create-react-app.dev/docs/deployment/#firebase) for setup.
 
 To manually build, run `yarn build`.
+
+> Note: if you're using Simple Analytics and converting this project to use SSR, you need to install it manually. The Simple Analytics ESM plugin [doesn't support SSR](https://github.com/DavidWells/analytics/blob/master/packages/analytics-plugin-simple-analytics/src/node.js).
 
 ## Credits
 
