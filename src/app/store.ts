@@ -27,7 +27,7 @@ interface State {
 
 const persistConfig: PersistConfig<any> = {
   key: "root",
-  version: 1,
+  version: 2,
   storage: storage("letsPlan"),
 };
 

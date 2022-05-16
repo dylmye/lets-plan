@@ -99,3 +99,22 @@ export const tripIsInState = (
 
   return dayjs(endsAt ?? startsAt).isSameOrAfter(dayjs().endOf("day"), "day");
 };
+
+/**
+ * Javascript compatible date ordering
+ * @param a First date to compare
+ * @param b Second date to compare
+ * @return 0 if equal, 1 if a>b, -1 if a<b
+ */
+export const dateCompare = (a: string | dayjs.Dayjs | null, b: string | dayjs.Dayjs | null): number => {
+  // one of the dates is invalid, or they're the same
+  if (!a || !b || dayjs(a).isSame(b)) {
+    return 0;
+  }
+  // a is further in the future than b
+  if (dayjs(a).isAfter(b)) {
+    return 1;
+  }
+  // a is earlier than b
+  return -1;
+};

@@ -1,24 +1,26 @@
-import {
-  createDraftSafeSelector,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import { RootState } from "../../app/store";
-import { tripIsInState } from "../../helpers/dates";
 import SliceNames from "../../enums/SliceNames";
 import { Trip } from "../../types/Trip";
-import { TripDraft } from "../../types/TripDraft";
 import { TripItemType } from "../../types/TripItemType";
 import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
+import {
+  createDraftSafeSelector,
+  createEntityAdapter,
+  createSlice,
+  Dictionary,
+  EntityId,
+  EntityState,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { dateCompare, tripIsInState } from "../../helpers/dates";
+import { TripDraft } from "../../types/TripDraft";
+import { RootState } from "../../app/store";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 
 const name = SliceNames.TRIPS;
 
-export interface TripState {
-  list: Trip[];
-}
+export interface TripState extends EntityState<Trip> {}
 
 const exampleStartDate = dayjs().local().startOf("day");
 
@@ -96,16 +98,19 @@ const exampleTrip: Trip = {
   ],
 };
 
-const initialState: TripState = {
-  list: [exampleTrip],
-};
+const tripsAdapter = createEntityAdapter<Trip>({
+  selectId: (trip) => trip.id,
+  sortComparer: (a, b) => dateCompare(a.startsAt, b.startsAt),
+});
 
-export const tripSlice = createSlice({
+const tripSlice = createSlice({
   name,
-  initialState,
+  initialState: tripsAdapter.getInitialState({
+    entities: { [exampleTrip.id]: exampleTrip } as Dictionary<Trip>,
+    ids: [exampleTrip.id] as EntityId[]
+  }),
   reducers: {
     addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
-      console.log("yesss");
       let trip: Trip = {
         id: payload.id,
         title: payload.title,
@@ -118,45 +123,23 @@ export const tripSlice = createSlice({
         items: [],
       };
 
-      return {
-        ...state,
-        list: [...state.list, trip],
-      };
+      tripsAdapter.addOne(state, trip);
     },
-    deleteTrip: (state, { payload: idToDelete }: PayloadAction<string>) => {
-      const ids = state.list.map(({ id }) => id);
-      // @TODO: API request to delete linked image?
-      if (ids.includes(idToDelete)) {
-        const newList = [...state.list].filter(({ id }) => id !== idToDelete);
-        return {
-          ...state,
-          list: newList,
-        };
-      }
-      return state;
-    },
+    deleteTripById: tripsAdapter.removeOne,
+    updateTripById: tripsAdapter.updateOne,
   },
 });
 
-export const { addTrip, deleteTrip } = tripSlice.actions;
+export const { addTrip, deleteTripById, updateTripById } = tripSlice.actions;
 
-export const rootTripSelector = (state: RootState) => state.trips;
-
-export const selectTrips = createDraftSafeSelector(
-  rootTripSelector,
-  (state) => state.list
-);
-
-export const selectTripIds = createDraftSafeSelector(selectTrips, (state) =>
-  state.map((x) => x.id)
-);
-
-export const selectTripById = (id: string) => (store: RootState) => {
-  return store.trips.list.find((x) => x.id === id);
-};
+export const {
+  selectAll: selectTrips,
+  selectIds: selectTripIds,
+  selectById: selectTripById,
+} = tripsAdapter.getSelectors<RootState>((state) => state.trips);
 
 export const selectTripItemsByDay = (id: string) => (store: RootState) => {
-  const trip = store.trips.list.find((x) => x.id === id);
+  const trip = selectTripById(store, id);
 
   if (trip === undefined || !trip.items?.length) {
     return {};
@@ -171,11 +154,12 @@ export const selectTripItemsByDay = (id: string) => (store: RootState) => {
 
 export const selectCurrentTrips = createDraftSafeSelector(
   selectTrips,
-  (state) => state.filter((trip) => tripIsInState(trip, "future"))
+  (state) => state.filter(trip => tripIsInState(trip, "future"))
 );
 
-export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
-  state.filter((trip) => tripIsInState(trip, "past"))
+export const selectPastTrips = createDraftSafeSelector(
+  selectTrips,
+  (state) => state.filter(trip => tripIsInState(trip, "past"))
 );
 
 export default tripSlice.reducer;

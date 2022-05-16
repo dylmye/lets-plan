@@ -27,7 +27,7 @@ import SuggestionsCard from "../../components/SuggestionsCard";
 const TripDetails = () => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
-  const trip = useAppSelector(selectTripById(tripId as string));
+  const trip = useAppSelector((state) => selectTripById(state, tripId as string));
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));

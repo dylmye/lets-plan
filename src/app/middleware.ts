@@ -7,7 +7,7 @@ import {
 } from "@reduxjs/toolkit";
 import SliceNames from "../enums/SliceNames";
 import { addTrip } from "../features/tripList/tripSlice";
-import analytics from "../helpers/analytics";
+// import analytics from "../helpers/analytics";
 import { AppDispatch, RootState } from "./store";
 
 const eventAnalyticsLogMiddleware = createListenerMiddleware({
@@ -21,9 +21,10 @@ export const startAppListening =
 
 startAppListening({
   matcher: isAnyOf(addTrip),
-  effect: (action, listenerApi) => {
+  effect: (action, _) => {
     if (action.type === `${SliceNames.TRIPS}/addTrip`) {
-      analytics.track('trip_created');
+      // https://github.com/DavidWells/analytics/issues/276
+      // analytics.track('trip_created');
     }
   },
 });
