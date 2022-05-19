@@ -29,6 +29,7 @@ import {
 import FormPagination from "./FormPagination";
 import { useAppDispatch } from "../../app/hooks";
 import { addTrip } from "../../features/tripList/tripSlice";
+import { useNavigate } from "react-router-dom";
 
 export interface AddTripModalProps {
   open: boolean;
@@ -50,6 +51,7 @@ const dialogStyle: SxProps<Theme> = {
 const AddTripModal = (props: AddTripModalProps) => {
   const TOTAL_STEPS = 3;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [formImageUploading, setFormImageUploading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -143,15 +145,20 @@ const AddTripModal = (props: AddTripModalProps) => {
     dispatch(addTrip({ ...values, image: coverImageUri }));
     setActiveStep(0);
     props.onClose();
+    navigate(`/trip/${values.id}`);
   };
 
   const onModalClose = () => {
     setActiveStep(0);
     props.onClose();
-  }
+  };
 
   return (
-    <Modal {...props} onClose={onModalClose} aria-labelledby="modal-addtrip-title">
+    <Modal
+      {...props}
+      onClose={onModalClose}
+      aria-labelledby="modal-addtrip-title"
+    >
       <Box sx={dialogStyle}>
         <Typography variant="h5">
           <strong id="modal-addtrip-title">Add A Trip</strong>

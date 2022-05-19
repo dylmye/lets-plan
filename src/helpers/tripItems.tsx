@@ -3,7 +3,6 @@ import {
   FlightTakeoff,
   DirectionsBoat,
   DirectionsBus,
-  DirectionsTransit,
   DirectionsSubway,
   AirportShuttle,
   Hail,
@@ -20,6 +19,7 @@ import {
   SportsSoccer,
   DirectionsWalk,
   DirectionsBike,
+  DirectionsRailway,
 } from "@mui/icons-material";
 import { COLOURS } from "./colours";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
@@ -34,7 +34,7 @@ export const getTripItemIcon = (item?: TripItemType): JSX.Element | null => {
     case TripItemType.Bus:
       return <DirectionsBus titleAccess="Bus item" />;
     case TripItemType.Train:
-      return <DirectionsTransit titleAccess="Train item" />;
+      return <DirectionsRailway titleAccess="Train item" />;
     case TripItemType.Subway:
       return <DirectionsSubway titleAccess="Subway item" />;
     case TripItemType.Shuttle:

@@ -49,7 +49,7 @@ const TripList = () => {
                 variant="h4"
                 sx={{ marginY: 4 }}
               >
-                Add a trip to get started :)
+                Add a trip to get started :&#41;
               </Typography>
             ) : null}
           </>
