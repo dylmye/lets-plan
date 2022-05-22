@@ -74,9 +74,13 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
             )}
             {trip.startsAt && (
               <Box>
-                <Typography variant="body2" textAlign="left">
+                <Typography variant="body2" textAlign="left" sx={{ display: { xs: 'none', sm: 'block' } }}>
                   {formatDate(trip.startsAt, "long", false)} -{" "}
                   {trip.endsAt ? formatDate(trip.endsAt, "long", false) : ""}
+                </Typography>
+                <Typography variant="body2" textAlign="left" sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  {formatDate(trip.startsAt, "short", false)} -{" "}
+                  {trip.endsAt ? formatDate(trip.endsAt, "short", false) : ""}
                 </Typography>
                 <Typography
                   variant="body2"
