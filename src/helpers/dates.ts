@@ -106,7 +106,10 @@ export const tripIsInState = (
  * @param b Second date to compare
  * @return 0 if equal, 1 if a>b, -1 if a<b
  */
-export const dateCompare = (a: string | dayjs.Dayjs | null, b: string | dayjs.Dayjs | null): number => {
+export const dateCompare = (
+  a: string | dayjs.Dayjs | null,
+  b: string | dayjs.Dayjs | null
+): number => {
   // one of the dates is invalid, or they're the same
   if (!a || !b || dayjs(a).isSame(b)) {
     return 0;
@@ -117,4 +120,24 @@ export const dateCompare = (a: string | dayjs.Dayjs | null, b: string | dayjs.Da
   }
   // a is earlier than b
   return -1;
+};
+
+/**
+ * Determine number of days until `target` from right now
+ * @param target The date to count down until
+ * @param now The current time
+ */
+export const formatDaysUntil = (
+  target: string | dayjs.Dayjs,
+  now: string | dayjs.Dayjs
+): string | null => {
+  const hasPassed = dayjs(target).isBefore(now);
+  if (hasPassed) {
+    return null;
+  }
+  const isUnder24Hours = dayjs(target).diff(now, "hour") < 24;
+  if (isUnder24Hours) {
+    return "In less than a day";
+  }
+  return `In ${dayjs(target).diff(now, "day")} days`;
 };

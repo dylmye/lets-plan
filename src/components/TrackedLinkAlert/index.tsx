@@ -1,6 +1,6 @@
-import React from "react";
-import { Alert } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { memo } from "react";
+import { Alert, Chip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./styles.module.css";
 
@@ -14,16 +14,17 @@ const TrackedLinkAlert = ({
   description,
   link,
   linkText,
-}: TrackedLinkAlertProps) => (
-  <Alert severity="info" className={styles.trackedLinkAlert} icon={false}>
-    <Link to="/legal">
-      <strong>AD</strong>
-    </Link>
-    : {description}{" "}
-    <a href={link} target="_blank" rel="noreferrer">
-      {linkText}
-    </a>
-  </Alert>
-);
+}: TrackedLinkAlertProps) => {
+  const navigate = useNavigate();
+  return (
+    <Alert severity="info" className={styles.trackedLinkAlert} icon={false}>
+      <Chip variant="outlined" size="small" label="AD" onClick={() => navigate("/legal")} />{" "}
+      {description}{" "}
+      <a href={link} target="_blank" rel="noreferrer">
+        {linkText}
+      </a>
+    </Alert>
+  );
+};
 
-export default TrackedLinkAlert;
+export default memo(TrackedLinkAlert);

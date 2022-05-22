@@ -3,7 +3,7 @@ import { Container, Skeleton, Stack, Typography } from "@mui/material";
 
 import styles from "./styles.module.css";
 import AddTripModal from "../../components/AddTripModal";
-import TripListItem from "../../components/TripListItem";
+import TripListItemCard from "../../components/TripListItemCard";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
@@ -41,7 +41,7 @@ const TripList = () => {
           <>
             {currentTrips?.length ? (
               currentTrips.map((trip) => (
-                <TripListItem trip={trip} key={`trip-${trip.id}`} />
+                <TripListItemCard trip={trip} key={`trip-${trip.id}`} />
               ))
             ) : !pastTrips?.length ? (
               <Typography
@@ -71,7 +71,7 @@ const TripList = () => {
           </Typography>
           <Stack spacing={2}>
             {pastTrips.map((trip) => (
-              <TripListItem trip={trip} key={`trip-${trip.id}`} />
+              <TripListItemCard trip={trip} key={`trip-${trip.id}`} />
             ))}
           </Stack>
         </>
