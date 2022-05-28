@@ -17,6 +17,7 @@
     "analytics": "^0.8.1",
     "dayjs": "^1.11.0",
     "firebase": "^9.6.10",
+    "firebaseui": "^6.0.1",
     "formik": "^2.2.9",
     "formik-mui": "^4.0.0-alpha.3",
     "formik-mui-lab": "^1.0.0-alpha.3",

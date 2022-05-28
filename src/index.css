@@ -2,10 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Paytone+One&display=swap');
 
-body {
-  background-color: rgba(255, 248, 243, 1) !important;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

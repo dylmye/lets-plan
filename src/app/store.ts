@@ -15,14 +15,18 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from 'redux-persist-indexeddb-storage';
-import suggestionsReducer, { SuggestionsState } from "../features/suggestions/suggestionsSlice";
+import storage from "redux-persist-indexeddb-storage";
+import suggestionsReducer, {
+  SuggestionsState,
+} from "../features/suggestions/suggestionsSlice";
+import themeReducer, { ThemeState } from "../features/theme/themeSlice";
 import tripsReducer, { TripState } from "../features/tripList/tripSlice";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {
   trips: TripState;
   suggestions: SuggestionsState;
+  theme: ThemeState;
 }
 
 const persistConfig: PersistConfig<any> = {
@@ -36,6 +40,7 @@ const rootReducer = persistReducer<State>(
   combineReducers({
     trips: tripsReducer,
     suggestions: suggestionsReducer,
+    theme: themeReducer,
   })
 );
 

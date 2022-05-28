@@ -26,6 +26,7 @@ const exampleStartDate = dayjs().local().startOf("day");
 
 const exampleTrip: Trip = {
   id: "example",
+  source: "offline",
   title: "Your First Trip",
   details: "Meeting up with Hanna and Janelle for a beach vacay!!",
   location: "Whitby, Yorkshire, UK",
@@ -117,6 +118,7 @@ const tripSlice = createSlice({
         location: payload.locationData?.label,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
+        source: "offline",
         createdAtUtc: dayjs().format(),
         updatedAtUtc: dayjs().format(),
         image: payload.image,

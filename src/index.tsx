@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { ThemeProvider } from "@mui/system";
-import { createTheme, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { LocalizationProvider } from "@mui/lab";
 import DateAdapter from '@mui/lab/AdapterDayjs';
 
@@ -11,35 +10,18 @@ import "./index.css";
 import App from "./App";
 import { persistor, store } from "./app/store";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      "Nunito",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-  },
-});
+import CustomTheme from "./contexts/CustomTheme/CustomTheme";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <ThemeProvider theme={theme}>
+        <CustomTheme>
           <CssBaseline />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <App />
           </LocalizationProvider>
-        </ThemeProvider>
+        </CustomTheme>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

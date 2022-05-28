@@ -6,4 +6,5 @@ export interface Trip extends TripDraft {
   updatedAtUtc: string;
   details?: string;
   items?: TripItineraryItemBase[];
+  source: 'offline' | 'sync';
 }

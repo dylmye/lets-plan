@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
+import { Alert } from "@mui/material";
 
 import "./App.css";
 import TripList from "./features/tripList";
 import Legal from "./features/legal";
 import TripDetailsContainer from "./features/tripDetailsContainer";
 import TripDetails from "./features/tripDetails";
-import { Alert } from "@mui/material";
+import LoginPage from "./features/login";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
@@ -46,11 +48,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <header className="header">
-          <Link to="/trips">
-            <span>Let's Plan</span>
-          </Link>
-        </header>
+        <Navbar />
         <main>
           {!isOnline && (
             <Alert severity="info">
@@ -65,12 +63,14 @@ function App() {
               <Route path=":tripId" element={<TripDetails />} />
               <Route path=":tripId/edit" element={<TripDetails />} />
             </Route>
+            <Route path="login" element={<LoginPage />} />
             <Route path="legal" element={<Legal />} />
             <Route path="*" element={<TripList />} />
           </Routes>
         </main>
         <footer>
-          <Link to="/legal">Terms & Privacy</Link>
+          <Link to="/legal">Terms & Privacy</Link><br />
+          <Link to="/legal">Sponsored Link Policy</Link>
           <p>Logo - Travel by Iconstock from NounProject.com</p>
         </footer>
       </BrowserRouter>
