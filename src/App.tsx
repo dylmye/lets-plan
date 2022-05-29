@@ -10,9 +10,17 @@ import TripDetailsContainer from "./features/tripDetailsContainer";
 import TripDetails from "./features/tripDetails";
 import LoginPage from "./features/login";
 import Navbar from "./components/Navbar";
+import AuthenticationModal from "./components/AuthenticationModal";
+import { useAuthModalVisible } from "./contexts/AuthModalVisible";
 
 function App() {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
+  const {
+    visible: authModalVisible,
+    toggleVisible: toggleAuthModalVisible,
+    authType,
+    setAuthType,
+  } = useAuthModalVisible();
 
   useEffect(() => {
     const init = async () => {
@@ -69,10 +77,19 @@ function App() {
           </Routes>
         </main>
         <footer>
-          <Link to="/legal">Terms & Privacy</Link><br />
+          <Link to="/legal">Terms & Privacy</Link>
+          <br />
           <Link to="/legal">Sponsored Link Policy</Link>
           <p>Logo - Travel by Iconstock from NounProject.com</p>
         </footer>
+        <AuthenticationModal
+          open={authModalVisible}
+          onClose={() => {
+            toggleAuthModalVisible(false);
+            setAuthType(null);
+          }}
+          type={authType}
+        />
       </BrowserRouter>
     </div>
   );

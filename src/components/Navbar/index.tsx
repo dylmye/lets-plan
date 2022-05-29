@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from "react";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Login } from "@mui/icons-material";
 import {
   AppBar,
-  Avatar,
   Container,
   FormControlLabel,
   IconButton,
@@ -12,9 +11,10 @@ import {
   Tooltip,
   Checkbox,
   Switch,
+  Divider,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { User } from "firebase/auth";
+import { signOut, User } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 
@@ -26,6 +26,7 @@ import {
   setSystemModeOverride,
   setThemeMode,
 } from "../../features/theme/themeSlice";
+import { useAuthModalVisible } from "../../contexts/AuthModalVisible";
 
 const AuthenticatedUserNavbarItem = ({
   user,
@@ -37,30 +38,41 @@ const AuthenticatedUserNavbarItem = ({
   anchor: HTMLElement | null;
   onToggle: (event?: React.MouseEvent<HTMLElement>) => void;
   extraMenuItems?: Record<string, JSX.Element | string>;
-}) => (
-  <>
-    <Tooltip title="Your account">
-      <IconButton size="large">
-        <Avatar src="https://via.placeholder.com/250" />
-      </IconButton>
-    </Tooltip>
-    <Menu
-      sx={{ mt: "45px" }}
-      id="menu-user-logged-in"
-      anchorEl={anchor}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={!!anchor}
-      onClose={() => onToggle()}
-    >
-      <MenuItem key="menu-user-item_login">Log out</MenuItem>
-      {Object.keys(extraMenuItems ?? {}).map((k) => {
-        return <MenuItem key={k}>{extraMenuItems?.[k]}</MenuItem>;
-      })}
-    </Menu>
-  </>
-);
+}) => {
+  const onClickLogOut = () => {
+    signOut(auth);
+    onToggle();
+  };
+  return (
+    <>
+      <Tooltip title="Your account">
+        <IconButton size="large" onClick={onToggle}>
+          <AccountCircle fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: "45px" }}
+        id="menu-user-logged-in"
+        anchorEl={anchor}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={!!anchor}
+        onClose={() => onToggle()}
+      >
+        <MenuItem key="menu-user-item_login" onClick={onClickLogOut}>Log out</MenuItem>
+        {extraMenuItems && <Divider />}
+        {Object.keys(extraMenuItems ?? {}).map((k) => {
+          return (
+            <MenuItem key={k} dense>
+              {extraMenuItems?.[k]}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </>
+  );
+};
 
 const UnauthenticatedUserNavbarItem = ({
   loading,
@@ -72,31 +84,58 @@ const UnauthenticatedUserNavbarItem = ({
   anchor: HTMLElement | null;
   onToggle: (event?: React.MouseEvent<HTMLElement>) => void;
   extraMenuItems?: Record<string, JSX.Element | string>;
-}) => (
-  <>
-    <Tooltip title="Login or sign up">
-      <IconButton size="large" sx={{ p: 0 }} onClick={onToggle}>
-        <AccountCircle fontSize="inherit" />
-      </IconButton>
-    </Tooltip>
-    <Menu
-      sx={{ mt: "45px" }}
-      id="menu-user-logged-out"
-      anchorEl={anchor}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={!!anchor}
-      onClose={() => onToggle()}
-    >
-      <MenuItem key="menu-user-item_login">Login</MenuItem>
-      <MenuItem key="menu-user-item_signup">Sign Up</MenuItem>
-      {Object.keys(extraMenuItems ?? {}).map((k) => {
-        return <MenuItem key={k}>{extraMenuItems?.[k]}</MenuItem>;
-      })}
-    </Menu>
-  </>
-);
+}) => {
+  const { toggleVisible, setAuthType } = useAuthModalVisible();
+
+  const showAuthModal = () => toggleVisible(true);
+
+  const onClickLogin = () => {
+    onToggle();
+    showAuthModal();
+    setAuthType("sign-in");
+  };
+
+  const onClickSignup = () => {
+    onToggle();
+    showAuthModal();
+    setAuthType("sign-up");
+  };
+
+  return (
+    <>
+      <Tooltip title="Login or sign up">
+        <IconButton size="large" onClick={onToggle}>
+          <Login fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: "45px" }}
+        id="menu-user-logged-out"
+        anchorEl={anchor}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={!!anchor}
+        onClose={() => onToggle()}
+      >
+        <MenuItem key="menu-user-item_login" onClick={onClickLogin}>
+          Login
+        </MenuItem>
+        <MenuItem key="menu-user-item_signup" onClick={onClickSignup}>
+          Sign Up
+        </MenuItem>
+        {extraMenuItems && <Divider />}
+        {Object.keys(extraMenuItems ?? {}).map((k) => {
+          return (
+            <MenuItem key={k} dense>
+              {extraMenuItems?.[k]}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </>
+  );
+};
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -187,12 +226,6 @@ const Navbar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-    // <header className="header">
-
-    //   <Box>
-
-    //   </Box>
-    // </header>
   );
 };
 

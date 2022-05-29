@@ -10,6 +10,7 @@ import {
 } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 import { TripDraft } from "../../types/TripDraft";
 import FormStepOne from "./FormStepOne";
@@ -29,12 +30,7 @@ import {
 import FormPagination from "./FormPagination";
 import { useAppDispatch } from "../../app/hooks";
 import { addTrip } from "../../features/tripList/tripSlice";
-import { useNavigate } from "react-router-dom";
-
-export interface AddTripModalProps {
-  open: boolean;
-  onClose: () => void;
-}
+import ModalProps from "../../types/ModalProps";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",
@@ -48,7 +44,7 @@ const dialogStyle: SxProps<Theme> = {
   p: 4,
 };
 
-const AddTripModal = (props: AddTripModalProps) => {
+const AddTripModal = (props: ModalProps) => {
   const TOTAL_STEPS = 3;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
