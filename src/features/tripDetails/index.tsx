@@ -9,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import TripItineraryItem from "../../components/TripItineraryItem";
 import {
@@ -23,6 +23,7 @@ import { COLOURS } from "../../helpers/colours";
 import { formatDate } from "../../helpers/dates";
 import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
+import StyledLink from "../../components/StyledLink";
 
 const TripDetails = () => {
   const { tripId } = useParams();
@@ -38,11 +39,11 @@ const TripDetails = () => {
 
   const xsItemHeaderStyles: SxProps<Theme> = {
     position: "sticky",
-    top: 0,
+    top: 46,
     marginX: "-5px",
     paddingY: 2,
     paddingX: 2,
-    backgroundColor: "rgba(255, 248, 243, 1)",
+    backgroundColor: "background.default",
   };
 
   const renderItemDay = (day: string, items: TripItineraryItemBase[]) => (
@@ -88,7 +89,7 @@ const TripDetails = () => {
   return (
     <Container>
       <Typography variant="body1" textAlign="left">
-        <Link to="/trips">&#8604; Back to trips</Link>
+        <StyledLink to="/trips">&#8604; Back to trips</StyledLink>
       </Typography>
       <Box sx={titleBackgroundImageStyle}>
         <Typography

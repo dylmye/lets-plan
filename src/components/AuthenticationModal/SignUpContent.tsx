@@ -1,9 +1,19 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import { Alert, Button, FormControlLabel, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  Alert,
+  Button,
+  Divider,
+  FormControlLabel,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Field, FieldProps, Form, Formik } from "formik";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithGoogle,
+  useSignInWithTwitter,
+} from "react-firebase-hooks/auth";
 import {
   SchemaOf,
   object as yObject,
@@ -21,6 +31,10 @@ import { AuthModalContentProps } from ".";
 import styles from "./styles.module.css";
 import { auth } from "../../firebase";
 import FormikVerifyField from "../VerifyField";
+import StyledLink from "../StyledLink";
+import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
+import { AuthError } from "firebase/auth";
+import { renderFriendlyAuthMessages } from "../../helpers/auth";
 
 type SignupEmailForm = {
   /** user id */
@@ -35,9 +49,32 @@ type SignupEmailForm = {
 
 const SignUpContent = ({ onClose }: AuthModalContentProps) => {
   const { enqueueSnackbar } = useSnackbar();
-  const [createUserWithEmailAndPassword, user, emailSignupLoading, error] =
-    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    emailSignupLoading,
+    emailErrors,
+  ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [signInWithTwitter, tUser, tLoading, tError] =
+    useSignInWithTwitter(auth);
   const captchaRef = useRef<HCaptcha>(null);
+
+  const combinedError = useMemo<AuthError[]>(() => {
+    let errs: AuthError[] = [];
+    if (gError) {
+      errs.push(gError);
+    }
+    if (tError) {
+      errs.push(tError);
+    }
+    if (!!errs.length) {
+      console.error(errs);
+    }
+    return errs;
+  }, [gError, tError]);
 
   const validationSchema: SchemaOf<SignupEmailForm> = yObject().shape({
     email: yString().email().required("Email required to sign up"),
@@ -53,14 +90,18 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
     []
   );
 
-  const VerifyField = useCallback((props: FieldProps) => <FormikVerifyField {...props} ref={captchaRef} />, []);
+  const VerifyField = useCallback(
+    (props: FieldProps) => <FormikVerifyField {...props} ref={captchaRef} />,
+    []
+  );
 
   useEffect(() => {
-    if (user) {
+    if (user || gUser || tUser) {
       onClose(true);
-      enqueueSnackbar("You're in! Check your email inbox.");
+      // Only show the email verify message when using email/password login
+      enqueueSnackbar(`You're in!${user ? " Check your email inbox." : ""}`);
     }
-  }, [user, onClose, enqueueSnackbar]);
+  }, [user, gUser, tUser, onClose, enqueueSnackbar]);
 
   return (
     <>
@@ -71,10 +112,22 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
         Signing up to <em>Let's Plan</em> is entirely optional, but it lets you
         access your trips on any device, share with your friends and family, and
         more in the future. Your data will be stored securely in the cloud,{" "}
-        <Link to="/legal" onClick={() => onClose(false)}>
+        <StyledLink to="/legal" onClick={() => onClose(false)}>
           learn more here.
-        </Link>
+        </StyledLink>
       </Typography>
+      <Stack spacing={2} className={styles.socialLoginsStack}>
+        {!!combinedError.length && (
+          <Alert severity="error">
+            {combinedError.map(renderFriendlyAuthMessages)}
+          </Alert>
+        )}
+        <GoogleSignInButton onClick={() => signInWithGoogle([])} />
+        <TwitterSignInButton onClick={() => signInWithTwitter([])} />
+      </Stack>
+      <Divider>
+        <Typography variant="body2">Or</Typography>
+      </Divider>
       <Formik<SignupEmailForm>
         initialValues={{
           email: "",
@@ -94,7 +147,11 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
         validationSchema={validationSchema}
       >
         <Form className={styles.formFieldsContainer}>
-          {error && <Alert severity="error">{error}</Alert>}
+          {!!emailErrors && (
+            <Alert severity="error">
+              {renderFriendlyAuthMessages(emailErrors)}
+            </Alert>
+          )}
           <Field
             component={TextField}
             name="email"
@@ -111,8 +168,10 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
             label={
               <span>
                 I've read the{" "}
-                <Link to="/legal">terms of use & privacy policy</Link> and I
-                accept them in full.
+                <StyledLink to="/legal">
+                  terms of use & privacy policy
+                </StyledLink>{" "}
+                and I accept them in full. <strong>(Required)</strong>
               </span>
             }
             sx={{ m: 0 }}

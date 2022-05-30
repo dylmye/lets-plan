@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { FieldProps } from "formik";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 
 /** Invisible HCaptcha element for verifying forms.
  * Trigger verification in the onSubmit using your ref:
@@ -39,8 +39,8 @@ const VerifyField = forwardRef<HCaptcha, FieldProps<string>>(
         />
         <Typography variant="caption">
           This site is protected by hCaptcha and its{" "}
-          <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> and{" "}
-          <a href="https://www.hcaptcha.com/terms" target="_blank" rel="noreferrer">Terms of Service</a> apply.
+          <Link href="https://www.hcaptcha.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</Link> and{" "}
+          <Link href="https://www.hcaptcha.com/terms" target="_blank" rel="noreferrer">Terms of Service</Link> apply.
         </Typography>
       </>
     );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Alert } from "@mui/material";
 
@@ -12,6 +12,7 @@ import LoginPage from "./features/login";
 import Navbar from "./components/Navbar";
 import AuthenticationModal from "./components/AuthenticationModal";
 import { useAuthModalVisible } from "./contexts/AuthModalVisible";
+import StyledLink from "./components/StyledLink";
 
 function App() {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
@@ -77,9 +78,9 @@ function App() {
           </Routes>
         </main>
         <footer>
-          <Link to="/legal">Terms & Privacy</Link>
+          <StyledLink to="/legal">Terms & Privacy</StyledLink>
           <br />
-          <Link to="/legal">Sponsored Link Policy</Link>
+          <StyledLink to="/legal">Sponsored Link Policy</StyledLink>
           <p>Logo - Travel by Iconstock from NounProject.com</p>
         </footer>
         <AuthenticationModal

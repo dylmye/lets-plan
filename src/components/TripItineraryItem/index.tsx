@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Tooltip } from "@mui/material";
+import { Grid, Link, Paper, Tooltip } from "@mui/material";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import {
   Assignment,
@@ -51,9 +51,9 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
         {Object.keys(urls).map((k) => (
           <li key={k ?? "link"}>
             <span style={{ marginTop: 2, marginBottom: 2 }}>
-              <a href={urls[k]} target="_blank" rel="noreferrer">
+              <Link href={urls[k]} target="_blank" rel="noreferrer">
                 {k ?? "link"}
-              </a>
+              </Link>
             </span>
           </li>
         ))}
@@ -96,7 +96,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             <Tooltip title="Directions">
               <Directions fontSize="inherit" className={styles.tripItemIcon} />
             </Tooltip>
-            <a
+            <Link
               href={journeyLink}
               target="_blank"
               rel="noreferrer"
@@ -108,7 +108,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             >
               {(item as TripItineraryTravelItem).originLocation} to
               {" " + (item as TripItineraryTravelItem).destinationLocation}
-            </a>
+            </Link>
           </Typography>
           {item.details && (
             <Typography variant="body1" className={styles.tripItemText}>
@@ -153,7 +153,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                   className={styles.tripItemIcon}
                 />
               </Tooltip>
-              <a
+              <Link
                 href={generateGoogleMapsQueryUrl(
                   (item as TripItineraryActivityItem).location
                 )}
@@ -162,7 +162,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                 title="View on Google Maps"
               >
                 {(item as TripItineraryActivityItem)?.location}
-              </a>
+              </Link>
             </Typography>
           )}
           {/* Show location link if no title */}
@@ -174,7 +174,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                   className={styles.tripItemIcon}
                 />
               </Tooltip>
-              <a
+              <Link
                 href={generateGoogleMapsQueryUrl(
                   (item as TripItineraryActivityItem).location
                 )}
@@ -182,7 +182,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                 rel="noreferrer"
               >
                 View on Google Maps
-              </a>
+              </Link>
             </Typography>
           )}
           {item.details && (
@@ -224,7 +224,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
   };
 
   return (
-    <Grid container>
+    <Grid container sx={{ flexDirection: { xs: "column", sm: "row" } }}>
       <Grid item xs className={styles.tripItemIconContainer}>
         <Box className={styles.tripItemIconBox}>
           <Paper

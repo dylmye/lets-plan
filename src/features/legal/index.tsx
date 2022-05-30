@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Link as MuiLink } from "@mui/material";
 
 import styles from "./styles.module.css";
 
@@ -41,25 +41,25 @@ const Legal = () => {
             <br />
             This data is controlled by <strong>Dylan Myers</strong> acting as{" "}
             <em>Let's Plan</em> and processed by{" "}
-            <a href="https://about.google" target="_blank" rel="noreferrer">
+            <MuiLink href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             in Europe (europe-west) and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://cloud.google.com/terms/"
               target="_blank"
               rel="noreferrer"
             >
               Google Cloud Platform Terms of Service
-            </a>
+            </MuiLink>
             . More information available{" "}
-            <a
+            <MuiLink
               href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase"
               target="_blank"
               rel="noreferrer"
             >
               here
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -70,25 +70,25 @@ const Legal = () => {
             minimised and retained for "a few months."
             <br />
             This data is controlled by{" "}
-            <a href="https://about.google" target="_blank" rel="noreferrer">
+            <MuiLink href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             in the United States and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
               rel="noreferrer"
             >
               Firebase Data Processing and Security Terms
-            </a>
+            </MuiLink>
             . More information available{" "}
-            <a
+            <MuiLink
               href="https://firebase.google.com/support/privacy#examples_of_end-user_personal_data_processed_by_firebase"
               target="_blank"
               rel="noreferrer"
             >
               here
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -99,17 +99,17 @@ const Legal = () => {
             search results to allow Google to improve its services.
             <br />
             This data is controlled by{" "}
-            <a href="https://about.google" target="_blank" rel="noreferrer">
+            <MuiLink href="https://about.google" target="_blank" rel="noreferrer">
               <strong>Google LLC</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://policies.google.com/privacy"
               target="_blank"
               rel="noreferrer"
             >
               Google Privacy Policy
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -124,21 +124,21 @@ const Legal = () => {
             only loaded when required.
             <br />
             This data is controlled by{" "}
-            <a
+            <MuiLink
               href="https://www.imachines.com/about"
               target="_blank"
               rel="noreferrer"
             >
               <strong>Intuition Machines, Inc.</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             in the United States and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://www.hcaptcha.com/privacy"
               target="_blank"
               rel="noreferrer"
             >
               hCaptcha Privacy Policy
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -149,35 +149,35 @@ const Legal = () => {
             set of anonymised data is collected, not including any IP addresses
             or other personal identifiable information. A list of this
             information is available{" "}
-            <a
+            <MuiLink
               href="https://docs.simpleanalytics.com/data-points"
               target="_blank"
               rel="noreferrer"
             >
               here
-            </a>
+            </MuiLink>
             . You can opt-out of this anonymous data analysis by{" "}
-            <a href="https://allaboutdnt.com" target="_blank" rel="noreferrer">
+            <MuiLink href="https://allaboutdnt.com" target="_blank" rel="noreferrer">
               enabling Do Not Track
-            </a>{" "}
+            </MuiLink>{" "}
             in your browser.
             <br />
             This data is controlled by{" "}
-            <a
+            <MuiLink
               href="https://simpleanalytics.com/"
               target="_blank"
               rel="noreferrer"
             >
               <strong>Simple Analytics</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             in the Netherlands and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://docs.simpleanalytics.com/what-we-collect"
               target="_blank"
               rel="noreferrer"
             >
               Privacy Policy
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -189,21 +189,21 @@ const Legal = () => {
             website from unauthorised access by non-human users.
             <br />
             This data is controlled and processed by{" "}
-            <a
+            <MuiLink
               href="https://www.cloudflare.com/about-overview/"
               target="_blank"
               rel="noreferrer"
             >
               <strong>Cloudflare, Inc.</strong>
-            </a>{" "}
+            </MuiLink>{" "}
             in the United States and Europe and is governed by the{" "}
-            <a
+            <MuiLink
               href="https://www.cloudflare.com/privacypolicy/"
               target="_blank"
               rel="noreferrer"
             >
               Cloudflare Privacy Policy
-            </a>{" "}
+            </MuiLink>{" "}
             (wherein you apply as an "End User".)
           </p>
         </li>
@@ -229,22 +229,22 @@ const Legal = () => {
             </strong>
             <br />
             Provided by{" "}
-            <a
+            <MuiLink
               href="https://www.awin.com/privacy"
               target="_blank"
               rel="noreferrer"
             >
               <strong>AWIN Ltd</strong> or <strong>AWIN AG</strong>
-            </a>
+            </MuiLink>
             , wherein you are an "End User" and this website is a "Publisher",
             and{" "}
-            <a
+            <MuiLink
               href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy"
               target="_blank"
               rel="noreferrer"
             >
               <strong>Go Travel Un Limited</strong>
-            </a>
+            </MuiLink>
             .
           </p>
         </li>
@@ -268,78 +268,78 @@ const Legal = () => {
       </p>
       <p>
         To view your trip data, please consult{" "}
-        <a
+        <MuiLink
           href="https://developer.chrome.com/docs/devtools/storage/indexeddb/#delete"
           target="_blank"
           rel="noreferrer"
         >
           this guide
-        </a>{" "}
+        </MuiLink>{" "}
         on how to manually access and delete your local storage.
       </p>
       <p>
         To request the data Google, LLC holds on you, please{" "}
-        <a
+        <MuiLink
           href="https://support.google.com/accounts/answer/3024190"
           target="_blank"
           rel="noreferrer"
         >
           consult this article
-        </a>
+        </MuiLink>
         .
       </p>
       <p>
         To request the data Intuition Machines, Inc. holds on you, please
         contact them using the email in the "Notice to EU Data Subjects" section
         in their{" "}
-        <a
+        <MuiLink
           href="https://www.hcaptcha.com/privacy"
           target="_blank"
           rel="noreferrer"
         >
           privacy policy
-        </a>
+        </MuiLink>
         .
       </p>
       <p>
         To request the data Simple Analytics holds on you, please contact them{" "}
-        <a href="https://simpleanalytics.com/contact">here</a>.
+        <MuiLink href="https://simpleanalytics.com/contact">here</MuiLink>.
       </p>
       <p>
         To request the data Cloudflare, Inc. holds on you, please contact them
         using the email in section 8 of their{" "}
-        <a
+        <MuiLink
           href="https://www.cloudflare.com/privacypolicy/"
           target="_blank"
           rel="noreferrer"
         >
           privacy policy
-        </a>
+        </MuiLink>
         .
       </p>
       <p>
         To request the data AWIN Ltd and/or AWIN AG holds on you, please contact
         them using the email under the "Questions?" section of their{" "}
-        <a
+        <MuiLink
           href="https://www.awin.com/gb/privacy"
           target="_blank"
           rel="noreferrer"
         >
           fair processing notice and privacy policy
-        </a>
+        </MuiLink>
         .
       </p>
       <p>
         To request the data Go Travel Un Limited holds on you, please contact
         them using the email under the "Identity of The Data Controller" section
         of their{" "}
-        <a
+        <MuiLink
           href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy"
           target="_blank"
           rel="noreferrer"
         >
           privacy policy
-        </a>
+        </MuiLink>
         .
       </p>
       <Typography variant="h3" className={styles.legalHeader} id="terms">
