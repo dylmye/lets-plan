@@ -1,4 +1,5 @@
 .tripListActionCard {
   box-shadow: none !important;
-  border: 2px dashed #000;
+  border-width: 2px;
+  border-style: dashed;
 }

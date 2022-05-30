@@ -22,7 +22,7 @@ export interface TripListActionProps {
 }
 
 const TripListAction = ({ onPress, actionType }: TripListActionProps) => (
-  <Card key="card-add" className={styles.tripListActionCard}>
+  <Card key="card-add" className={styles.tripListActionCard} sx={{ borderColor: "palette.text.secondary" }}>
     <CardActionArea onClick={onPress}>
       <CardContent>
         <Typography variant="h4" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

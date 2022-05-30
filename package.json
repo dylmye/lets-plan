@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "ISC",
   "dependencies": {
+    "@3m1/service-worker-updater": "^2.0.3",
     "@analytics/simple-analytics": "^0.3.3",
     "@date-io/dayjs": "^2.13.1",
     "@dylmye/flight-designator": "^4.1.3",

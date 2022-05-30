@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
-import { Alert } from "@mui/material";
 
 import "./App.css";
 import TripList from "./features/tripList";
@@ -13,6 +12,9 @@ import Navbar from "./components/Navbar";
 import AuthenticationModal from "./components/AuthenticationModal";
 import { useAuthModalVisible } from "./contexts/AuthModalVisible";
 import StyledLink from "./components/StyledLink";
+import UpdateAlert from "./components/UpdateAlert";
+import OfflineAlert from "./components/OfflineAlert";
+import { Stack } from "@mui/material";
 
 function App() {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
@@ -59,12 +61,10 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <main>
-          {!isOnline && (
-            <Alert severity="info">
-              You're offline - your trips are still accessible and you can still
-              make changes, but images and links might not load.
-            </Alert>
-          )}
+          <Stack spacing={2}>
+            <OfflineAlert isOnline={isOnline} />
+            {isOnline && <UpdateAlert />}
+          </Stack>
           <Routes>
             <Route path="/" element={<TripList />} />
             <Route path="trips" element={<TripList />} />
