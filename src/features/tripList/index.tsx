@@ -56,7 +56,7 @@ const TripList = () => {
         )}
         <TripListAction
           key="trip-action-add"
-          onPress={() => toggleModalVisibility(true)}
+          onClick={() => toggleModalVisibility(true)}
           actionType={TripListActions.ACTION_ADD}
         />
       </Stack>

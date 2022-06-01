@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Card } from "@mui/material";
+import { Button } from "@mui/material";
 
 import { TripItemType } from "../../types/TripItemType";
 import styles from "./styles.module.css";
@@ -8,18 +8,23 @@ import { getEnumKeyByEnumValue } from "../../helpers/enums";
 
 interface Props {
   item: TripItemType;
+  onClick: (item: TripItemType) => void;
   type: "activity" | "travel";
 }
 
-const TripItemTypeCard = ({ item }: Props) => {
+const TripItemTypeCard = ({ item, onClick }: Props) => {
   const Icon = () => getTripItemIcon(item);
   const friendlyName = getEnumKeyByEnumValue(TripItemType, item);
 
   return (
-    <Card variant="outlined" className={styles.tripItemTypeCard}>
-      {Icon && <Icon />}
+    <Button
+      variant="outlined"
+      startIcon={<Icon />}
+      className={styles.tripItemTypeCard}
+      onClick={() => onClick(item)}
+    >
       {friendlyName ?? item}
-    </Card>
+    </Button>
   );
 };
 

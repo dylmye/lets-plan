@@ -17,13 +17,13 @@ const actionIcons: Record<TripListActions, JSX.Element> = {
 };
 
 export interface TripListActionProps {
-  onPress: () => void;
+  onClick: () => void;
   actionType: TripListActions;
 }
 
-const TripListAction = ({ onPress, actionType }: TripListActionProps) => (
+const TripListAction = ({ onClick, actionType }: TripListActionProps) => (
   <Card key="card-add" className={styles.tripListActionCard} sx={{ borderColor: "palette.text.secondary" }}>
-    <CardActionArea onClick={onPress}>
+    <CardActionArea onClick={onClick}>
       <CardContent>
         <Typography variant="h4" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           {actionIcons[actionType]} {actionLabels[actionType] ?? 'Click Here'}

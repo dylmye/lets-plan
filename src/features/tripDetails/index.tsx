@@ -1,17 +1,20 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Container,
+  Divider,
+  IconButton,
   Stack,
   SxProps,
   Theme,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 
-import TripItineraryItem from "../../components/TripItineraryItem";
+import styles from "./styles.module.css";
 import {
   selectTripIds,
   selectTripById,
@@ -21,14 +24,23 @@ import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { COLOURS } from "../../helpers/colours";
 import { formatDate } from "../../helpers/dates";
+import TripItineraryItem from "../../components/TripItineraryItem";
 import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
+import { Add, FilterAlt } from "@mui/icons-material";
 
-const TripDetails = () => {
+interface TripDetailsProps {
+  /** In edit mode? */
+  edit?: boolean;
+}
+
+const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
-  const trip = useAppSelector((state) => selectTripById(state, tripId as string));
+  const trip = useAppSelector((state) =>
+    selectTripById(state, tripId as string)
+  );
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
@@ -41,26 +53,40 @@ const TripDetails = () => {
     position: "sticky",
     top: 46,
     marginX: "-5px",
-    paddingY: 2,
-    paddingX: 2,
+    padding: 1,
     backgroundColor: "background.default",
   };
 
   const renderItemDay = (day: string, items: TripItineraryItemBase[]) => (
-    <Fragment key={day}>
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: "bold",
-          marginY: 4,
-          textAlign: "left",
-          ...(!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}),
-        }}
+    <Container key={day} disableGutters>
+      <Box
+        className={styles.itemDayHeaderContainer}
+        sx={!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}}
       >
-        <time dateTime={day}>{formatDate(day, "long")}</time>
-      </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "left",
+          }}
+        >
+          <time dateTime={day}>{formatDate(day, "long")}</time>
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Tooltip title="Add to day">
+            <IconButton aria-label="Add an item this day">
+              <Add fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Filter day">
+            <IconButton aria-label="Filter the items in this day">
+              <FilterAlt fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      </Box>
       <Stack spacing={2}>{items.map(renderItem)}</Stack>
-    </Fragment>
+    </Container>
   );
 
   const titleBackgroundImageStyle: SxProps | undefined = !!trip?.image
@@ -139,6 +165,7 @@ const TripDetails = () => {
             )}
           </Box>
         )}
+        <Divider />
         <SuggestionsCard />
       </Stack>
     </Container>

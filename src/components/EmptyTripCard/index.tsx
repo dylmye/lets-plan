@@ -15,7 +15,7 @@ const EmptyTripCard = () => (
           <Typography variant="h5" fontWeight="bold">Travelling</Typography>
           <Stack spacing={2}>
             {TravelTypes.map((x) => (
-              <TripItemTypeCard key={x} item={x} type="travel" />
+              <TripItemTypeCard key={x} item={x} type="travel" onClick={console.log} />
             ))}
           </Stack>
         </Grid>
@@ -24,7 +24,7 @@ const EmptyTripCard = () => (
           <Typography variant="h5" fontWeight="bold">Activities</Typography>
           <Stack spacing={2}>
             {ActivityTypes.map((x) => (
-              <TripItemTypeCard key={x} item={x} type="activity" />
+              <TripItemTypeCard key={x} item={x} type="activity" onClick={console.log} />
             ))}
           </Stack>
         </Grid>

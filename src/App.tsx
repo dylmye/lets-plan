@@ -14,7 +14,7 @@ import { useAuthModalVisible } from "./contexts/AuthModalVisible";
 import StyledLink from "./components/StyledLink";
 import UpdateAlert from "./components/UpdateAlert";
 import OfflineAlert from "./components/OfflineAlert";
-import { Stack } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 
 function App() {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
@@ -61,16 +61,18 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <main>
-          <Stack spacing={2}>
-            <OfflineAlert isOnline={isOnline} />
-            {isOnline && <UpdateAlert />}
-          </Stack>
+          <Container>
+            <Stack spacing={2}>
+              <OfflineAlert isOnline={isOnline} />
+              <UpdateAlert isOnline={isOnline} />
+            </Stack>
+          </Container>
           <Routes>
             <Route path="/" element={<TripList />} />
             <Route path="trips" element={<TripList />} />
             <Route path="trip" element={<TripDetailsContainer />}>
               <Route path=":tripId" element={<TripDetails />} />
-              <Route path=":tripId/edit" element={<TripDetails />} />
+              <Route path=":tripId/edit" element={<TripDetails edit />} />
             </Route>
             <Route path="login" element={<LoginPage />} />
             <Route path="legal" element={<Legal />} />

@@ -5,16 +5,25 @@ import {
   withServiceWorkerUpdater,
 } from "@3m1/service-worker-updater";
 
+interface UpdateAlertProps {
+  isOnline: boolean;
+}
+
 /** Display a message + action when there's a new version of LP */
 const UpdateAlert = ({
   newServiceWorkerDetected,
   onLoadNewServiceWorkerAccept,
-}: ServiceWorkerUpdaterProps) =>
-  newServiceWorkerDetected ? (
+  isOnline,
+}: ServiceWorkerUpdaterProps & UpdateAlertProps) =>
+  isOnline && newServiceWorkerDetected ? (
     <Alert
       severity="info"
       action={
-        <Button color="inherit" size="small" onClick={onLoadNewServiceWorkerAccept}>
+        <Button
+          color="inherit"
+          size="small"
+          onClick={onLoadNewServiceWorkerAccept}
+        >
           Reload
         </Button>
       }

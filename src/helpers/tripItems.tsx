@@ -20,53 +20,57 @@ import {
   DirectionsWalk,
   DirectionsBike,
   DirectionsRailway,
+  Notes,
 } from "@mui/icons-material";
 import { COLOURS } from "./colours";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
+import { SvgIconProps } from "@mui/material";
 
 /** Convert from TripItemType to a MUI Icon component */
-export const getTripItemIcon = (item?: TripItemType): JSX.Element | null => {
+export const getTripItemIcon = (item?: TripItemType, otherProps?: SvgIconProps): JSX.Element | null => {
   switch (item) {
     case TripItemType.Plane:
-      return <FlightTakeoff titleAccess="Flight item" />;
+      return <FlightTakeoff titleAccess="Flight item" {...otherProps} />;
     case TripItemType.Ferry:
-      return <DirectionsBoat titleAccess="Ferry item" />;
+      return <DirectionsBoat titleAccess="Ferry item" {...otherProps} />;
     case TripItemType.Bus:
-      return <DirectionsBus titleAccess="Bus item" />;
+      return <DirectionsBus titleAccess="Bus item" {...otherProps} />;
     case TripItemType.Train:
-      return <DirectionsRailway titleAccess="Train item" />;
+      return <DirectionsRailway titleAccess="Train item" {...otherProps} />;
     case TripItemType.Subway:
-      return <DirectionsSubway titleAccess="Subway item" />;
+      return <DirectionsSubway titleAccess="Subway item" {...otherProps} />;
     case TripItemType.Shuttle:
-      return <AirportShuttle titleAccess="Shuttle item" />;
+      return <AirportShuttle titleAccess="Shuttle item" {...otherProps} />;
     case TripItemType.Taxi:
-      return <Hail titleAccess="Taxi item" />;
+      return <Hail titleAccess="Taxi item" {...otherProps} />;
     case TripItemType["Car Rental"]:
-      return <CarRental titleAccess="Rental Car item" />;
+      return <CarRental titleAccess="Rental Car item" {...otherProps} />;
     case TripItemType.Car:
-      return <DirectionsCar titleAccess="Car item" />;
+      return <DirectionsCar titleAccess="Car item" {...otherProps} />;
     case TripItemType["By Foot"]:
-      return <DirectionsWalk titleAccess="By Foot item" />;
+      return <DirectionsWalk titleAccess="By Foot item" {...otherProps} />;
     case TripItemType.Cycle:
-      return <DirectionsBike titleAccess="Bicycling item" />;
+      return <DirectionsBike titleAccess="Bicycling item" {...otherProps} />;
     case TripItemType.Museum:
-      return <Museum titleAccess="Museum item" />;
+      return <Museum titleAccess="Museum item" {...otherProps} />;
     case TripItemType["Eating Out"]:
-      return <RestaurantMenu titleAccess="Eating Out item" />;
+      return <RestaurantMenu titleAccess="Eating Out item" {...otherProps} />;
     case TripItemType["Meet-up"]:
-      return <Groups titleAccess="Meet-up item" />;
+      return <Groups titleAccess="Meet-up item" {...otherProps} />;
     case TripItemType.Tour:
-      return <Tour titleAccess="Tour item" />;
+      return <Tour titleAccess="Tour item" {...otherProps} />;
     case TripItemType.Theatre:
-      return <TheaterComedy titleAccess="Theatre item" />;
+      return <TheaterComedy titleAccess="Theatre item" {...otherProps} />;
     case TripItemType.Cinema:
-      return <Theaters titleAccess="Cinema item" />;
+      return <Theaters titleAccess="Cinema item" {...otherProps} />;
     case TripItemType.Concert:
-      return <MusicNote titleAccess="Concert item" />;
+      return <MusicNote titleAccess="Concert item" {...otherProps} />;
     case TripItemType.Shopping:
-      return <ShoppingBag titleAccess="Shopping item" />;
+      return <ShoppingBag titleAccess="Shopping item" {...otherProps} />;
     case TripItemType.Sports:
-      return <SportsSoccer titleAccess="Sports item" />;
+      return <SportsSoccer titleAccess="Sports item" {...otherProps} />;
+    case TripItemType.Note:
+      return <Notes titleAccess="Note item" {...otherProps} />;
   }
   return null;
 };

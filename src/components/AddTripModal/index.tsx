@@ -141,7 +141,7 @@ const AddTripModal = (props: ModalProps) => {
     dispatch(addTrip({ ...values, image: coverImageUri }));
     setActiveStep(0);
     props.onClose();
-    navigate(`/trip/${values.id}`);
+    navigate(`/trip/${values.id}/edit`);
   };
 
   const onModalClose = () => {

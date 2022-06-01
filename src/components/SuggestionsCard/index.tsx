@@ -5,6 +5,7 @@ import {
   CardContent,
   Collapse,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { ArrowDropDown, ArrowDropUp, AutoAwesome } from "@mui/icons-material";
@@ -49,9 +50,13 @@ const SuggestionsCard = () => {
             onClick={onToggleCollapse}
           >
             {isCollapsed ? (
-              <ArrowDropDown fontSize="inherit" />
+              <Tooltip title="Open">
+                <ArrowDropDown fontSize="inherit" />
+              </Tooltip>
             ) : (
-              <ArrowDropUp fontSize="inherit" />
+              <Tooltip title="Close">
+                <ArrowDropUp fontSize="inherit" />
+              </Tooltip>
             )}
           </IconButton>
         </Box>
@@ -67,7 +72,8 @@ const SuggestionsCard = () => {
               className={styles.emptyTripSuggestionSubtitle}
             >
               <em>Let's Plan</em> earns a small commission if you buy anything
-              through the above links. <StyledLink to="/legal">Learn more</StyledLink>.
+              through the above links.{" "}
+              <StyledLink to="/legal">Learn more</StyledLink>.
             </Typography>
           </Box>
         </Collapse>
