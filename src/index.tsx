@@ -6,13 +6,13 @@ import { PersistGate } from "redux-persist/integration/react";
 import { CssBaseline } from "@mui/material";
 import { LocalizationProvider } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDayjs";
+import { onServiceWorkerUpdate } from "@3m1/service-worker-updater";
 
 import "./index.css";
 import App from "./App";
 import { persistor, store } from "./app/store";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { CustomTheme, AuthModalVisible } from "./contexts";
-import { onServiceWorkerUpdate } from "@3m1/service-worker-updater";
 
 ReactDOM.render(
   <React.StrictMode>
