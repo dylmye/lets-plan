@@ -7,6 +7,8 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Calculate Short SHA for REACT_APP_RELEASE_VERSION
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.2
@@ -20,6 +22,7 @@ jobs:
           envkey_REACT_APP_SIMPLE_ANALYTICS_PIXEL_URL: ${{ secrets.SIMPLE_ANALYTICS_PIXEL_URL }}
           envkey_REACT_APP_HCAPTCHA_SITE_KEY: ${{ secrets.HCAPTCHA_SITE_KEY }}
           envkey_NODE_ENV: 'production'
+          envkey_REACT_APP_RELEASE_VERSION: ${SHORT_SHA}
       - name: install yarn dependencies
         uses: borales/actions-yarn@v2.3.0
         with:

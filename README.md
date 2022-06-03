@@ -4,13 +4,11 @@
   </a>
 </p>
 
-A simple React/Redux based trip planner. Let's Plan is designed to be mobile- and offline- first, with added support for sync and sharing with friends. Cloud services (sync, image hosting) are provided through Firebase.
+A simple React/Redux based trip planner. Let's Plan is designed to be mobile- and offline- first, with added support for sync and sharing with friends. Cloud services (accounts, sync, image hosting) are provided through Firebase.
 
 ## Current roadmap/to-do
 
-- [ ] Sync epic - making a firebase functions-based API
-- [ ] `redux-offline` implementation
-- [ ] Edit trip functionality
+Check the GitHub project board
 
 ## Development
 
@@ -30,6 +28,7 @@ Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 - `REACT_APP_SIMPLE_ANALYTICS_PIXEL_URL`: You can disregard this if you're not using [Simple Analytics](https://simpleanalytics.com/). If you're not using a custom domain, set this to `queue.simpleanalyticscdn.com`. Otherwise set it to your `custom.domain.com`.
 - `REACT_APP_UBER_API_CLIENT_ID`: You can disregard this if you're not using the Uber API for taxi journey links. This is for the "CLIENT_ID" parameter for Uber's Ride Requests API, which is used to link to Uber in taxi itinerary items ([see here](https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction#ride-requests).)
 - `REACT_APP_HCAPTCHA_SITE_KEY`: You can disregard this if you're not using HCaptcha (an anti-bot tool like Recaptcha). This is the site key from the dev portal linked to your domain.
+- `REACT_APP_RELEASE_VERSION`: Used in the app to display what version of LP is running. Useful for debugging. (optional)
 
 To make this project your own, you also need to:
 

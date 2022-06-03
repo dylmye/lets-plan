@@ -60,7 +60,9 @@ const AuthenticatedUserNavbarItem = ({
         open={!!anchor}
         onClose={() => onToggle()}
       >
-        <MenuItem key="menu-user-item_login" onClick={onClickLogOut}>Log out</MenuItem>
+        <MenuItem key="menu-user-item_login" onClick={onClickLogOut}>
+          Log out
+        </MenuItem>
         {extraMenuItems && <Divider />}
         {Object.keys(extraMenuItems ?? {}).map((k) => {
           return (
@@ -132,6 +134,21 @@ const UnauthenticatedUserNavbarItem = ({
             </MenuItem>
           );
         })}
+        <Divider />
+        <MenuItem key="version-text" dense>
+          <Box
+            sx={{ display: "flex", flexDirection: "column" }}
+            onClick={() =>
+              window?.open("https://dylmye.me/?ref=lp", "_blank")?.focus()
+            }
+          >
+            <small>
+              {process.env.REACT_APP_RELEASE_VERSION ?? "unknown"} -{" "}
+              {process.env.NODE_ENV ?? "unknown"}
+            </small>
+            <small>let's plan is a dylanmye creation</small>
+          </Box>
+        </MenuItem>
       </Menu>
     </>
   );
