@@ -8,7 +8,9 @@ A simple React/Redux based trip planner. Let's Plan is designed to be mobile- an
 
 ## Current roadmap/to-do
 
-Check the GitHub project board
+Check the GitHub project board for feature to-dos and roadmap.
+
+Right now, all commits trigger a new prod build. Once MVP is feature-complete, this will be changed to prod builds per version tag, and a development
 
 ## Development
 
@@ -35,6 +37,7 @@ To make this project your own, you also need to:
 - Remove the scripts and HTML comments from public/index.html
 - Set the `homepage` field in the package.json to the URL you'll be hosting the website on (to make the service worker work)
 - Remove helpers/analytics.ts + any references to it, or change it to use the analytics package you use
+- Remove the credit footer in the Navbar component
 
 ## Build
 

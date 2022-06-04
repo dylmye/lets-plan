@@ -1,9 +1,3 @@
-.tripItemTypeCard {
-  text-transform: capitalize;
-  color: #fff;
-  border-color: #fff;
-}
-
 .tripItemTypeCard:hover {
-  border-color: #fff;
+  border-color: #fff !important;
 }

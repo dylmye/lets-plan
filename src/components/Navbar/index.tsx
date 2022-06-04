@@ -27,6 +27,7 @@ import {
   setThemeMode,
 } from "../../features/theme/themeSlice";
 import { useAuthModalVisible } from "../../contexts/AuthModalVisible";
+import { uninstallWorker } from "../../helpers/worker";
 
 const AuthenticatedUserNavbarItem = ({
   user,
@@ -63,7 +64,10 @@ const AuthenticatedUserNavbarItem = ({
         <MenuItem key="menu-user-item_login" onClick={onClickLogOut}>
           Log out
         </MenuItem>
-        {extraMenuItems && <Divider />}
+        <Divider />
+        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
+          Reset App
+        </MenuItem>
         {Object.keys(extraMenuItems ?? {}).map((k) => {
           return (
             <MenuItem key={k} dense>
@@ -71,6 +75,21 @@ const AuthenticatedUserNavbarItem = ({
             </MenuItem>
           );
         })}
+        <Divider />
+        <MenuItem key="version-text" dense>
+          <Box
+            sx={{ display: "flex", flexDirection: "column" }}
+            onClick={() =>
+              window?.open("https://dylmye.me/?ref=lp", "_blank")?.focus()
+            }
+          >
+            <small>
+              {process.env.REACT_APP_RELEASE_VERSION ?? "unknown"} -{" "}
+              {process.env.NODE_ENV ?? "unknown"}
+            </small>
+            <small>let's plan is a dylanmye creation</small>
+          </Box>
+        </MenuItem>
       </Menu>
     </>
   );
@@ -126,7 +145,10 @@ const UnauthenticatedUserNavbarItem = ({
         <MenuItem key="menu-user-item_signup" onClick={onClickSignup}>
           Sign Up
         </MenuItem>
-        {extraMenuItems && <Divider />}
+        <Divider />
+        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
+          Reset App
+        </MenuItem>
         {Object.keys(extraMenuItems ?? {}).map((k) => {
           return (
             <MenuItem key={k} dense>

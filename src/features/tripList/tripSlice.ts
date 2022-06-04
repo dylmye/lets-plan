@@ -108,7 +108,7 @@ const tripSlice = createSlice({
   name,
   initialState: tripsAdapter.getInitialState({
     entities: { [exampleTrip.id]: exampleTrip } as Dictionary<Trip>,
-    ids: [exampleTrip.id] as EntityId[]
+    ids: [exampleTrip.id] as EntityId[],
   }),
   reducers: {
     addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
@@ -156,12 +156,15 @@ export const selectTripItemsByDay = (id: string) => (store: RootState) => {
 
 export const selectCurrentTrips = createDraftSafeSelector(
   selectTrips,
-  (state) => state.filter(trip => tripIsInState(trip, "future"))
+  (state) => state.filter((trip) => tripIsInState(trip, "future"))
 );
 
-export const selectPastTrips = createDraftSafeSelector(
-  selectTrips,
-  (state) => state.filter(trip => tripIsInState(trip, "past"))
+export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
+  state
+    .filter((trip) => tripIsInState(trip, "past"))
+    .sort((a, b) =>
+      dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt, true)
+    )
 );
 
 export default tripSlice.reducer;

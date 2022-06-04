@@ -104,11 +104,13 @@ export const tripIsInState = (
  * Javascript compatible date ordering
  * @param a First date to compare
  * @param b Second date to compare
- * @return 0 if equal, 1 if a>b, -1 if a<b
+ * @param reverse Whether to reverse the result, for desc ordering. (def: false)
+ * @return 0 if equal, 1 if a>b, -1 if a<b (reverse for 1 and -1)
  */
 export const dateCompare = (
   a: string | dayjs.Dayjs | null,
-  b: string | dayjs.Dayjs | null
+  b: string | dayjs.Dayjs | null,
+  reverse: boolean = false
 ): number => {
   // one of the dates is invalid, or they're the same
   if (!a || !b || dayjs(a).isSame(b)) {
@@ -116,10 +118,10 @@ export const dateCompare = (
   }
   // a is further in the future than b
   if (dayjs(a).isAfter(b)) {
-    return 1;
+    return reverse ? -1 : 1;
   }
   // a is earlier than b
-  return -1;
+  return reverse ? 1 : -1;
 };
 
 /**
