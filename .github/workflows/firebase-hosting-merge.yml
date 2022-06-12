@@ -25,11 +25,11 @@ jobs:
           envkey_NODE_ENV: 'production'
           envkey_REACT_APP_RELEASE_VERSION: ${SHORT_SHA}
       - name: install yarn dependencies
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v3.0.0
         with:
           cmd: install --frozen-lockfile
       - name: create production build
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v3.0.0
         with:
           cmd: build
       - name: deploy production build to Firebase Hosting
