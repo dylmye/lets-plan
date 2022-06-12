@@ -30,7 +30,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { AuthModalContentProps } from ".";
 import styles from "./styles.module.css";
 import { auth } from "../../firebase";
-import FormikVerifyField from "../VerifyField";
+import FormikVerifyField from "../fields/VerifyField";
 import StyledLink from "../StyledLink";
 import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
 import { AuthError } from "firebase/auth";

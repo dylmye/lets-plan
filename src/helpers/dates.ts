@@ -7,7 +7,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "dayjs/locale/en-gb";
 import "dayjs/locale/en";
 
-import { Trip } from "../types/Trip";
+import Trip from "../types/Trip";
 
 dayjs.extend(utc);
 dayjs.extend(localeData);

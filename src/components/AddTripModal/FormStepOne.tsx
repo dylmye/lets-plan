@@ -1,15 +1,13 @@
 import React, { useCallback } from "react";
-import { useTheme } from "@mui/material";
-import { Field, FieldProps, useFormikContext } from "formik";
-import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { Field, useFormikContext } from "formik";
+import { TextField } from "formik-mui";
 import { ActionMeta } from "react-select";
 
 import styles from "./styles.module.css";
-import { TripDraft } from "../../types/TripDraft";
+import TripDraft from "../../types/TripDraft";
+import GoogleMapsField from "../fields/GoogleMapsField";
 
 const FormStepOne = () => {
-  const { palette } = useTheme();
   const { setFieldValue } = useFormikContext<TripDraft>();
 
   const onMapFieldChange = useCallback(
@@ -19,47 +17,19 @@ const FormStepOne = () => {
     [setFieldValue]
   );
 
-  const TextField = useCallback(
-    (props: TextFieldProps) => <FormikTextField {...props} fullWidth />,
-    []
-  );
-  const GoogleMapsField = useCallback(
-    ({ field, ...props }: FieldProps<string>) => (
-      <GooglePlacesAutocomplete
-        {...props}
-        selectProps={{
-          value: field.value,
-          onChange: onMapFieldChange,
-          placeholder: "Where is this trip?",
-          styles: {
-            control: (provided) => ({
-              ...provided,
-              backgroundColor: palette.background.paper,
-              padding: "6.5px 4px",
-            }),
-            input: (provided) => ({
-              ...provided,
-              color: palette.text.primary,
-            }),
-            menu: (provided) => ({
-              ...provided,
-              backgroundColor: palette.mode === "dark" ? "#080808" : palette.background.paper,
-              color: palette.text.primary,
-            }),
-          },
-        }}
-      />
-    ),
-    [onMapFieldChange, palette]
-  );
-
   return (
     <div className={styles.formFieldsContainer}>
-      <Field component={TextField} name="title" label="Name of your trip" />
+      <Field
+        component={TextField}
+        fullWidth
+        name="title"
+        label="Name of your trip"
+      />
       <Field
         component={GoogleMapsField}
         name="locationData"
         label="Where is your trip?"
+        onMapFieldChange={onMapFieldChange}
       />
     </div>
   );

@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { FieldProps } from "formik";
 import { isMobile } from 'react-device-detect';
 
-import styles from "./UploadImageField.module.css";
+import styles from "./styles.module.css";
 
 interface Props extends FieldProps {}
 

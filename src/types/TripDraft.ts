@@ -1,6 +1,6 @@
 import { ActionMeta } from "react-select";
 
-export interface TripDraft {
+export default interface TripDraft {
   id: string;
   title: string;
   location?: string;

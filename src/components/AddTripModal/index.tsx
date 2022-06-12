@@ -12,7 +12,7 @@ import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
-import { TripDraft } from "../../types/TripDraft";
+import TripDraft from "../../types/TripDraft";
 import FormStepOne from "./FormStepOne";
 import FormStepTwo from "./FormStepTwo";
 import FormStepThree from "./FormStepThree";

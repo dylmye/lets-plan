@@ -44,10 +44,10 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.5"
 
-"@analytics/simple-analytics@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@analytics/simple-analytics/-/simple-analytics-0.3.3.tgz#91373eb18ada7e473384f32855c1ca79931ca73c"
-  integrity sha512-7jRS3yRUQBbkNju2bhGOyCSYPno95X6rZU/eOrayFhfBme2Db6U/jmugpQbUsxdUxez8Q8us/nyidpbwx7XpgQ==
+"@analytics/simple-analytics@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@analytics/simple-analytics/-/simple-analytics-0.3.4.tgz#a3a79ce04c4513132cce02c34a3f9a9412fdcf85"
+  integrity sha512-fxjftzR8/XxeH4yZg/yOLMFmkJZVigqq5uGTMG7HHgph9l9tZxPk9mbvljGvr66+Qn/rev6x+zIpsGhgKQ/nlQ==
 
 "@analytics/storage-utils@^0.4.0":
   version "0.4.0"

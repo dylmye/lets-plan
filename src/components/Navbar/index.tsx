@@ -12,6 +12,7 @@ import {
   Checkbox,
   Switch,
   Divider,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { signOut, User } from "firebase/auth";
@@ -61,13 +62,20 @@ const AuthenticatedUserNavbarItem = ({
         open={!!anchor}
         onClose={() => onToggle()}
       >
+        {user?.displayName && (
+          <Typography
+            variant="overline"
+            fontWeight="bold"
+            key="menu-user-item_displayname"
+            sx={{ marginLeft: 2 }}
+          >
+            {user.displayName}
+          </Typography>
+        )}
         <MenuItem key="menu-user-item_login" onClick={onClickLogOut}>
           Log out
         </MenuItem>
         <Divider />
-        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
-          Reset App
-        </MenuItem>
         {Object.keys(extraMenuItems ?? {}).map((k) => {
           return (
             <MenuItem key={k} dense>
@@ -75,6 +83,9 @@ const AuthenticatedUserNavbarItem = ({
             </MenuItem>
           );
         })}
+        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
+          Reset App
+        </MenuItem>
         <Divider />
         <MenuItem key="version-text" dense>
           <Box
@@ -146,9 +157,6 @@ const UnauthenticatedUserNavbarItem = ({
           Sign Up
         </MenuItem>
         <Divider />
-        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
-          Reset App
-        </MenuItem>
         {Object.keys(extraMenuItems ?? {}).map((k) => {
           return (
             <MenuItem key={k} dense>
@@ -156,6 +164,9 @@ const UnauthenticatedUserNavbarItem = ({
             </MenuItem>
           );
         })}
+        <MenuItem key="menu-reset-app" onClick={uninstallWorker}>
+          Reset App
+        </MenuItem>
         <Divider />
         <MenuItem key="version-text" dense>
           <Box

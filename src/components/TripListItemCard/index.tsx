@@ -1,18 +1,19 @@
-import React from "react";
 import { Place } from "@mui/icons-material";
 import {
   Box,
   Card,
   CardActionArea,
   CardContent,
+  CardHeader,
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 
-import { Trip } from "../../types/Trip";
+import Trip from "../../types/Trip";
 import styles from "./styles.module.css";
 import { formatDate, formatDaysUntil } from "../../helpers/dates";
+import TripDetailsAction from "../TripDetailsAction";
 
 export interface TripListItemCardProps {
   trip: Trip;
@@ -40,27 +41,27 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
           trip.image ? styles.tripListTextOverImage : ""
         }`}
       >
+        <CardHeader
+          title={trip.title}
+          titleTypographyProps={{
+            variant: "h5",
+            textAlign: "left",
+            className: styles.tripListTitle,
+            fontWeight: "bold",
+          }}
+          action={<TripDetailsAction id={trip.id} />}
+        />
         <CardContent
           sx={{
             display: "flex",
             flex: "1 0 auto",
             flexDirection: "column",
             justifyContent: "space-between",
-            height: "8rem",
-            // gap: "3rem",
           }}
           classes={{
             root: styles.cardContentPaddingOverride,
           }}
         >
-          <Typography
-            variant="h5"
-            textAlign="left"
-            className={styles.tripListTitle}
-            fontWeight="bold"
-          >
-            {trip.title}
-          </Typography>
           <Box className={styles.tripListDetails}>
             {trip.location && (
               <Typography
@@ -74,11 +75,19 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
             )}
             {trip.startsAt && (
               <Box>
-                <Typography variant="body2" textAlign="left" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Typography
+                  variant="body2"
+                  textAlign="left"
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
                   {formatDate(trip.startsAt, "long", false)} -{" "}
                   {trip.endsAt ? formatDate(trip.endsAt, "long", false) : ""}
                 </Typography>
-                <Typography variant="body2" textAlign="left" sx={{ display: { xs: 'block', sm: 'none' } }}>
+                <Typography
+                  variant="body2"
+                  textAlign="left"
+                  sx={{ display: { xs: "block", sm: "none" } }}
+                >
                   {formatDate(trip.startsAt, "short", false)} -{" "}
                   {trip.endsAt ? formatDate(trip.endsAt, "short", false) : ""}
                 </Typography>

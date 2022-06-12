@@ -1,4 +1,4 @@
-import { DefaultTripImageMetadata } from "../types/DefaultTripImageMetadata";
+import DefaultTripImageMetadata from "../types/DefaultTripImageMetadata";
 
 const defaultImages: Record<string, DefaultTripImageMetadata> = {
   "ImoVrhUBeFs": {

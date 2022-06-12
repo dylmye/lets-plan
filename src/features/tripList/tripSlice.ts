@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import SliceNames from "../../enums/SliceNames";
-import { Trip } from "../../types/Trip";
+import Trip from "../../types/Trip";
 import { TripItemType } from "../../types/TripItemType";
 import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
@@ -14,9 +14,9 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
-import { TripDraft } from "../../types/TripDraft";
-import { RootState } from "../../app/store";
+import TripDraft from "../../types/TripDraft";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
+import { RootState } from "../../app/store";
 
 const name = SliceNames.TRIPS;
 

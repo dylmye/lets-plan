@@ -1,0 +1,83 @@
+import React from "react";
+import { Box, Modal, SxProps, Theme, Typography } from "@mui/material";
+import { Field, Form, Formik } from "formik";
+import { TextField } from "formik-mui";
+
+import { useAppDispatch } from "../../app/hooks";
+import ModalProps from "../../types/ModalProps";
+import TripDetails from "../../types/TripDetails";
+import GoogleMapsField from "../fields/GoogleMapsField";
+import { ActionMeta } from "react-select";
+import { updateTripById } from "../../features/tripList/tripSlice";
+
+export interface EditTripDetailsModalProps extends ModalProps, TripDetails {
+  id: string;
+}
+
+const dialogStyle: SxProps<Theme> = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const EditTripDetailsModal = ({
+  id,
+  title,
+  location,
+  startsAt,
+  endsAt,
+  ...props
+}: EditTripDetailsModalProps) => {
+  const dispatch = useAppDispatch();
+
+  const onFormSubmit = async (values: TripDetails) => {
+    dispatch(updateTripById({ id, changes: values }));
+    props.onClose();
+  };
+
+  return (
+    <Modal {...props} aria-labelledby="modal-edittrip-title">
+      <Box sx={dialogStyle}>
+        <Typography variant="h5">
+          <strong id="modal-edittrip-title">Edit Trip Details</strong>
+        </Typography>
+        <Formik<TripDetails>
+          initialValues={{
+            title,
+            locationData: location
+              ? {
+                  label: location,
+                  value: {} as ActionMeta<any>,
+                }
+              : undefined,
+            startsAt,
+            endsAt,
+          }}
+          onSubmit={onFormSubmit}
+        >
+          <Form>
+            <Field
+              component={TextField}
+              name="title"
+              label="Name of your trip"
+              fullWidth
+            />
+            <Field
+              component={GoogleMapsField}
+              name="locationData"
+              label="Where is your trip?"
+            />
+          </Form>
+        </Formik>
+      </Box>
+    </Modal>
+  );
+};
+
+export default EditTripDetailsModal;

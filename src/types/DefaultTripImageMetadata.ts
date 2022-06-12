@@ -1,4 +1,4 @@
-export interface DefaultTripImageMetadata {
+export default interface DefaultTripImageMetadata {
   url: string;
   location: string;
   unsplashUrl?: string;
