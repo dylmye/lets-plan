@@ -45,7 +45,9 @@ const SuggestionsCard = () => {
             Suggestions
           </Typography>
           <IconButton
-            aria-label="Collapse the Suggestions section"
+            aria-label={`${
+              isCollapsed ? "Open" : "Collapse"
+            } the Suggestions section`}
             size="medium"
             onClick={onToggleCollapse}
           >

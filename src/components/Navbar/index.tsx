@@ -48,7 +48,7 @@ const AuthenticatedUserNavbarItem = ({
   return (
     <>
       <Tooltip title="Your Settings">
-        <IconButton size="large" onClick={onToggle}>
+        <IconButton size="large" onClick={onToggle} aria-label="Access your settings">
           <AccountCircle fontSize="inherit" htmlColor="#fff" />
         </IconButton>
       </Tooltip>
@@ -136,7 +136,7 @@ const UnauthenticatedUserNavbarItem = ({
   return (
     <>
       <Tooltip title="Login or Sign Up">
-        <IconButton size="large" onClick={onToggle}>
+        <IconButton size="large" onClick={onToggle} aria-label="Access settings and login/signup options">
           <Login fontSize="inherit" htmlColor="#fff" />
         </IconButton>
       </Tooltip>
