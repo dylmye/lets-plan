@@ -115,7 +115,7 @@ const tripSlice = createSlice({
       let trip: Trip = {
         id: payload.id,
         title: payload.title,
-        location: payload.locationData?.label,
+        location: payload?.locationData?.label ?? payload.location,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
         source: "offline",

@@ -71,6 +71,7 @@ const EditTripDetailsModal = ({
             <Field
               component={GoogleMapsField}
               name="locationData"
+              offlineName="location"
               label="Where is your trip?"
             />
           </Form>

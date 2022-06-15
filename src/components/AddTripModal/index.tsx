@@ -31,6 +31,7 @@ import FormPagination from "./FormPagination";
 import { useAppDispatch } from "../../app/hooks";
 import { addTrip } from "../../features/tripList/tripSlice";
 import ModalProps from "../../types/ModalProps";
+import { useOnlineStatus } from "../../contexts/OnlineStatus";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",
@@ -45,12 +46,14 @@ const dialogStyle: SxProps<Theme> = {
 };
 
 const AddTripModal = (props: ModalProps) => {
-  const TOTAL_STEPS = 3;
+  const { online } = useOnlineStatus();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [formImageUploading, setFormImageUploading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const TOTAL_STEPS = online ? 3 : 2;
 
   const today = useMemo(() => dayjs(), []);
 
@@ -69,7 +72,10 @@ const AddTripModal = (props: ModalProps) => {
         return <FormStepTwo />;
       }
       case 2: {
-        return <FormStepThree isImageUploading={formImageUploading} />;
+        if (online) {
+          return <FormStepThree isImageUploading={formImageUploading} />;
+        }
+        return null;
       }
       default: {
         return null;

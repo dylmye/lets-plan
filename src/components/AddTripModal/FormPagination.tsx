@@ -25,7 +25,7 @@ const FormPagination = memo(
     return (
       <MobileStepper
         variant="dots"
-        steps={3}
+        steps={totalSteps}
         position="static"
         activeStep={activeStep}
         backButton={

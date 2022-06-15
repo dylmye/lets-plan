@@ -28,6 +28,7 @@ const FormStepOne = () => {
       <Field
         component={GoogleMapsField}
         name="locationData"
+        offlineName="location"
         label="Where is your trip?"
         onMapFieldChange={onMapFieldChange}
       />

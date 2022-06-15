@@ -11,15 +11,17 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
 
   const onButtonPress = (
     event?: React.MouseEvent<HTMLElement | null>
-  ): void => {
+  ): false => {
     if (!!anchorEl || !event) {
-      return setAnchorEl(null);
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
     }
-    return setAnchorEl(event.currentTarget);
+    return false;
   };
 
   return (
-    <>
+    <div onClick={e => e.preventDefault()}>
       <Tooltip title="Trip Settings">
         <IconButton aria-label="Settings for this trip" onClick={onButtonPress}>
           <MoreVert fontSize="inherit" />
@@ -39,7 +41,7 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
           Edit Details
         </MenuItem>
       </Menu>
-    </>
+    </div>
   );
 };
 

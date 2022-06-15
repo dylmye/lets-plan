@@ -15,15 +15,16 @@ import StyledLink from "./components/StyledLink";
 import UpdateAlert from "./components/UpdateAlert";
 import OfflineAlert from "./components/OfflineAlert";
 import { Container, Stack } from "@mui/material";
+import { useOnlineStatus } from "./contexts/OnlineStatus";
 
 function App() {
-  const [isOnline, setOnlineStatus] = useState(navigator.onLine);
   const {
     visible: authModalVisible,
     toggleVisible: toggleAuthModalVisible,
     authType,
     setAuthType,
   } = useAuthModalVisible();
+  const { online: isOnline } = useOnlineStatus();
 
   useEffect(() => {
     const init = async () => {
@@ -45,16 +46,6 @@ function App() {
       console.error("Unable to load Google Maps API:", error);
     }
   });
-
-  useEffect(() => {
-    window.addEventListener("offline", () => setOnlineStatus(false));
-    window.addEventListener("online", () => setOnlineStatus(true));
-
-    return () => {
-      window.removeEventListener("offline", () => setOnlineStatus(false));
-      window.removeEventListener("online", () => setOnlineStatus(true));
-    };
-  }, []);
 
   return (
     <div className="App">
