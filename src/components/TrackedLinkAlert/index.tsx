@@ -25,7 +25,7 @@ const TrackedLinkAlert = ({
         variant="outlined"
         size="small"
         label="AD"
-        onClick={() => navigate("/legal")}
+        onClick={() => navigate("/sponsored-links")}
       />{" "}
       {description}{" "}
       <Link

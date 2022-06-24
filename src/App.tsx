@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 
@@ -10,12 +10,14 @@ import TripDetails from "./features/tripDetails";
 import LoginPage from "./features/login";
 import Navbar from "./components/Navbar";
 import AuthenticationModal from "./components/AuthenticationModal";
-import { useAuthModalVisible } from "./contexts/AuthModalVisible";
+import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
 import StyledLink from "./components/StyledLink";
 import UpdateAlert from "./components/UpdateAlert";
 import OfflineAlert from "./components/OfflineAlert";
 import { Container, Stack } from "@mui/material";
 import { useOnlineStatus } from "./contexts/OnlineStatus";
+import SponsoredLinks from "./features/sponsoredLinks";
+import EditTripDetailsModal from "./components/EditTripDetailsModal";
 
 function App() {
   const {
@@ -23,7 +25,9 @@ function App() {
     toggleVisible: toggleAuthModalVisible,
     authType,
     setAuthType,
-  } = useAuthModalVisible();
+    trip: currentTrip,
+    setTrip,
+  } = useGlobalModalVisibility();
   const { online: isOnline } = useOnlineStatus();
 
   useEffect(() => {
@@ -67,13 +71,14 @@ function App() {
             </Route>
             <Route path="login" element={<LoginPage />} />
             <Route path="legal" element={<Legal />} />
+            <Route path="sponsored-links" element={<SponsoredLinks />} />
             <Route path="*" element={<TripList />} />
           </Routes>
         </main>
         <footer>
           <StyledLink to="/legal">Terms & Privacy</StyledLink>
           <br />
-          <StyledLink to="/legal">Sponsored Link Policy</StyledLink>
+          <StyledLink to="/sponsored-links">Sponsored Link Policy</StyledLink>
           <p>Logo - Travel by Iconstock from NounProject.com</p>
         </footer>
         <AuthenticationModal
@@ -84,6 +89,14 @@ function App() {
           }}
           type={authType}
         />
+        {currentTrip && (
+          <EditTripDetailsModal
+            open={!!currentTrip}
+            onClose={() => setTrip(null)}
+            id={currentTrip.id}
+            tripDetails={currentTrip}
+          />
+        )}
       </BrowserRouter>
     </div>
   );

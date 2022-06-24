@@ -1,4 +1,4 @@
 import CustomTheme from "./CustomTheme";
-import AuthModalVisible from "./AuthModalVisible";
+import GlobalModalVisibility from "./GlobalModalVisibility";
 
-export { CustomTheme, AuthModalVisible };
+export { CustomTheme, GlobalModalVisibility };

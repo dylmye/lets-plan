@@ -1,6 +1,6 @@
 import React from "react";
-import { Grid, Link, Paper, Tooltip } from "@mui/material";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Grid, Link, Paper, Tooltip, Box, Card, CardContent, Typography } from "@mui/material";
+import { useTheme } from '@mui/system';
 import {
   Assignment,
   Directions,
@@ -36,7 +36,8 @@ export interface TripItineraryItemProps {
 
 /** Index item with a preview of the trip */
 const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
-  const Icon = () => getTripItemIcon(item.type);
+  const { palette } = useTheme();
+  const Icon = () => getTripItemIcon(item.type, { htmlColor: palette.background.paper });
   const iconBackgroundColour = getTripItemColour(item.type);
 
   const renderUrls = (urls: Record<string, string>): JSX.Element => (

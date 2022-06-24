@@ -1,17 +1,20 @@
 import React from "react";
-import { Box, Modal, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
+import { ActionMeta } from "react-select";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
 import GoogleMapsField from "../fields/GoogleMapsField";
-import { ActionMeta } from "react-select";
 import { updateTripById } from "../../features/tripList/tripSlice";
+import styles from "./styles.module.css";
+import { Check, KeyboardArrowRight } from "@mui/icons-material";
 
-export interface EditTripDetailsModalProps extends ModalProps, TripDetails {
+export interface EditTripDetailsModalProps extends ModalProps {
   id: string;
+  tripDetails: TripDetails;
 }
 
 const dialogStyle: SxProps<Theme> = {
@@ -28,13 +31,11 @@ const dialogStyle: SxProps<Theme> = {
 
 const EditTripDetailsModal = ({
   id,
-  title,
-  location,
-  startsAt,
-  endsAt,
+  tripDetails,
   ...props
 }: EditTripDetailsModalProps) => {
   const dispatch = useAppDispatch();
+  const { title, location, startsAt, endsAt } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
     dispatch(updateTripById({ id, changes: values }));
@@ -61,7 +62,7 @@ const EditTripDetailsModal = ({
           }}
           onSubmit={onFormSubmit}
         >
-          <Form>
+          <Form className={styles.formFieldsContainer}>
             <Field
               component={TextField}
               name="title"
@@ -74,6 +75,10 @@ const EditTripDetailsModal = ({
               offlineName="location"
               label="Where is your trip?"
             />
+            <Button size="small" type="submit">
+              <Check />
+              Update Trip
+            </Button>
           </Form>
         </Formik>
       </Box>

@@ -27,7 +27,7 @@ import {
   setSystemModeOverride,
   setThemeMode,
 } from "../../features/theme/themeSlice";
-import { useAuthModalVisible } from "../../contexts/AuthModalVisible";
+import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 import { uninstallWorker } from "../../helpers/worker";
 
 const AuthenticatedUserNavbarItem = ({
@@ -117,7 +117,7 @@ const UnauthenticatedUserNavbarItem = ({
   onToggle: (event?: React.MouseEvent<HTMLElement>) => void;
   extraMenuItems?: Record<string, JSX.Element | string>;
 }) => {
-  const { toggleVisible, setAuthType } = useAuthModalVisible();
+  const { toggleVisible, setAuthType } = useGlobalModalVisibility();
 
   const showAuthModal = () => toggleVisible(true);
 

@@ -75,7 +75,7 @@ const SuggestionsCard = () => {
             >
               <em>Let's Plan</em> earns a small commission if you buy anything
               through the above links.{" "}
-              <StyledLink to="/legal">Learn more</StyledLink>.
+              <StyledLink to="/sponsored-links">Learn more</StyledLink>.
             </Typography>
           </Box>
         </Collapse>

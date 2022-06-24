@@ -12,12 +12,12 @@ import "./index.css";
 import App from "./App";
 import { persistor, store } from "./app/store";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { CustomTheme, AuthModalVisible } from "./contexts";
+import { CustomTheme, GlobalModalVisibility } from "./contexts";
 import OnlineStatus from "./contexts/OnlineStatus";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthModalVisible>
+    <GlobalModalVisibility>
       <OnlineStatus>
         <Provider store={store}>
           <PersistGate persistor={persistor}>
@@ -32,7 +32,7 @@ ReactDOM.render(
           </PersistGate>
         </Provider>
       </OnlineStatus>
-    </AuthModalVisible>
+    </GlobalModalVisibility>
   </React.StrictMode>,
   document.getElementById("root")
 );
