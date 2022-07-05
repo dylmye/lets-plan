@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
-import { ActionMeta, OnChangeValue } from "react-select";
+import { ActionMeta } from "react-select";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
@@ -77,7 +77,7 @@ const EditTripDetailsModal = ({
             <Field
               component={TextField}
               name="title"
-              label="Name of your trip" 
+              label="Name of your trip"
               fullWidth
             />
             <Field
