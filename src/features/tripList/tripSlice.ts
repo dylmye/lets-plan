@@ -128,7 +128,17 @@ const tripSlice = createSlice({
       tripsAdapter.addOne(state, trip);
     },
     deleteTripById: tripsAdapter.removeOne,
-    updateTripById: tripsAdapter.updateOne,
+    updateTripById: (state, { payload }: PayloadAction<Partial<Trip>>) => {
+      if (!payload?.id) return;
+
+      let changes = { ...payload };
+
+      if (payload?.locationData || payload?.location) {
+        changes.location = payload?.locationData?.label ?? payload.location;
+      }
+
+      tripsAdapter.updateOne(state, { id: payload.id, changes });
+    },
   },
 });
 

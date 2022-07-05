@@ -2,12 +2,16 @@ import { useTheme } from "@mui/system";
 import { FieldProps } from "formik";
 import { TextField } from "formik-mui";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-import { ActionMeta } from "react-select";
+import { ActionMeta, OnChangeValue } from "react-select";
 
 import { useOnlineStatus } from "../../../contexts/OnlineStatus";
 
+export type GoogleMapsChangeProps = OnChangeValue<
+  { label: string; value: ActionMeta<any> },
+  false
+>;
+
 interface GoogleMapsFieldProps extends FieldProps<string> {
-  offlineName?: string;
   onMapFieldChange: (newValue: {
     label: string;
     value: ActionMeta<string>;
@@ -17,17 +21,14 @@ interface GoogleMapsFieldProps extends FieldProps<string> {
 /** Google Maps Places API autocomplete, with offline backup */
 const GoogleMapsField = ({
   field,
-  offlineName,
   onMapFieldChange,
   ...props
 }: GoogleMapsFieldProps) => {
   const { online } = useOnlineStatus();
   const { palette } = useTheme();
 
-  if (!online && offlineName) {
-    return (
-      <TextField {...props} field={{...field, name: offlineName}}  />
-    );
+  if (!online) {
+    return <TextField {...props} field={field} />;
   }
 
   return (

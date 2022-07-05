@@ -6,9 +6,11 @@ import { ActionMeta } from "react-select";
 import styles from "./styles.module.css";
 import TripDraft from "../../types/TripDraft";
 import GoogleMapsField from "../fields/GoogleMapsField";
+import { useSmartFieldName } from "../../helpers/forms";
 
 const FormStepOne = () => {
   const { setFieldValue } = useFormikContext<TripDraft>();
+  const locationFieldName = useSmartFieldName('locationData', 'location');
 
   const onMapFieldChange = useCallback(
     (newValue: { label: string; value: ActionMeta<any> }) => {
@@ -27,8 +29,7 @@ const FormStepOne = () => {
       />
       <Field
         component={GoogleMapsField}
-        name="locationData"
-        offlineName="location"
+        name={locationFieldName}
         label="Where is your trip?"
         onMapFieldChange={onMapFieldChange}
       />

@@ -2,15 +2,16 @@ import React from "react";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
-import { ActionMeta } from "react-select";
+import { ActionMeta, OnChangeValue } from "react-select";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
-import GoogleMapsField from "../fields/GoogleMapsField";
+import GoogleMapsField, { GoogleMapsChangeProps } from "../fields/GoogleMapsField";
 import { updateTripById } from "../../features/tripList/tripSlice";
 import styles from "./styles.module.css";
-import { Check, KeyboardArrowRight } from "@mui/icons-material";
+import { Check } from "@mui/icons-material";
+import { useSmartFieldName } from "../../helpers/forms";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;
@@ -36,10 +37,18 @@ const EditTripDetailsModal = ({
 }: EditTripDetailsModalProps) => {
   const dispatch = useAppDispatch();
   const { title, location, startsAt, endsAt } = tripDetails;
+  const locationFieldName = useSmartFieldName('locationData', 'location');
 
   const onFormSubmit = async (values: TripDetails) => {
-    dispatch(updateTripById({ id, changes: values }));
+    dispatch(updateTripById(values));
     props.onClose();
+  };
+
+  const onMapFieldChange = (
+    newValue: GoogleMapsChangeProps,
+    onChange: (field: string, newValue: any) => void
+  ) => {
+    onChange("locationData", newValue);
   };
 
   return (
@@ -57,29 +66,32 @@ const EditTripDetailsModal = ({
                   value: {} as ActionMeta<any>,
                 }
               : undefined,
+            location,
             startsAt,
             endsAt,
           }}
           onSubmit={onFormSubmit}
         >
-          <Form className={styles.formFieldsContainer}>
+          {({ setFieldValue }) => (
+            <Form className={styles.formFieldsContainer}>
             <Field
               component={TextField}
               name="title"
-              label="Name of your trip"
+              label="Name of your trip" 
               fullWidth
             />
             <Field
               component={GoogleMapsField}
-              name="locationData"
-              offlineName="location"
+              name={locationFieldName}
               label="Where is your trip?"
+              onMapFieldChange={(v: GoogleMapsChangeProps) => onMapFieldChange(v, setFieldValue)}
             />
             <Button size="small" type="submit">
               <Check />
               Update Trip
             </Button>
           </Form>
+          )}
         </Formik>
       </Box>
     </Modal>
