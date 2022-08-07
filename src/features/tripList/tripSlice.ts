@@ -1,9 +1,4 @@
 import dayjs from "dayjs";
-import SliceNames from "../../enums/SliceNames";
-import Trip from "../../types/Trip";
-import { TripItemType } from "../../types/TripItemType";
-import { CarItem } from "../../types/tripItineraryTypes";
-import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import {
   createDraftSafeSelector,
   createEntityAdapter,
@@ -13,10 +8,19 @@ import {
   EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+
+import { RootState } from "../../app/store";
+import { tripsRef } from "../../firebase";
+import SliceNames from "../../enums/SliceNames";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
+import Trip from "../../types/Trip";
 import TripDraft from "../../types/TripDraft";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
-import { RootState } from "../../app/store";
+import { TripItemType } from "../../types/TripItemType";
+import { CarItem } from "../../types/tripItineraryTypes";
+import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 
 const name = SliceNames.TRIPS;
 
@@ -176,5 +180,9 @@ export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
       dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt, true)
     )
 );
+
+export const useSelectFirebaseTripById = (tripId: string) => {
+  return useDocumentData(doc(tripsRef, tripId));
+};
 
 export default tripSlice.reducer;

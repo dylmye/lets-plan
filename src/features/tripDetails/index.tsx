@@ -13,12 +13,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { Add, FilterAlt } from "@mui/icons-material";
 
 import styles from "./styles.module.css";
 import {
   selectTripIds,
   selectTripById,
   selectTripItemsByDay,
+  useSelectFirebaseTripById,
 } from "../tripList/tripSlice";
 import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
@@ -28,7 +30,6 @@ import TripItineraryItem from "../../components/TripItineraryItem";
 import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
-import { Add, FilterAlt } from "@mui/icons-material";
 
 interface TripDetailsProps {
   /** In edit mode? */
@@ -41,6 +42,8 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const trip = useAppSelector((state) =>
     selectTripById(state, tripId as string)
   );
+  const [snapshot, loading, error, reload] = useSelectFirebaseTripById(tripId as string);
+  console.log({ snapshot, loading, error, reload });
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
