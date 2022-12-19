@@ -14,7 +14,7 @@ import { Link, Typography } from "@mui/material";
  */
 const VerifyField = forwardRef<HCaptcha, FieldProps<string>>(
   ({ field, form: { setFieldValue, setFieldError } }, captchaRef) => {
-    const onVerify = (token: string) => {
+    const onVerify = (token: string): void => {
       setFieldValue(field.name, token);
     };
 

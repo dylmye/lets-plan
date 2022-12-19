@@ -1,23 +1,27 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
+import { onAuthStateChanged } from "firebase/auth";
+import { Container, Stack } from "@mui/material";
 
 import "./App.css";
+import { auth } from "./firebase";
+import { useAppDispatch } from "./app/hooks";
+import Navbar from "./components/Navbar";
+import AuthenticationModal from "./components/AuthenticationModal";
+import EditTripDetailsModal from "./components/EditTripDetailsModal";
+import StyledLink from "./components/StyledLink";
+import UpdateAlert from "./components/UpdateAlert";
+import OfflineAlert from "./components/OfflineAlert";
+import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
+import { useOnlineStatus } from "./contexts/OnlineStatus";
 import TripList from "./features/tripList";
 import Legal from "./features/legal";
 import TripDetailsContainer from "./features/tripDetailsContainer";
 import TripDetails from "./features/tripDetails";
 import LoginPage from "./features/login";
-import Navbar from "./components/Navbar";
-import AuthenticationModal from "./components/AuthenticationModal";
-import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
-import StyledLink from "./components/StyledLink";
-import UpdateAlert from "./components/UpdateAlert";
-import OfflineAlert from "./components/OfflineAlert";
-import { Container, Stack } from "@mui/material";
-import { useOnlineStatus } from "./contexts/OnlineStatus";
 import SponsoredLinks from "./features/sponsoredLinks";
-import EditTripDetailsModal from "./components/EditTripDetailsModal";
+import { setLoggedIn } from "./features/login/authSlice";
 
 function App() {
   const {
@@ -29,6 +33,12 @@ function App() {
     setTrip,
   } = useGlobalModalVisibility();
   const { online: isOnline } = useOnlineStatus();
+  const dispatch = useAppDispatch();
+
+  // set logged in state
+  onAuthStateChanged(auth, user => {
+    dispatch(setLoggedIn(!!user));
+  });
 
   useEffect(() => {
     const init = async () => {

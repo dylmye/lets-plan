@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import {
   createDraftSafeSelector,
@@ -8,7 +9,13 @@ import {
   EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { doc } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  getDoc,
+  getDocs,
+  CollectionReference,
+} from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
 import { RootState } from "../../app/store";
@@ -21,6 +28,10 @@ import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { TripItemType } from "../../types/TripItemType";
 import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
+import { useAppSelector } from "../../app/hooks";
+import { convertTripDocument } from "../../helpers/converters";
+import TripItemSnapshot from "../../types/firebase/TripItemSnapshot";
+import { isLoggedIn } from "../login/authSlice";
 
 const name = SliceNames.TRIPS;
 
@@ -29,8 +40,8 @@ export interface TripState extends EntityState<Trip> {}
 const exampleStartDate = dayjs().local().startOf("day");
 
 const exampleTrip: Trip = {
+  tripSchemaRevision: 1,
   id: "example",
-  source: "offline",
   title: "Your First Trip",
   details: "Meeting up with Hanna and Janelle for a beach vacay!!",
   location: "Whitby, Yorkshire, UK",
@@ -101,6 +112,7 @@ const exampleTrip: Trip = {
       endsAtTimezone: "Europe/London",
     } as CarItem,
   ],
+  public: false,
 };
 
 const tripsAdapter = createEntityAdapter<Trip>({
@@ -117,16 +129,17 @@ const tripSlice = createSlice({
   reducers: {
     addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
       let trip: Trip = {
+        tripSchemaRevision: 1,
         id: payload.id,
         title: payload.title,
         location: payload?.locationData?.label ?? payload.location,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
-        source: "offline",
         createdAtUtc: dayjs().format(),
         updatedAtUtc: dayjs().format(),
         image: payload.image,
         items: [],
+        public: false,
       };
 
       tripsAdapter.addOne(state, trip);
@@ -151,11 +164,11 @@ export const { addTrip, deleteTripById, updateTripById } = tripSlice.actions;
 export const {
   selectAll: selectTrips,
   selectIds: selectTripIds,
-  selectById: selectTripById,
+  selectById: selectLocalTripById,
 } = tripsAdapter.getSelectors<RootState>((state) => state.trips);
 
 export const selectTripItemsByDay = (id: string) => (store: RootState) => {
-  const trip = selectTripById(store, id);
+  const trip = selectLocalTripById(store, id);
 
   if (trip === undefined || !trip.items?.length) {
     return {};
@@ -182,7 +195,83 @@ export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
 );
 
 export const useSelectFirebaseTripById = (tripId: string) => {
-  return useDocumentData(doc(tripsRef, tripId));
+  return useDocumentData(
+    doc(tripsRef, tripId).withConverter<Trip>(convertTripDocument)
+  );
+};
+
+/**
+ * Grab the local trip. If the user is logged in,
+ * fetch the trip from Firebase.
+ * @param tripId The Trip UID to select with
+ * @returns The Trip Data
+ */
+export const useSelectTripById = (
+  tripId: string
+): [data: Trip | null | undefined, loading: boolean] => {
+  const [state, setState] = useState<{
+    data: Trip | null | undefined;
+    loading: boolean;
+  }>({ data: null, loading: true });
+  const loggedIn = useAppSelector(isLoggedIn);
+  const localTrip = useAppSelector((state) =>
+    selectLocalTripById(state, tripId as string)
+  );
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setState({
+        data: localTrip,
+        loading: false,
+      });
+    } else {
+      const tripDoc = doc(tripsRef, tripId).withConverter<Trip>(
+        convertTripDocument
+      );
+
+      // we have to use .then because it's a hook :(
+      // sorry I know this code hurts to read.
+      getDoc(tripDoc).then((grabbedTripDoc) => {
+        if (grabbedTripDoc.exists()) {
+          const tripData = grabbedTripDoc.data();
+
+          // fetch the trip items and merge them in with the trip data
+          const tripItemsCollection = collection(
+            tripsRef,
+            tripId,
+            "items"
+          ) as CollectionReference<TripItemSnapshot>;
+
+          getDocs<TripItemSnapshot>(tripItemsCollection).then(
+            (grabbedTripItemDocs) => {
+              if (!grabbedTripItemDocs.empty) {
+                const combinedTripData = {
+                  ...tripData,
+                  items: grabbedTripItemDocs.docs.map((x) => x.data()),
+                } as Trip;
+                setState({
+                  data: combinedTripData,
+                  loading: false,
+                });
+              } else {
+                setState({
+                  data: tripData,
+                  loading: false,
+                });
+              }
+            }
+          );
+        } else {
+          setState({
+            data: localTrip,
+            loading: false,
+          });
+        }
+      });
+    }
+  }, [tripId, localTrip, loggedIn]);
+
+  return [state.data, state.loading];
 };
 
 export default tripSlice.reducer;

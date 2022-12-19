@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import { PersistGate } from "redux-persist/integration/react";
 import { CssBaseline } from "@mui/material";
-import { LocalizationProvider } from "@mui/lab";
-import DateAdapter from "@mui/lab/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { onServiceWorkerUpdate } from "@3m1/service-worker-updater";
 
 import "./index.css";
@@ -24,7 +24,7 @@ ReactDOM.render(
             <SnackbarProvider maxSnack={2}>
               <CustomTheme>
                 <CssBaseline />
-                <LocalizationProvider dateAdapter={DateAdapter}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <App />
                 </LocalizationProvider>
               </CustomTheme>

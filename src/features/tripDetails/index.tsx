@@ -4,6 +4,7 @@ import {
   Container,
   Divider,
   IconButton,
+  Skeleton,
   Stack,
   SxProps,
   Theme,
@@ -18,9 +19,9 @@ import { Add, FilterAlt } from "@mui/icons-material";
 import styles from "./styles.module.css";
 import {
   selectTripIds,
-  selectTripById,
+  // selectLocalTripById,
   selectTripItemsByDay,
-  useSelectFirebaseTripById,
+  useSelectTripById,
 } from "../tripList/tripSlice";
 import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
@@ -39,11 +40,8 @@ interface TripDetailsProps {
 const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
-  const trip = useAppSelector((state) =>
-    selectTripById(state, tripId as string)
-  );
-  const [snapshot, loading, error, reload] = useSelectFirebaseTripById(tripId as string);
-  console.log({ snapshot, loading, error, reload });
+  const [trip, loading] = useSelectTripById(tripId as string);
+
   const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
@@ -113,58 +111,82 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
       : "Trip Details - Let's Plan!";
   }, [trip?.title, tripId, tripIds]);
 
-  const isEmptyTrip = Object.keys(groupedItems).length < 1;
+  const isEmptyTrip = !loading && Object.keys(groupedItems).length < 1;
+
+  const TripHeaderPlaceholder = () => (
+    <Skeleton
+      variant="rectangular"
+      height={450}
+      className={styles.tripItemPlaceholder}
+    />
+  );
+
+  const TripItemPlaceholder = () => (
+    <Skeleton
+      variant="rectangular"
+      height={172}
+      className={styles.tripItemPlaceholder}
+    />
+  );
 
   return (
     <Container>
       <Typography variant="body1" textAlign="left">
         <StyledLink to="/trips">&#8604; Back to trips</StyledLink>
       </Typography>
-      <Box sx={titleBackgroundImageStyle}>
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: "bold",
-            marginBottom: 2,
-            color: titleBackgroundImageStyle && COLOURS.white,
-          }}
-        >
-          {trip?.title}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            fontWeight: "bold",
-            marginBottom: 2,
-            color: titleBackgroundImageStyle && COLOURS.white,
-          }}
-        >
-          {trip?.startsAt ? (
-            <time dateTime={trip.startsAt}>
-              {formatDate(trip.startsAt, "long", false)}
-            </time>
-          ) : (
-            ""
-          )}{" "}
-          -{" "}
-          {trip?.endsAt ? (
-            <time dateTime={trip.endsAt}>
-              {formatDate(trip.endsAt, "long", false)}
-            </time>
-          ) : (
-            ""
-          )}
-          <br />
-          {trip?.location}
-        </Typography>
-      </Box>
+      {loading ? (
+        <TripHeaderPlaceholder />
+      ) : (
+        <Box sx={titleBackgroundImageStyle}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "bold",
+              marginBottom: 2,
+              color: titleBackgroundImageStyle && COLOURS.white,
+            }}
+          >
+            {trip?.title}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              marginBottom: 2,
+              color: titleBackgroundImageStyle && COLOURS.white,
+            }}
+          >
+            {trip?.startsAt ? (
+              <time dateTime={trip.startsAt}>
+                {formatDate(trip.startsAt, "long", false)}
+              </time>
+            ) : (
+              ""
+            )}{" "}
+            -{" "}
+            {trip?.endsAt ? (
+              <time dateTime={trip.endsAt}>
+                {formatDate(trip.endsAt, "long", false)}
+              </time>
+            ) : (
+              ""
+            )}
+            <br />
+            {trip?.location}
+          </Typography>
+        </Box>
+      )}
       <Stack spacing={2}>
         {isEmptyTrip ? (
           <EmptyTripCard />
         ) : (
           <Box>
-            {Object.keys(groupedItems).map((k) =>
-              renderItemDay(k, groupedItems[k])
+            {loading ? (
+              <TripItemPlaceholder key="placeholder-1" />
+            ) : (
+              Object.keys(groupedItems).map((k) =>
+                renderItemDay(k, groupedItems[k])
+              )
             )}
           </Box>
         )}

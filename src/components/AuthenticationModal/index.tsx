@@ -29,18 +29,16 @@ const AuthenticationModal = ({
   open,
   type,
   onClose,
-}: AuthenticationModalProps) => {
-  return (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-auth-title">
-      <Box sx={dialogStyle}>
-        {type === "sign-in" ? (
-          <SignInContent onClose={onClose} />
-        ) : (
-          <SignUpContent onClose={onClose} />
-        )}
-      </Box>
-    </Modal>
-  );
-};
+}: AuthenticationModalProps) => (
+  <Modal open={open} onClose={onClose} aria-labelledby="modal-auth-title">
+    <Box sx={dialogStyle}>
+      {type === "sign-in" ? (
+        <SignInContent onClose={onClose} />
+      ) : (
+        <SignUpContent onClose={onClose} />
+      )}
+    </Box>
+  </Modal>
+);
 
 export default AuthenticationModal;

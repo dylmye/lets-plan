@@ -1,18 +1,20 @@
 .legalContainer {
   max-width: 70rem;
   margin: 0 auto;
+  margin-bottom: 10rem;
   padding: 0 1rem;
+}
+
+.legalContainer {
+  text-align: left;
 }
 
 .legalHeader {
   margin-top: 2rem;
+  text-align: center;
 }
 
 .legalSubheader {
   margin-top: 2rem;
   font-weight: bold;
-}
-
-.legalList {
-  text-align: left;
 }

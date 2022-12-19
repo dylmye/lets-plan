@@ -70,9 +70,6 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
     if (tError) {
       errs.push(tError);
     }
-    if (!!errs.length) {
-      console.error(errs);
-    }
     return errs;
   }, [gError, tError]);
 
@@ -96,6 +93,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
   );
 
   useEffect(() => {
+    captchaRef.current?.execute({ async: false });
     if (user || gUser || tUser) {
       onClose(true);
       // Only show the email verify message when using email/password login

@@ -10,8 +10,9 @@ const SponsoredLinks = () => (
       About Sponsored Links
     </Typography>
     <p>
-      <em>Let's Plan</em> is designed with privacy in mind. Websites cost money
-      to run, but disturbing your privacy is out of the question.
+      <em>Let's Plan</em> is designed to keep you and your data completely
+      private. Websites cost money to run, but disturbing your privacy is not an
+      option.
     </p>
     <p>
       In order to maintain the website, a small number of relevant, hand-picked
@@ -21,7 +22,8 @@ const SponsoredLinks = () => (
     </p>
     <p>
       These links take up minimal space, can easily be hidden, and are designed
-      to actually be useful for your planning experience.
+      to actually be useful for your planning experience. They are not
+      personalised to you, so they aren't based on data about you.
     </p>
     <p>
       Just to make it clear -{" "}

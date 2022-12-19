@@ -84,6 +84,7 @@ const AddTripModal = (props: ModalProps) => {
   };
 
   const validationSchema: SchemaOf<TripDraft> = yObject().shape({
+    tripSchemaRevision: yMixed().oneOf([1]).required(),
     id: yString().required(),
     title: yString().required(),
     location: yString().optional(),
@@ -167,6 +168,7 @@ const AddTripModal = (props: ModalProps) => {
         </Typography>
         <Formik<TripDraft>
           initialValues={{
+            tripSchemaRevision: 1,
             id: uuidv4(),
             title: "",
             location: "",

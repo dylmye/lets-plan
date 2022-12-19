@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { MoreVert } from "@mui/icons-material";
-import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import {
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  MenuList,
+  Tooltip,
+} from "@mui/material";
 import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 import { useAppSelector } from "../../app/hooks";
-import { selectTripById } from "../../features/tripList/tripSlice";
+import { selectLocalTripById } from "../../features/tripList/tripSlice";
 import Trip from "../../types/Trip";
 
 export interface TripDetailsActionProps {
@@ -11,7 +18,7 @@ export interface TripDetailsActionProps {
 }
 
 const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
-  const trip = useAppSelector((state) => selectTripById(state, id));
+  const trip = useAppSelector((state) => selectLocalTripById(state, id));
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { setTrip } = useGlobalModalVisibility();
 
@@ -47,13 +54,24 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
         open={!!anchorEl}
         onClose={() => onButtonPress()}
       >
-        <MenuItem
-          key={`menu-trip-${id}-editdetails`}
-          dense
-          onClick={() => onEditTrip()}
-        >
-          Edit Details
-        </MenuItem>
+        <MenuList disablePadding>
+          <MenuItem
+            key={`menu-trip-${id}-editdetails`}
+            dense
+            onClick={() => onEditTrip()}
+          >
+            <ListItemIcon>
+              <Edit fontSize="inherit" />
+            </ListItemIcon>
+            Edit Details
+          </MenuItem>
+          <MenuItem key={`menu-trip-${id}-delete`} dense>
+            <ListItemIcon>
+              <Delete fontSize="inherit" />
+            </ListItemIcon>
+            Delete
+          </MenuItem>
+        </MenuList>
       </Menu>
     </div>
   );

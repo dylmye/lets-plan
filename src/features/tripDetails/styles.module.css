@@ -5,3 +5,8 @@
   align-items: center;
   padding: 1rem 0;
 }
+
+.tripItemPlaceholder {
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}

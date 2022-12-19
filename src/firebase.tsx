@@ -2,7 +2,6 @@ import { FirebaseOptions, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { collection, CollectionReference, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import TripItemSnapshot from "./types/firebase/TripItemSnapshot";
 
 import TripSnapshot from "./types/firebase/TripSnapshot";
 import UserSnapshot from "./types/firebase/UserSnapshot";
@@ -26,5 +25,4 @@ export const firestore = getFirestore(firebaseApp);
 
 // firestore collections
 export const tripsRef = collection(firestore, 'trips') as CollectionReference<TripSnapshot>;
-export const tripItemRef = collection(firestore, 'tripItems') as CollectionReference<TripItemSnapshot>;
 export const usersRef = collection(firestore, 'users') as CollectionReference<UserSnapshot>;

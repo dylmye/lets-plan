@@ -1,16 +1,16 @@
-import { Timestamp, DocumentReference, DocumentData } from 'firebase/firestore';
+import { Timestamp, DocumentData } from "firebase/firestore";
+import Trip from "../Trip";
 
-export default interface TripSnapshot extends DocumentData {
-  tripSchemaRevision: 1;
-  details: string | null;
-  image: string | null;
-  items: DocumentReference<TripSnapshot>[];
-  location: string | null;
-  public: boolean;
-  title: string;
-  userId: string | null;
-  createdAtUtc: Timestamp;
-  updatedAtUtc: Timestamp;
+interface TripWithoutTimestamps
+  extends Omit<Trip, "startsAt" | "endsAt" | "createdAtUtc" | "updatedAtUtc"> {}
+
+/** Firebase stored version of Trip type. Timestamps are converted to/from ISO8601 timestamps. */
+export default interface TripSnapshot
+  extends DocumentData,
+    TripWithoutTimestamps {
   startsAt: Timestamp;
   endsAt: Timestamp;
+  createdAtUtc: Timestamp;
+  updatedAtUtc: Timestamp;
+  // subcollection of items: TripItineraryItemBase
 }

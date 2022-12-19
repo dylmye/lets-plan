@@ -16,6 +16,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist-indexeddb-storage";
+import authReducer, { AuthState } from "../features/login/authSlice";
 import suggestionsReducer, {
   SuggestionsState,
 } from "../features/suggestions/suggestionsSlice";
@@ -27,12 +28,15 @@ interface State {
   trips: TripState;
   suggestions: SuggestionsState;
   theme: ThemeState;
+  auth: AuthState;
 }
+
+export const reduxStorage = storage("letsPlan");
 
 const persistConfig: PersistConfig<any> = {
   key: "root",
   version: 2,
-  storage: storage("letsPlan"),
+  storage: reduxStorage,
 };
 
 const rootReducer = persistReducer<State>(
@@ -41,6 +45,7 @@ const rootReducer = persistReducer<State>(
     trips: tripsReducer,
     suggestions: suggestionsReducer,
     theme: themeReducer,
+    auth: authReducer,
   })
 );
 
