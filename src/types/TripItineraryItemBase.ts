@@ -17,4 +17,6 @@ export default interface TripItineraryItemBase {
   startsAt: string;
   /** The timezone to display the start time in */
   startsAtTimezone: string;
+  /** Display order */
+  order: number;
 }

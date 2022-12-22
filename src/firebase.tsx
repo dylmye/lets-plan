@@ -1,6 +1,11 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { collection, CollectionReference, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  CollectionReference,
+  enableMultiTabIndexedDbPersistence,
+  getFirestore,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 import TripSnapshot from "./types/firebase/TripSnapshot";
@@ -23,6 +28,15 @@ export const auth = getAuth(firebaseApp);
 
 export const firestore = getFirestore(firebaseApp);
 
+// modern offline support, might not be supported by some mobile browsers
+enableMultiTabIndexedDbPersistence(firestore).catch(console.error);
+
 // firestore collections
-export const tripsRef = collection(firestore, 'trips') as CollectionReference<TripSnapshot>;
-export const usersRef = collection(firestore, 'users') as CollectionReference<UserSnapshot>;
+export const tripsRef = collection(
+  firestore,
+  "trips"
+) as CollectionReference<TripSnapshot>;
+export const usersRef = collection(
+  firestore,
+  "users"
+) as CollectionReference<UserSnapshot>;
