@@ -1,4 +1,4 @@
-import { TripItemType } from "../types/TripItemType";
+import dayjs from "dayjs";
 import {
   FlightTakeoff,
   DirectionsBoat,
@@ -22,9 +22,12 @@ import {
   DirectionsRailway,
   Notes,
 } from "@mui/icons-material";
-import { COLOURS } from "./colours";
-import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import { SvgIconProps } from "@mui/material";
+
+import { COLOURS } from "./colours";
+import { TripItemType } from "../types/TripItemType";
+import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
+import TripItineraryItemBase from "../types/TripItineraryItemBase";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (item?: TripItemType, otherProps?: SvgIconProps): JSX.Element | null => {
@@ -112,4 +115,12 @@ export const convertTripItemTypeToGoogleMapsTravelMode = (
     }
   }
   return null;
+};
+
+export const groupTripItemsByDay = (tripItems: TripItineraryItemBase[]): Record<string, TripItineraryItemBase[]> => {
+  return tripItems?.reduce((r, a) => {
+    const date = dayjs(a.startsAt).format("YYYY-MM-DD");
+    r[date] = [...(r[date] ?? []), a];
+    return r;
+  }, {} as Record<string, TripItineraryItemBase[]>);
 };

@@ -17,16 +17,12 @@ import { useParams } from "react-router-dom";
 import { Add, FilterAlt } from "@mui/icons-material";
 
 import styles from "./styles.module.css";
-import {
-  selectTripIds,
-  // selectLocalTripById,
-  selectTripItemsByDay,
-  useSelectTripById,
-} from "../tripList/tripSlice";
+import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
 import { useAppSelector } from "../../app/hooks";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { COLOURS } from "../../helpers/colours";
-import { formatDate } from "../../helpers/dates";
+import { dateCompare, formatDate } from "../../helpers/dates";
+import { groupTripItemsByDay } from "../../helpers/tripItems";
 import TripItineraryItem from "../../components/TripItineraryItem";
 import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
@@ -42,11 +38,11 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const tripIds = useAppSelector(selectTripIds);
   const [trip, loading] = useSelectTripById(tripId as string);
 
-  const groupedItems = useAppSelector(selectTripItemsByDay(tripId as string));
+  const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const renderItem = (item: TripItineraryItemBase) => (
+  const renderTripItem = (item: TripItineraryItemBase) => (
     <TripItineraryItem item={item} key={item.startsAt} />
   );
 
@@ -86,7 +82,11 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
           </Tooltip>
         </Stack>
       </Box>
-      <Stack spacing={2}>{items.map(renderItem)}</Stack>
+      <Stack spacing={2}>
+        {items
+          .sort((a, b) => dateCompare(a.startsAt, b.startsAt))
+          .map(renderTripItem)}
+      </Stack>
     </Container>
   );
 
@@ -99,6 +99,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        borderRadius: "4px",
       } as SxProps)
     : undefined;
 
@@ -122,11 +123,14 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   );
 
   const TripItemPlaceholder = () => (
-    <Skeleton
-      variant="rectangular"
-      height={172}
-      className={styles.tripItemPlaceholder}
-    />
+    <Container disableGutters>
+      <Skeleton variant="text" className={styles.tripDayHeaderPlaceholder} />
+      <Skeleton
+        variant="rectangular"
+        height={172}
+        className={styles.tripItemPlaceholder}
+      />
+    </Container>
   );
 
   return (
@@ -184,7 +188,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
             {loading ? (
               <TripItemPlaceholder key="placeholder-1" />
             ) : (
-              Object.keys(groupedItems).map((k) =>
+              Object.keys(groupedItems).sort(dateCompare).map((k) =>
                 renderItemDay(k, groupedItems[k])
               )
             )}

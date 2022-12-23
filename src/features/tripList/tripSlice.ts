@@ -9,29 +9,26 @@ import {
   EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import {
-  doc,
-  collection,
-  getDoc,
-  getDocs,
-  CollectionReference,
-} from "firebase/firestore";
+import { doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
+import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { tripsRef } from "../../firebase";
 import SliceNames from "../../enums/SliceNames";
+import { isLoggedIn } from "../login/authSlice";
+import {
+  convertTripDocument,
+  convertTripItemDocuments,
+} from "../../helpers/converters";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
+import { groupTripItemsByDay } from "../../helpers/tripItems";
 import Trip from "../../types/Trip";
 import TripDraft from "../../types/TripDraft";
-import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { TripItemType } from "../../types/TripItemType";
 import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
-import { useAppSelector } from "../../app/hooks";
-import { convertTripDocument } from "../../helpers/converters";
-import TripItemSnapshot from "../../types/firebase/TripItemSnapshot";
-import { isLoggedIn } from "../login/authSlice";
+import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 
 const name = SliceNames.TRIPS;
 
@@ -179,11 +176,7 @@ export const selectTripItemsByDay = (id: string) => (store: RootState) => {
     return {};
   }
 
-  return trip?.items.reduce((r, a) => {
-    const date = dayjs(a.startsAt).format("YYYY-MM-DD");
-    r[date] = [...(r[date] ?? []), a];
-    return r;
-  }, {} as Record<string, TripItineraryItemBase[]>);
+  return groupTripItemsByDay(trip?.items);
 };
 
 export const selectCurrentTrips = createDraftSafeSelector(
@@ -236,43 +229,47 @@ export const useSelectTripById = (
 
       // we have to use .then because it's a hook :(
       // sorry I know this code hurts to read.
-      getDoc(tripDoc).then((grabbedTripDoc) => {
-        if (grabbedTripDoc.exists()) {
-          const tripData = grabbedTripDoc.data();
+      getDoc(tripDoc)
+        .then((grabbedTripDoc) => {
+          if (grabbedTripDoc.exists()) {
+            const tripData = grabbedTripDoc.data();
 
-          // fetch the trip items and merge them in with the trip data
-          const tripItemsCollection = collection(
-            tripsRef,
-            tripId,
-            "items"
-          ) as CollectionReference<TripItemSnapshot>;
+            // fetch the trip items and merge them in with the trip data
+            const tripItemsCollection = collection(
+              tripsRef,
+              tripId,
+              "items"
+            ).withConverter<TripItineraryItemBase>(convertTripItemDocuments);
 
-          getDocs<TripItemSnapshot>(tripItemsCollection).then(
-            (grabbedTripItemDocs) => {
-              if (!grabbedTripItemDocs.empty) {
-                const combinedTripData = {
-                  ...tripData,
-                  items: grabbedTripItemDocs.docs.map((x) => x.data()),
-                } as Trip;
-                setState({
-                  data: combinedTripData,
-                  loading: false,
-                });
-              } else {
-                setState({
-                  data: tripData,
-                  loading: false,
-                });
-              }
-            }
-          ).catch(e => console.error("Unable to fetch trip list items:", e));
-        } else {
-          setState({
-            data: localTrip,
-            loading: false,
-          });
-        }
-      }).catch(e => console.error("Unable to fetch trip:", e));
+            getDocs(tripItemsCollection)
+              .then((grabbedTripItemDocs) => {
+                if (!grabbedTripItemDocs.empty) {
+                  const combinedTripData = {
+                    ...tripData,
+                    items: grabbedTripItemDocs.docs.map((x) => x.data()),
+                  } as Trip;
+                  setState({
+                    data: combinedTripData,
+                    loading: false,
+                  });
+                } else {
+                  setState({
+                    data: tripData,
+                    loading: false,
+                  });
+                }
+              })
+              .catch((e) =>
+                console.error("Unable to fetch trip list items:", e)
+              );
+          } else {
+            setState({
+              data: localTrip,
+              loading: false,
+            });
+          }
+        })
+        .catch((e) => console.error("Unable to fetch trip:", e));
     }
   }, [tripId, localTrip, loggedIn]);
 
