@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import {
   createDraftSafeSelector,
@@ -216,12 +216,20 @@ export const useSelectTripById = (
     selectLocalTripById(state, tripId as string)
   );
 
+  const setLocalAsState = useCallback(() => {
+    if (!localTrip) {
+      console.error("Trip doesn't exist locally");
+    }
+
+    setState({
+      data: localTrip,
+      loading: false,
+    });
+  }, [localTrip]);
+
   useEffect(() => {
     if (!loggedIn) {
-      setState({
-        data: localTrip,
-        loading: false,
-      });
+      setLocalAsState();
     } else {
       const tripDoc = doc(tripsRef, tripId).withConverter<Trip>(
         convertTripDocument
@@ -253,25 +261,22 @@ export const useSelectTripById = (
                     loading: false,
                   });
                 } else {
-                  setState({
-                    data: tripData,
-                    loading: false,
-                  });
+                  setLocalAsState();
                 }
               })
               .catch((e) =>
                 console.error("Unable to fetch trip list items:", e)
               );
           } else {
-            setState({
-              data: localTrip,
-              loading: false,
-            });
+            setLocalAsState();
           }
         })
-        .catch((e) => console.error("Unable to fetch trip:", e));
+        .catch((e) => {
+          console.warn("Unable to fetch trip:", e);
+          setLocalAsState();
+        });
     }
-  }, [tripId, localTrip, loggedIn]);
+  }, [tripId, localTrip, loggedIn, setLocalAsState]);
 
   return [state.data, state.loading];
 };

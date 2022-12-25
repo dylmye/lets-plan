@@ -104,9 +104,6 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     : undefined;
 
   useEffect(() => {
-    if (!tripId || !tripIds.includes(tripId)) {
-      throw Error("Trip not found or has been deleted");
-    }
     document.title = trip?.title
       ? `${trip?.title} - Let's Plan!`
       : "Trip Details - Let's Plan!";
@@ -132,6 +129,22 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
       />
     </Container>
   );
+
+  if (!trip && !loading) {
+    return (
+      <Container>
+        <Typography variant="body1" textAlign="left">
+          <StyledLink to="/trips">&#8604; Back to trips</StyledLink>
+        </Typography>
+        <Typography variant="h3">Trip not found</Typography>
+        <p>
+          If you created this trip, you may have deleted it, or migrated it to
+          your account. If the trip was shared by someone else, the owner may
+          have made it private or deleted it.
+        </p>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -182,15 +195,17 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
       )}
       <Stack spacing={2}>
         {isEmptyTrip ? (
-          <EmptyTripCard />
+          <Box>
+            <EmptyTripCard startDate={trip?.startsAt} />
+          </Box>
         ) : (
           <Box>
             {loading ? (
               <TripItemPlaceholder key="placeholder-1" />
             ) : (
-              Object.keys(groupedItems).sort(dateCompare).map((k) =>
-                renderItemDay(k, groupedItems[k])
-              )
+              Object.keys(groupedItems)
+                .sort(dateCompare)
+                .map((k) => renderItemDay(k, groupedItems[k]))
             )}
           </Box>
         )}

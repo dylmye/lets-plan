@@ -4,11 +4,11 @@ export default interface TrainItem extends TripItineraryTravelItem {
   /** The name of the business operating the journey */
   trainOperator?: string;
   /** Station designator for origin */
-  originStationCode?: string;
+  originStation?: string;
   /** Station designator for destination */
-  destinationStationCode?: string;
+  destinationStation?: string;
   /** Purchased seat fare, generic classes */
-  class?: 'Business' | 'First' | 'Standard' | 'Third';
+  class?: 'Business' | 'First' | 'Standard' | 'Third' | 'Other';
   /** The type of ticket bought, eg saver, off-peak */
   fare?: string;
 }

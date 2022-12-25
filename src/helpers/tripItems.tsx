@@ -30,7 +30,10 @@ import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import TripItineraryItemBase from "../types/TripItineraryItemBase";
 
 /** Convert from TripItemType to a MUI Icon component */
-export const getTripItemIcon = (item?: TripItemType, otherProps?: SvgIconProps): JSX.Element | null => {
+export const getTripItemIcon = (
+  item?: TripItemType,
+  otherProps?: SvgIconProps
+): JSX.Element | null => {
   switch (item) {
     case TripItemType.Plane:
       return <FlightTakeoff titleAccess="Flight item" {...otherProps} />;
@@ -117,10 +120,84 @@ export const convertTripItemTypeToGoogleMapsTravelMode = (
   return null;
 };
 
-export const groupTripItemsByDay = (tripItems: TripItineraryItemBase[]): Record<string, TripItineraryItemBase[]> => {
+/** Group an array of trip items to an object of <startsAt>: TripItems[] */
+export const groupTripItemsByDay = (
+  tripItems: TripItineraryItemBase[]
+): Record<string, TripItineraryItemBase[]> => {
   return tripItems?.reduce((r, a) => {
     const date = dayjs(a.startsAt).format("YYYY-MM-DD");
     r[date] = [...(r[date] ?? []), a];
     return r;
   }, {} as Record<string, TripItineraryItemBase[]>);
+};
+
+/**
+ * Reverse index the TripItemType
+ * @param t The trip item type to get the label of
+ * @returns The friendly name for the trip item type
+ */
+export const getTripItemTypeLabel = (t: TripItemType): string =>
+  Object.keys(TripItemType)[Object.values(TripItemType).indexOf(t)];
+
+/**
+ * An object of types with their extra fields. The field type is either 'text' (TextField), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
+ * - connected-dropdown:airport
+ * - connected-dropdown:airline
+ * You can also use 'optional-dropdown:x,y,z' to allow users to select one of your options, or enter their own.
+ */
+export const tripItemExtraFields: Record<TripItemType, Record<string, 'text' | 'toggle' | string>> = {
+  [TripItemType.Plane]: {
+    "flightDesignator": "text",
+    "airline": "connected-dropdown:airline",
+    "originAirport": "connected-dropdown:airport",
+    "destinationAirport": "connected-dropdown:airport",
+  },
+  [TripItemType.Ferry]: {
+    "ferryOperator": "text",
+  },
+  [TripItemType.Bus]: {
+    "busOperator": "text",
+  },
+  [TripItemType.Train]: {
+    "trainOperator": "text",
+    "originStation": "text",
+    "destinationStation": "text",
+    "class": "optional-dropdown:Business,First,Standard,Third",
+    "fare": "text",
+  },
+  [TripItemType.Subway]: {
+    "subwayOperator": "text",
+    "line": "text",
+  },
+  [TripItemType.Shuttle]: {
+    "shuttleOperator": "text",
+  },
+  [TripItemType.Taxi]: {
+    "taxiOperator": "text",
+    "serviceName": "text",
+    "prebooked": "toggle",
+  },
+  [TripItemType["Car Rental"]]: {
+    "rentalOperator": "text",
+    "pickupLocation": "text",
+    "selectedVehicleType": "text",
+  },
+  [TripItemType.Car]: {},
+  [TripItemType["By Foot"]]: {},
+  [TripItemType.Cycle]: {},
+  [TripItemType["Other Mode of Transport"]]: {
+    "operatorName": "text",
+    "details": "text",
+  },
+  [TripItemType.Museum]: {},
+  [TripItemType["Eating Out"]]: {},
+  [TripItemType["Meet-up"]]: {},
+  [TripItemType.Tour]: {},
+  [TripItemType.Theatre]: {},
+  [TripItemType.Cinema]: {},
+  [TripItemType.Concert]: {},
+  [TripItemType.Shopping]: {},
+  [TripItemType.Sports]: {},
+  [TripItemType.Note]: {},
+  [TripItemType["Other Activity"]]: {},
 };
