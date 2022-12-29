@@ -134,7 +134,7 @@ const tripSlice = createSlice({
         tripSchemaRevision: 1,
         id: payload.id,
         title: payload.title,
-        location: payload?.locationData?.label ?? payload.location,
+        location: payload.location,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
         createdAtUtc: dayjs().format(),
@@ -150,13 +150,9 @@ const tripSlice = createSlice({
     updateTripById: (state, { payload }: PayloadAction<Partial<Trip>>) => {
       if (!payload?.id) return;
 
-      let changes = { ...payload };
+      console.log({ payload });
 
-      if (payload?.locationData || payload?.location) {
-        changes.location = payload?.locationData?.label ?? payload.location;
-      }
-
-      tripsAdapter.updateOne(state, { id: payload.id, changes });
+      tripsAdapter.updateOne(state, { id: payload.id, changes: payload });
     },
   },
 });

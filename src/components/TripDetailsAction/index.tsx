@@ -20,7 +20,7 @@ export interface TripDetailsActionProps {
 const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
   const trip = useAppSelector((state) => selectLocalTripById(state, id));
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const { setTrip } = useGlobalModalVisibility();
+  const { setTrip, setDeleteTrip } = useGlobalModalVisibility();
 
   const onButtonPress = (
     event?: React.MouseEvent<HTMLElement | null>
@@ -35,6 +35,13 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
 
   const onEditTrip = () => {
     setTrip(trip as Trip);
+  };
+
+  const onDeleteTrip = () => {
+    setDeleteTrip({
+      id: trip?.id as string,
+      title: trip?.title as string,
+    });
   };
 
   return (
@@ -65,7 +72,11 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
             </ListItemIcon>
             Edit Details
           </MenuItem>
-          <MenuItem key={`menu-trip-${id}-delete`} dense>
+          <MenuItem
+            key={`menu-trip-${id}-delete`}
+            dense
+            onClick={() => onDeleteTrip()}
+          >
             <ListItemIcon>
               <Delete fontSize="inherit" />
             </ListItemIcon>

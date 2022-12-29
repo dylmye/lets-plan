@@ -22,6 +22,7 @@ import TripDetails from "./features/tripDetails";
 import LoginPage from "./features/login";
 import SponsoredLinks from "./features/sponsoredLinks";
 import { setLoggedIn } from "./features/login/authSlice";
+import DeleteTripDialog from "./components/DeleteTripDialog";
 
 function App() {
   const {
@@ -31,12 +32,14 @@ function App() {
     setAuthType,
     trip: currentTrip,
     setTrip,
+    deleteTrip,
+    setDeleteTrip,
   } = useGlobalModalVisibility();
   const { online: isOnline } = useOnlineStatus();
   const dispatch = useAppDispatch();
 
   // set logged in state
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, (user) => {
     dispatch(setLoggedIn(!!user));
   });
 
@@ -105,6 +108,14 @@ function App() {
             onClose={() => setTrip(null)}
             id={currentTrip.id}
             tripDetails={currentTrip}
+          />
+        )}
+        {deleteTrip && (
+          <DeleteTripDialog
+            visible={!!deleteTrip?.id}
+            onClose={() => setDeleteTrip(null)}
+            id={deleteTrip.id}
+            title={deleteTrip.title}
           />
         )}
       </BrowserRouter>

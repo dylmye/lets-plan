@@ -87,13 +87,7 @@ const AddTripModal = (props: ModalProps) => {
     tripSchemaRevision: yMixed().oneOf([1]).required(),
     id: yString().required(),
     title: yString().required(),
-    location: yString().optional(),
-    locationData: yObject()
-      .shape({
-        label: yString(),
-        value: yObject(),
-      })
-      .required(),
+    location: yString().required(),
     startsAt: yString().required(),
     endsAt: yString().required(),
     image: yString().optional(),
@@ -126,7 +120,6 @@ const AddTripModal = (props: ModalProps) => {
     setFormError(null);
     if (values.coverImageBlob) {
       const extension = getExtensionByMimetype(values.coverImageBlob.type);
-      console.debug(`uploading trip-thumbs/${values.id}.${extension}...`);
       const storageRef = ref(storage, `trip-thumbs/${values.id}.${extension}`);
 
       setFormImageUploading(true);
@@ -134,7 +127,6 @@ const AddTripModal = (props: ModalProps) => {
       try {
         res = await uploadBytes(storageRef, values.coverImageBlob);
         delete values.coverImageBlob;
-        console.debug("uploaded successfully", res?.metadata);
       } catch (e) {
         if (e instanceof FirebaseError) {
           setFormError(getUploadErrorFriendlyText(e));

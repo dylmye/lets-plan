@@ -1,40 +1,24 @@
-import React, { useCallback } from "react";
-import { Field, useFormikContext } from "formik";
+import React from "react";
+import { Field } from "formik";
 import { TextField } from "formik-mui";
-import { ActionMeta } from "react-select";
 
 import styles from "./styles.module.css";
-import TripDraft from "../../types/TripDraft";
-import GoogleMapsField from "../fields/GoogleMapsField";
-import { useSmartFieldName } from "../../helpers/forms";
+import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
-const FormStepOne = () => {
-  const { setFieldValue } = useFormikContext<TripDraft>();
-  const locationFieldName = useSmartFieldName('locationData', 'location');
-
-  const onMapFieldChange = useCallback(
-    (newValue: { label: string; value: ActionMeta<any> }) => {
-      setFieldValue("locationData", newValue);
-    },
-    [setFieldValue]
-  );
-
-  return (
-    <div className={styles.formFieldsContainer}>
-      <Field
-        component={TextField}
-        fullWidth
-        name="title"
-        label="Name of your trip"
-      />
-      <Field
-        component={GoogleMapsField}
-        name={locationFieldName}
-        label="Where is your trip?"
-        onMapFieldChange={onMapFieldChange}
-      />
-    </div>
-  );
-};
+const FormStepOne = () => (
+  <div className={styles.formFieldsContainer}>
+    <Field
+      component={TextField}
+      fullWidth
+      name="title"
+      label="Name of your trip"
+    />
+    <Field
+      component={GooglePlacesAutocompleteField}
+      name="location"
+      label="Where is your trip?"
+    />
+  </div>
+);
 
 export default FormStepOne;

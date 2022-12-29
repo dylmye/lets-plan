@@ -5,13 +5,8 @@ export default interface TripDraft {
   /** assigned on creation. GUID format for local trips, alphanumeric 20-char format for sync'd trips. */
   id: string;
   title: string;
-  /** Result from Google Search (or free text when in offline mode) */
+  /** The general location of where the trip is taking place */
   location?: string;
-  /** Object returned from GMaps API, converted to location property */
-  locationData?: {
-    label: string;
-    value: ActionMeta<any>;
-  };
   /** date in ISO8601, without fraction seconds */
   startsAt: string | null;
   /** date in ISO8601, without fraction seconds */

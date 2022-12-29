@@ -15,6 +15,9 @@ export interface GlobalModalVisibilityContextInterface {
   /** for Edit Trip Details modal */
   trip: Trip | null;
   setTrip: SetState<Trip | null>;
+  /** for Delete Trip dialog */
+  deleteTrip: { id: string, title: string } | null;
+  setDeleteTrip: SetState<GlobalModalVisibilityContextInterface['deleteTrip']>;
 }
 
 export const GlobalModalVisibilityContext =
@@ -25,6 +28,8 @@ export const GlobalModalVisibilityContext =
     setAuthType: () => {},
     trip: null,
     setTrip: () => {},
+    deleteTrip: null,
+    setDeleteTrip: () => {},
   });
 
 export const useGlobalModalVisibility = () => {
@@ -44,10 +49,20 @@ const GlobalModalVisibility: React.FC = ({ children }) => {
     AuthenticationModalProps["type"] | null
   >(null);
   const [trip, setTrip] = useState<Trip | null>(null);
+  const [deleteTrip, setDeleteTrip] = useState<GlobalModalVisibilityContextInterface['deleteTrip']>(null);
 
   return (
     <GlobalModalVisibilityContext.Provider
-      value={{ visible, toggleVisible, authType, setAuthType, trip, setTrip }}
+      value={{
+        visible,
+        toggleVisible,
+        authType,
+        setAuthType,
+        trip,
+        setTrip,
+        deleteTrip,
+        setDeleteTrip,
+      }}
     >
       {children}
     </GlobalModalVisibilityContext.Provider>

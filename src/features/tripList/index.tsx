@@ -9,6 +9,7 @@ import TripListAction, {
 } from "../../components/TripListAction";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentTrips, selectPastTrips } from "./tripSlice";
+import DeleteTripDialog from "../../components/DeleteTripDialog";
 
 const TripList = () => {
   const loading = false;
@@ -16,6 +17,11 @@ const TripList = () => {
   const pastTrips = useAppSelector(selectPastTrips);
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
+  const [deleteDialogProps, setDeleteDialogProps] = useState<{
+    visible: boolean;
+    id?: string;
+    title?: string;
+  }>({ visible: false });
 
   const Placeholder = () => (
     <Skeleton
@@ -26,7 +32,7 @@ const TripList = () => {
   );
 
   useEffect(() => {
-    document.title = "Let's Plan!"
+    document.title = "Let's Plan!";
   }, []);
 
   return (
@@ -79,6 +85,12 @@ const TripList = () => {
       <AddTripModal
         open={addModalVisible}
         onClose={() => toggleModalVisibility(false)}
+      />
+      <DeleteTripDialog
+        visible={deleteDialogProps.visible}
+        onClose={() => setDeleteDialogProps({ visible: false })}
+        id={deleteDialogProps.id as string}
+        title={deleteDialogProps.title as string}
       />
     </Container>
   );

@@ -2,16 +2,14 @@ import React from "react";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
-import { ActionMeta } from "react-select";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
-import GoogleMapsField, { GoogleMapsChangeProps } from "../fields/GoogleMapsField";
 import { updateTripById } from "../../features/tripList/tripSlice";
 import styles from "./styles.module.css";
 import { Check } from "@mui/icons-material";
-import { useSmartFieldName } from "../../helpers/forms";
+import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;
@@ -37,18 +35,13 @@ const EditTripDetailsModal = ({
 }: EditTripDetailsModalProps) => {
   const dispatch = useAppDispatch();
   const { title, location, startsAt, endsAt } = tripDetails;
-  const locationFieldName = useSmartFieldName('locationData', 'location');
 
   const onFormSubmit = async (values: TripDetails) => {
-    dispatch(updateTripById(values));
+    dispatch(updateTripById({
+      ...values,
+      id
+    }));
     props.onClose();
-  };
-
-  const onMapFieldChange = (
-    newValue: GoogleMapsChangeProps,
-    onChange: (field: string, newValue: any) => void
-  ) => {
-    onChange("locationData", newValue);
   };
 
   return (
@@ -60,20 +53,13 @@ const EditTripDetailsModal = ({
         <Formik<TripDetails>
           initialValues={{
             title,
-            locationData: location
-              ? {
-                  label: location,
-                  value: {} as ActionMeta<any>,
-                }
-              : undefined,
             location,
             startsAt,
             endsAt,
           }}
           onSubmit={onFormSubmit}
         >
-          {({ setFieldValue }) => (
-            <Form className={styles.formFieldsContainer}>
+          <Form className={styles.formFieldsContainer}>
             <Field
               component={TextField}
               name="title"
@@ -81,17 +67,15 @@ const EditTripDetailsModal = ({
               fullWidth
             />
             <Field
-              component={GoogleMapsField}
-              name={locationFieldName}
+              component={GooglePlacesAutocompleteField}
+              name="location"
               label="Where is your trip?"
-              onMapFieldChange={(v: GoogleMapsChangeProps) => onMapFieldChange(v, setFieldValue)}
             />
             <Button size="small" type="submit">
               <Check />
               Update Trip
             </Button>
           </Form>
-          )}
         </Formik>
       </Box>
     </Modal>
