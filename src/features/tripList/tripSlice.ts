@@ -150,8 +150,6 @@ const tripSlice = createSlice({
     updateTripById: (state, { payload }: PayloadAction<Partial<Trip>>) => {
       if (!payload?.id) return;
 
-      console.log({ payload });
-
       tripsAdapter.updateOne(state, { id: payload.id, changes: payload });
     },
   },

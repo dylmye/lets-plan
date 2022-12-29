@@ -1,6 +1,16 @@
 import React from "react";
 import { Field, Form, Formik } from "formik";
-import { Box, Grid, ToggleButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  CardActions,
+  Divider,
+  Grid,
+  ToggleButton,
+} from "@mui/material";
+import { Switch, TextField, ToggleButtonGroup } from "formik-mui";
+import { DateTimePicker } from "formik-mui-x-date-pickers";
+import dayjs from "dayjs";
 
 import { AddTripItemCardProps } from ".";
 import styles from "./styles.module.css";
@@ -11,25 +21,42 @@ import {
   TripItemType,
 } from "../../types/TripItemType";
 import AutocompleteField from "../fields/AutocompleteField";
-import { getTripItemIcon, getTripItemTypeLabel, tripItemExtraFields } from "../../helpers/tripItems";
-import { Switch, TextField, ToggleButtonGroup } from "formik-mui";
+import {
+  getTripItemIcon,
+  getTripItemTypeLabel,
+  tripItemExtraFields,
+} from "../../helpers/tripItems";
 
-const AddTripItemCardContents = ({ initialValues }: AddTripItemCardProps) => {
+const AddTripItemCardContents = ({
+  initialValues,
+  tripDetails,
+}: AddTripItemCardProps) => {
   const fieldNameToLabel = (name: string): string => {
     const result = name.replace(/([A-Z]{1,})/g, " $1");
     return result.charAt(0).toUpperCase() + result.slice(1);
   };
   const renderExtraField = (field: string, fieldType: string): JSX.Element => {
     switch (fieldType) {
-      case 'toggle': {
+      case "toggle": {
+        console.log(fieldNameToLabel(field));
         return (
-          <Field name={field} label={fieldNameToLabel(field)} component={Switch} type="checkbox" />
-        )
+          <Field
+            name={field}
+            label={fieldNameToLabel(field)}
+            component={Switch}
+            type="checkbox"
+          />
+        );
       }
       // @TODO: dropdown, optional-dropdown, connected-dropdown
       default:
         return (
-          <Field name={field} label={fieldNameToLabel(field)} component={TextField} fullWidth />
+          <Field
+            name={field}
+            label={fieldNameToLabel(field)}
+            component={TextField}
+            fullWidth
+          />
         );
     }
   };
@@ -42,6 +69,7 @@ const AddTripItemCardContents = ({ initialValues }: AddTripItemCardProps) => {
           : "activity",
         type: initialValues.type as TripItemType,
         startsAt: initialValues.date as string,
+        title: '',
       }}
       onSubmit={console.log}
     >
@@ -55,7 +83,10 @@ const AddTripItemCardContents = ({ initialValues }: AddTripItemCardProps) => {
                 type="checkbox"
                 exclusive
                 fullWidth
-                onChange={(_event: any, newValue: "travel" | "activity" | null) => {
+                onChange={(
+                  _event: any,
+                  newValue: "travel" | "activity" | null
+                ) => {
                   if (newValue !== null) {
                     setFieldValue("category", newValue);
                     setFieldValue("type", null);
@@ -98,12 +129,57 @@ const AddTripItemCardContents = ({ initialValues }: AddTripItemCardProps) => {
                 fullWidth
               />
             </Grid>
-            {values.type && Object.keys(tripItemExtraFields[values.type]).map((field) => (
-              <Grid item xs={12} md={6} key={`extra-field-griditem-${field}`}>
-                {renderExtraField(field, tripItemExtraFields[values.type][field])}
-              </Grid>
-            ))}
+            {values.type && (
+              <>
+                <Grid item xs={12}>
+                  <Divider flexItem />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    component={DateTimePicker}
+                    label="Starts At"
+                    name="startsAt"
+                    textField={{
+                      helperText: "'All day' option coming soon",
+                      fullWidth: true,
+                    }}
+                    minDate={dayjs(tripDetails?.startsAt)}
+                    maxDate={dayjs(tripDetails?.endsAt)}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    component={DateTimePicker}
+                    label="Finishes At"
+                    name="endsAt"
+                    textField={{
+                      helperText: values.category === "activity" && "Optional",
+                      fullWidth: true,
+                    }}
+                    minDate={values.startsAt && dayjs(values.startsAt)}
+                    maxDate={dayjs(tripDetails?.endsAt)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider flexItem />
+                </Grid>
+              </>
+            )}
+            {values.type &&
+              Object.keys(tripItemExtraFields[values.type]).map((field) => (
+                <Grid item xs={12} md={6} key={`extra-field-griditem-${field}`}>
+                  {renderExtraField(
+                    field,
+                    tripItemExtraFields[values.type][field]
+                  )}
+                </Grid>
+              ))}
           </Grid>
+          <CardActions sx={{ justifyContent: 'right' }}>
+            <Button type="submit" variant="contained">
+              Add to trip
+            </Button>
+          </CardActions>
         </Form>
       )}
     </Formik>

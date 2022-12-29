@@ -5200,10 +5200,10 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-formik-mui-lab@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/formik-mui-lab/-/formik-mui-lab-1.0.0.tgz#049afd4329dc8790c259dfa5a8785d7099c9d2b3"
-  integrity sha512-4YSpaFXJ4fJ+er2Eu/XNcKyrrcUEWQiwxWjnSbki9bxRjjSDiKWCrRlDgM+vdl/HEiO+XrwrxA5I9M+xU4r1tg==
+formik-mui-x-date-pickers@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/formik-mui-x-date-pickers/-/formik-mui-x-date-pickers-0.0.1.tgz#9b7fdaf16cd09d4cf73735fcaa91861d8a3d8100"
+  integrity sha512-IxZsY6er+g0eNsucIDHcNs6DLaPDdG14IYx/lS2HSuKnTgV4vGEWpXyGMpkY/vGyh+W3N5U4TrBVu+7eRb5rLA==
 
 formik-mui@^4.0.0:
   version "4.0.0"

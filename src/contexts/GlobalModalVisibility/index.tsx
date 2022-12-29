@@ -16,8 +16,8 @@ export interface GlobalModalVisibilityContextInterface {
   trip: Trip | null;
   setTrip: SetState<Trip | null>;
   /** for Delete Trip dialog */
-  deleteTrip: { id: string, title: string } | null;
-  setDeleteTrip: SetState<GlobalModalVisibilityContextInterface['deleteTrip']>;
+  deleteTrip: { id: string; title: string } | null;
+  setDeleteTrip: SetState<GlobalModalVisibilityContextInterface["deleteTrip"]>;
 }
 
 export const GlobalModalVisibilityContext =
@@ -43,13 +43,23 @@ export const useGlobalModalVisibility = () => {
   return ctx;
 };
 
+/** Enable modals & dialogs to be opened from anywhere. Using a context is easier than passing props down from a page to a menu element.
+ * To add a new global modal:
+ * 1. Add the modal/dialog component low down in the stack: we use App.tsx
+ * 2. Add two properties to the context interface: the boolean/object prop that determines visibility (and optionally any state the modal needs), and the function prop that toggles visibility
+ * 3. Implement these props in the createContext above and the provider below. Typically this is done using a useState hook.
+ * 4. Where the button to trigger the modal is, set the two props as required.
+ *
+ * A good example of this is deleteTrip, used to show a delete confirmation dialog for a given trip. The trigger code is in the `TripDetailsAction` component.
+ */
 const GlobalModalVisibility: React.FC = ({ children }) => {
   const [visible, toggleVisible] = useState<boolean>(false);
   const [authType, setAuthType] = useState<
     AuthenticationModalProps["type"] | null
   >(null);
   const [trip, setTrip] = useState<Trip | null>(null);
-  const [deleteTrip, setDeleteTrip] = useState<GlobalModalVisibilityContextInterface['deleteTrip']>(null);
+  const [deleteTrip, setDeleteTrip] =
+    useState<GlobalModalVisibilityContextInterface["deleteTrip"]>(null);
 
   return (
     <GlobalModalVisibilityContext.Provider

@@ -9,14 +9,10 @@ import {
 import TripItemTypeCard from "../TripItemTypeCard";
 import styles from "./styles.module.css";
 import AddTripItemCardContents from "../AddTripItemCard/AddTripItemCardContents";
-
-interface EmptyTripCardProps {
-  /** Date to add to first item by default */
-  startDate?: string | null;
-}
+import TripDetails from '../../types/TripDetails';
 
 /** Combined display for trips with no items */
-const EmptyTripCard = ({ startDate }: EmptyTripCardProps) => {
+const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {
   const [selected, setSelected] = useState<TripItemType>();
   return (
     <Card>
@@ -64,7 +60,8 @@ const EmptyTripCard = ({ startDate }: EmptyTripCardProps) => {
           </>
         ) : (
           <AddTripItemCardContents
-            initialValues={{ type: selected, date: startDate }}
+            initialValues={{ type: selected, date: startsAt }}
+            tripDetails={{ startsAt, ...props }}
           />
         )}
       </CardContent>

@@ -12,7 +12,7 @@ interface AutocompleteFieldProps<T = string>
 /** A MUI Autocomplete Form Field, which takes any number of `options` to set a given field. For Formik. */
 const AutocompleteField = <T = string>({
   field,
-  form: { setFieldValue, touched, errors },
+  form: { setFieldValue, touched, errors, isSubmitting },
   options,
   label,
   ...props
@@ -25,6 +25,7 @@ const AutocompleteField = <T = string>({
       </Box>
     )}
     {...props}
+    disabled={isSubmitting}
     autoHighlight
     disableClearable
     value={field.value}

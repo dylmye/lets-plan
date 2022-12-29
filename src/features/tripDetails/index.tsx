@@ -41,6 +41,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
+  const tripIsExample = tripId === "example";
 
   const renderTripItem = (item: TripItineraryItemBase) => (
     <TripItineraryItem item={item} key={item.startsAt} />
@@ -70,11 +71,13 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
           <time dateTime={day}>{formatDate(day, "long")}</time>
         </Typography>
         <Stack direction="row" spacing={1}>
-          <Tooltip title="Add to day">
-            <IconButton aria-label="Add an item this day">
-              <Add fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
+          {!tripIsExample && (
+            <Tooltip title="Add to day">
+              <IconButton aria-label="Add an item this day">
+                <Add fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="Filter day">
             <IconButton aria-label="Filter the items in this day">
               <FilterAlt fontSize="inherit" />
@@ -194,9 +197,14 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         </Box>
       )}
       <Stack spacing={2}>
-        {isEmptyTrip ? (
-          <Box>
-            <EmptyTripCard startDate={trip?.startsAt} />
+        {isEmptyTrip && trip ? (
+          <Box sx={{ marginTop: 2 }}>
+            <EmptyTripCard
+              startsAt={trip.startsAt}
+              title={trip.title}
+              location={trip.location}
+              endsAt={trip.endsAt}
+            />
           </Box>
         ) : (
           <Box>
