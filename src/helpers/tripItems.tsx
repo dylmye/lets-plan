@@ -23,6 +23,9 @@ import {
   Notes,
 } from "@mui/icons-material";
 import { SvgIconProps } from "@mui/material";
+import { Field } from "formik";
+import { Switch, TextField } from "formik-mui";
+import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import { COLOURS } from "./colours";
 import { TripItemType } from "../types/TripItemType";
@@ -141,8 +144,9 @@ export const getTripItemTypeLabel = (t: TripItemType): string =>
 
 /**
  * An object of types with their extra fields. The field type is either 'text' (TextField), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
- * - connected-dropdown:airport
- * - connected-dropdown:airline
+ * - connected-dropdown:airport - a list of airports with english name and ICAO/IATA codes
+ * - connected-dropdown:airline - a list of airliners with english name and ICAO/IATA codes
+ * - connected-dropdown:places - google maps places api
  * You can also use 'optional-dropdown:x,y,z' to allow users to select one of your options, or enter their own.
  */
 export const tripItemExtraFields: Record<TripItemType, Record<string, 'text' | 'toggle' | string>> = {
@@ -200,4 +204,54 @@ export const tripItemExtraFields: Record<TripItemType, Record<string, 'text' | '
   [TripItemType.Sports]: {},
   [TripItemType.Note]: {},
   [TripItemType["Other Activity"]]: {},
+};
+
+const fieldNameToLabel = (name: string): string => {
+  const result = name.replace(/([A-Z]{1,})/g, " $1");
+  return result.charAt(0).toUpperCase() + result.slice(1);
+};
+
+/**
+ * Convert a field-name: field-type pair to a field component
+ * @param field The field name to use for formik
+ * @param fieldType The value for the field in the extraFields array
+ * @returns The component for the field
+ */
+export const renderExtraField = (field: string, fieldType: string): JSX.Element => {
+  switch (fieldType) {
+    case "toggle": {
+      return (
+        <Field
+          name={field}
+          label={fieldNameToLabel(field)}
+          component={Switch}
+          type="checkbox"
+        />
+      );
+    }
+    case "connected-dropdown:places": {
+      return (
+        <Field
+          component={GooglePlacesAutocompleteField}
+          name={field}
+          label={fieldNameToLabel(field)}
+        />
+      );
+    }
+    // case "connected-dropdown:airport"
+    // case "connected-dropdown:airline"
+    default:
+      // starts-with "optional-dropdown"
+      // starts-with "dropdown"
+
+      // fieldType === 'text' + backup
+      return (
+        <Field
+          name={field}
+          label={fieldNameToLabel(field)}
+          component={TextField}
+          fullWidth
+        />
+      );
+  }
 };

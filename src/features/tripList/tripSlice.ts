@@ -222,7 +222,7 @@ export const useSelectTripById = (
   }, [localTrip]);
 
   useEffect(() => {
-    if (!loggedIn) {
+    if (!loggedIn || tripId === "example") {
       setLocalAsState();
     } else {
       const tripDoc = doc(tripsRef, tripId).withConverter<Trip>(

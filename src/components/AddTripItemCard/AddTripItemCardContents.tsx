@@ -7,10 +7,12 @@ import {
   Divider,
   Grid,
   ToggleButton,
+  TextFieldProps,
 } from "@mui/material";
-import { Switch, TextField, ToggleButtonGroup } from "formik-mui";
+import { TextField, ToggleButtonGroup } from "formik-mui";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 import dayjs from "dayjs";
+import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import { AddTripItemCardProps } from ".";
 import styles from "./styles.module.css";
@@ -24,41 +26,28 @@ import AutocompleteField from "../fields/AutocompleteField";
 import {
   getTripItemIcon,
   getTripItemTypeLabel,
+  renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";
+import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
+import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
+import { useAppSelector } from "../../app/hooks";
+import { selectThemeMode } from "../../features/theme/themeSlice";
 
 const AddTripItemCardContents = ({
   initialValues,
   tripDetails,
 }: AddTripItemCardProps) => {
-  const fieldNameToLabel = (name: string): string => {
-    const result = name.replace(/([A-Z]{1,})/g, " $1");
-    return result.charAt(0).toUpperCase() + result.slice(1);
-  };
-  const renderExtraField = (field: string, fieldType: string): JSX.Element => {
-    switch (fieldType) {
-      case "toggle": {
-        console.log(fieldNameToLabel(field));
-        return (
-          <Field
-            name={field}
-            label={fieldNameToLabel(field)}
-            component={Switch}
-            type="checkbox"
-          />
-        );
-      }
-      // @TODO: dropdown, optional-dropdown, connected-dropdown
-      default:
-        return (
-          <Field
-            name={field}
-            label={fieldNameToLabel(field)}
-            component={TextField}
-            fullWidth
-          />
-        );
-    }
+  const currentTheme = useAppSelector(selectThemeMode);
+
+  const googleAttributionHelperText: TextFieldProps = {
+    helperText: (
+      <img
+        src={currentTheme === "light" ? poweredByGoogleLightMode : poweredByGoogleDarkMode}
+        alt="This location search field uses Google APIs."
+        className={styles.googleAttribution}
+      />
+    )
   };
 
   return (
@@ -69,7 +58,7 @@ const AddTripItemCardContents = ({
           : "activity",
         type: initialValues.type as TripItemType,
         startsAt: initialValues.date as string,
-        title: '',
+        title: "",
       }}
       onSubmit={console.log}
     >
@@ -127,6 +116,7 @@ const AddTripItemCardContents = ({
                 name="title"
                 label="Title"
                 fullWidth
+                helperText="Optional"
               />
             </Grid>
             {values.type && (
@@ -163,6 +153,32 @@ const AddTripItemCardContents = ({
                 <Grid item xs={12}>
                   <Divider flexItem />
                 </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    component={GooglePlacesAutocompleteField}
+                    name={
+                      values.category === "travel"
+                        ? "originLocation"
+                        : "location"
+                    }
+                    label={
+                      values.category === "travel"
+                        ? "Starting Location"
+                        : "Location"
+                    }
+                    inputProps={googleAttributionHelperText}
+                  />
+                </Grid>
+                {values.category === "travel" && (
+                  <Grid item xs={12} md={6}>
+                    <Field
+                      component={GooglePlacesAutocompleteField}
+                      name="destinationLocation"
+                      label="Ending Location"
+                      inputProps={googleAttributionHelperText}
+                    />
+                  </Grid>
+                )}
               </>
             )}
             {values.type &&
@@ -175,7 +191,7 @@ const AddTripItemCardContents = ({
                 </Grid>
               ))}
           </Grid>
-          <CardActions sx={{ justifyContent: 'right' }}>
+          <CardActions sx={{ justifyContent: "right" }}>
             <Button type="submit" variant="contained">
               Add to trip
             </Button>
