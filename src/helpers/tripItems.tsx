@@ -31,6 +31,7 @@ import { COLOURS } from "./colours";
 import { TripItemType } from "../types/TripItemType";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import TripItineraryItemBase from "../types/TripItineraryItemBase";
+import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -149,49 +150,52 @@ export const getTripItemTypeLabel = (t: TripItemType): string =>
  * - connected-dropdown:places - google maps places api
  * You can also use 'optional-dropdown:x,y,z' to allow users to select one of your options, or enter their own.
  */
-export const tripItemExtraFields: Record<TripItemType, Record<string, 'text' | 'toggle' | string>> = {
+export const tripItemExtraFields: Record<
+  TripItemType,
+  Record<string, "text" | "toggle" | string>
+> = {
   [TripItemType.Plane]: {
-    "flightDesignator": "text",
-    "airline": "connected-dropdown:airline",
-    "originAirport": "connected-dropdown:airport",
-    "destinationAirport": "connected-dropdown:airport",
+    flightDesignator: "text",
+    airline: "connected-dropdown:airline",
+    originAirport: "connected-dropdown:airport",
+    destinationAirport: "connected-dropdown:airport",
   },
   [TripItemType.Ferry]: {
-    "ferryOperator": "text",
+    ferryOperator: "text",
   },
   [TripItemType.Bus]: {
-    "busOperator": "text",
+    busOperator: "text",
   },
   [TripItemType.Train]: {
-    "trainOperator": "text",
-    "originStation": "text",
-    "destinationStation": "text",
-    "class": "optional-dropdown:Business,First,Standard,Third",
-    "fare": "text",
+    trainOperator: "text",
+    originStation: "text",
+    destinationStation: "text",
+    class: "optional-dropdown:Business,First,Standard,Third",
+    fare: "text",
   },
   [TripItemType.Subway]: {
-    "subwayOperator": "text",
-    "line": "text",
+    subwayOperator: "text",
+    line: "text",
   },
   [TripItemType.Shuttle]: {
-    "shuttleOperator": "text",
+    shuttleOperator: "text",
   },
   [TripItemType.Taxi]: {
-    "taxiOperator": "text",
-    "serviceName": "text",
-    "prebooked": "toggle",
+    taxiOperator: "text",
+    serviceName: "text",
+    prebooked: "toggle",
   },
   [TripItemType["Car Rental"]]: {
-    "rentalOperator": "text",
-    "pickupLocation": "text",
-    "selectedVehicleType": "text",
+    rentalOperator: "text",
+    pickupLocation: "text",
+    selectedVehicleType: "text",
   },
   [TripItemType.Car]: {},
   [TripItemType["By Foot"]]: {},
   [TripItemType.Cycle]: {},
   [TripItemType["Other Mode of Transport"]]: {
-    "operatorName": "text",
-    "details": "text",
+    operatorName: "text",
+    details: "text",
   },
   [TripItemType.Museum]: {},
   [TripItemType["Eating Out"]]: {},
@@ -217,7 +221,10 @@ const fieldNameToLabel = (name: string): string => {
  * @param fieldType The value for the field in the extraFields array
  * @returns The component for the field
  */
-export const renderExtraField = (field: string, fieldType: string): JSX.Element => {
+export const renderExtraField = (
+  field: string,
+  fieldType: string
+): JSX.Element => {
   switch (fieldType) {
     case "toggle": {
       return (
@@ -238,8 +245,16 @@ export const renderExtraField = (field: string, fieldType: string): JSX.Element 
         />
       );
     }
+    case "connected-dropdown:airline": {
+      return (
+        <Field
+          component={AirlineAutocompleteField}
+          name={field}
+          label={fieldNameToLabel(field)}
+        />
+      );
+    }
     // case "connected-dropdown:airport"
-    // case "connected-dropdown:airline"
     default:
       // starts-with "optional-dropdown"
       // starts-with "dropdown"

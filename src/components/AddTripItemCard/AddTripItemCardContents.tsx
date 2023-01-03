@@ -43,11 +43,15 @@ const AddTripItemCardContents = ({
   const googleAttributionHelperText: TextFieldProps = {
     helperText: (
       <img
-        src={currentTheme === "light" ? poweredByGoogleLightMode : poweredByGoogleDarkMode}
+        src={
+          currentTheme === "light"
+            ? poweredByGoogleLightMode
+            : poweredByGoogleDarkMode
+        }
         alt="This location search field uses Google APIs."
         className={styles.googleAttribution}
       />
-    )
+    ),
   };
 
   return (
@@ -62,7 +66,7 @@ const AddTripItemCardContents = ({
       }}
       onSubmit={console.log}
     >
-      {({ values, setFieldValue }) => (
+      {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.formFieldsContainer}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -81,6 +85,7 @@ const AddTripItemCardContents = ({
                     setFieldValue("type", null);
                   }
                 }}
+                disabled={isSubmitting}
               >
                 <ToggleButton value="travel">Travel</ToggleButton>
                 <ToggleButton value="activity">Activity</ToggleButton>
@@ -192,7 +197,7 @@ const AddTripItemCardContents = ({
               ))}
           </Grid>
           <CardActions sx={{ justifyContent: "right" }}>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={isSubmitting}>
               Add to trip
             </Button>
           </CardActions>

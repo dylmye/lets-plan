@@ -31,6 +31,7 @@ Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 - `REACT_APP_UBER_API_CLIENT_ID`: You can disregard this if you're not using the Uber API for taxi journey links. This is for the "CLIENT_ID" parameter for Uber's Ride Requests API, which is used to link to Uber in taxi itinerary items ([see here](https://developer.uber.com/docs/riders/ride-requests/tutorials/deep-links/introduction#ride-requests).)
 - `REACT_APP_HCAPTCHA_SITE_KEY`: You can disregard this if you're not using HCaptcha (an anti-bot tool like Recaptcha). This is the site key from the dev portal linked to your domain.
 - `REACT_APP_RELEASE_VERSION`: Used in the app to display what version of LP is running. Useful for debugging. (optional)
+- `REACT_APP_RAPIDAPI_KEY`: Used for the [Aviation Reference Data API](https://rapidapi.com/proground/api/aviation-reference-data), to get airlines and airports. Get one by signing up at [RapidAPI](https://rapidapi.com). You can disregard this if you don't want this feature.
 
 To make this project your own, you also need to:
 

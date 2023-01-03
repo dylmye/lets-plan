@@ -59,7 +59,6 @@ const exampleTrip: Trip = {
       startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(11, "hour").add(49, "minute").format(),
       endsAtTimezone: "Europe/London",
-      order: 0,
     } as CarItem,
     {
       type: TripItemType["Eating Out"],
@@ -70,7 +69,6 @@ const exampleTrip: Trip = {
       startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(13, "hour").format(),
       endsAtTimezone: "Europe/London",
-      order: 1,
     } as TripItineraryActivityItem,
     {
       type: TripItemType.Museum,
@@ -86,7 +84,6 @@ const exampleTrip: Trip = {
       reference: "CK0094410",
       price: 15,
       priceCurrency: "GBP",
-      order: 2,
     } as TripItineraryActivityItem,
     {
       type: TripItemType["Meet-up"],
@@ -96,7 +93,6 @@ const exampleTrip: Trip = {
       startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(19, "hour").format(),
       endsAtTimezone: "Europe/London",
-      order: 3,
     } as TripItineraryActivityItem,
     {
       type: TripItemType.Car,
@@ -111,7 +107,6 @@ const exampleTrip: Trip = {
         .add(49, "minute")
         .format(),
       endsAtTimezone: "Europe/London",
-      order: 4,
     } as CarItem,
   ],
   public: false,
