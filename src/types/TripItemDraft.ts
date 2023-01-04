@@ -6,8 +6,8 @@ export default interface TripItemDraft {
   type: TripItemType;
   title?: string;
   details?: string;
-  urls?: Record<string, string>;
-  startsAt: string | null;
+  urls?: Record<string, string> | null;
+  startsAt: string;
   endsAt?: string | null;
   /** Fields from derived types */
   [x: string]: unknown;

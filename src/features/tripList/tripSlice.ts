@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import {
+  createAction,
   createDraftSafeSelector,
   createEntityAdapter,
   createSlice,
@@ -22,13 +23,14 @@ import {
   convertTripItemDocuments,
 } from "../../helpers/converters";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
-import { groupTripItemsByDay } from "../../helpers/tripItems";
+import { getTripItemTypeLabel, groupTripItemsByDay } from "../../helpers/tripItems";
 import Trip from "../../types/Trip";
 import TripDraft from "../../types/TripDraft";
 import { TripItemType } from "../../types/TripItemType";
 import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
+import TripItemDraft from "../../types/TripItemDraft";
 
 const name = SliceNames.TRIPS;
 
@@ -117,6 +119,8 @@ const tripsAdapter = createEntityAdapter<Trip>({
   sortComparer: (a, b) => dateCompare(a.startsAt, b.startsAt),
 });
 
+export const addTripItemByTripId = createAction<{ id: EntityId } & TripItemDraft>('trips/addTripItemByTripId');
+
 const tripSlice = createSlice({
   name,
   initialState: tripsAdapter.getInitialState({
@@ -147,6 +151,27 @@ const tripSlice = createSlice({
 
       tripsAdapter.updateOne(state, { id: payload.id, changes: payload });
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addTripItemByTripId, (state, { payload }) => {
+        if (!payload?.id) return;
+
+        const { category, ...filteredPayload } = payload;
+
+        const newTripItem: TripItineraryItemBase = {
+          startsAtTimezone: 'Europe/London', // @TODO: custom tz
+          ...filteredPayload,
+          title: filteredPayload?.title ?? getTripItemTypeLabel(filteredPayload.type)
+        };
+
+        const items: TripItineraryItemBase[] = [
+          ...(state.entities[payload.id]?.items || []),
+          newTripItem,
+        ];
+
+        tripsAdapter.updateOne(state, { id: payload.id, changes: { items } })
+      })
   },
 });
 

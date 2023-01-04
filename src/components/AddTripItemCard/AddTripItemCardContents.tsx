@@ -31,13 +31,15 @@ import {
 } from "../../helpers/tripItems";
 import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
 import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectThemeMode } from "../../features/theme/themeSlice";
+import { addTripItemByTripId } from "../../features/tripList/tripSlice";
 
 const AddTripItemCardContents = ({
   initialValues,
   tripDetails,
 }: AddTripItemCardProps) => {
+  const dispatch = useAppDispatch();
   const currentTheme = useAppSelector(selectThemeMode);
 
   const googleAttributionHelperText: TextFieldProps = {
@@ -54,6 +56,8 @@ const AddTripItemCardContents = ({
     ),
   };
 
+  const fieldIsRequired = (value: string): string | null => !value ? 'This field is required' : null;
+
   return (
     <Formik<TripItemDraft>
       initialValues={{
@@ -64,7 +68,14 @@ const AddTripItemCardContents = ({
         startsAt: initialValues.date as string,
         title: "",
       }}
-      onSubmit={console.log}
+      onSubmit={(values) => {
+        if (!tripDetails?.id) {
+          console.error("Couldn't add trip item, no trip id specified");
+          return;
+        };
+        dispatch(addTripItemByTripId({ ...values, id: tripDetails.id }))
+      }}
+      // validationSchema={validationSchema} We can't use validation here because the type is a dictionary (to allow extra fields)
     >
       {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.formFieldsContainer}>
@@ -113,6 +124,7 @@ const AddTripItemCardContents = ({
                 getOptionLabel={getTripItemTypeLabel}
                 name="type"
                 label={`Type of ${values.category}`}
+                validate={fieldIsRequired}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -140,6 +152,7 @@ const AddTripItemCardContents = ({
                     }}
                     minDate={dayjs(tripDetails?.startsAt)}
                     maxDate={dayjs(tripDetails?.endsAt)}
+                    validate={fieldIsRequired}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>

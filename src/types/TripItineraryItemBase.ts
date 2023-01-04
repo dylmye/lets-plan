@@ -12,7 +12,7 @@ export default interface TripItineraryItemBase {
   /** User-provided description for all types */
   details?: string;
   /** User-provided relevant links. key = title (optional), value = URL */
-  urls?: Record<string, string>;
+  urls?: Record<string, string> | null;
   /** The UTC time the item starts at */
   startsAt: string;
   /** The timezone to display the start time in */

@@ -200,6 +200,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         {isEmptyTrip && trip ? (
           <Box sx={{ marginTop: 2 }}>
             <EmptyTripCard
+              id={trip.id}
               startsAt={trip.startsAt}
               title={trip.title}
               location={trip.location}
