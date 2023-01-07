@@ -1,6 +1,15 @@
 import React from "react";
-import { Grid, Link, Paper, Tooltip, Box, Card, CardContent, Typography } from "@mui/material";
-import { useTheme } from '@mui/system';
+import {
+  Grid,
+  Link,
+  Paper,
+  Tooltip,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+} from "@mui/material";
+import { useTheme } from "@mui/system";
 import {
   Assignment,
   Directions,
@@ -13,6 +22,7 @@ import {
   convertTripItemTypeToGoogleMapsTravelMode,
   getTripItemColour,
   getTripItemIcon,
+  getTripItemTypeLabel,
 } from "../../helpers/tripItems";
 import styles from "./styles.module.css";
 import {
@@ -37,7 +47,8 @@ export interface TripItineraryItemProps {
 /** Index item with a preview of the trip */
 const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
   const { palette } = useTheme();
-  const Icon = () => getTripItemIcon(item.type, { htmlColor: palette.background.paper });
+  const Icon = () =>
+    getTripItemIcon(item.type, { htmlColor: palette.background.paper });
   const iconBackgroundColour = getTripItemColour(item.type);
 
   const renderUrls = (urls: Record<string, string>): JSX.Element => (
@@ -107,7 +118,9 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                   : "View on Google Maps"
               }
             >
-              {(item as TripItineraryTravelItem).originLocation} to
+              <strong>From</strong>{" "}
+              {(item as TripItineraryTravelItem).originLocation}{" "}
+              <strong>to</strong>
               {" " + (item as TripItineraryTravelItem).destinationLocation}
             </Link>
           </Typography>
@@ -277,6 +290,15 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                     </time>
                   </>
                 )}
+                {` \u30fb ${
+                  item.type &&
+                  ![
+                    TripItemType["Other Activity"],
+                    TripItemType["Other Mode of Transport"],
+                  ].includes(item.type)
+                    ? getTripItemTypeLabel(item.type)
+                    : "Other"
+                }`}
               </Typography>
               {renderItemText(item)}
             </CardContent>

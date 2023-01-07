@@ -3,8 +3,7 @@ import { Button } from "@mui/material";
 
 import { TripItemType } from "../../types/TripItemType";
 import styles from "./styles.module.css";
-import { getTripItemIcon } from "../../helpers/tripItems";
-import { getEnumKeyByEnumValue } from "../../helpers/enums";
+import { getTripItemIcon, getTripItemTypeLabel } from "../../helpers/tripItems";
 
 interface Props {
   item: TripItemType;
@@ -15,7 +14,7 @@ interface Props {
 /** A button representing a specific itinerary item, for the EmptyTripCard */
 const TripItemTypeCard = ({ item, onClick }: Props) => {
   const Icon = () => getTripItemIcon(item);
-  const friendlyName = getEnumKeyByEnumValue(TripItemType, item);
+  const friendlyName = getTripItemTypeLabel(item);
 
   return (
     <Button

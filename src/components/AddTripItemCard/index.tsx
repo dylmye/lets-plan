@@ -11,11 +11,13 @@ export interface AddTripItemCardProps {
     date?: string | null;
   };
   tripDetails?: TripDetails;
+  showCancel?: boolean;
+  onCancel?: () => void;
 }
 
 const AddTripItemCard = (props: AddTripItemCardProps) => (
   <Card>
-    <CardContent>
+    <CardContent sx={{ paddingBottom: 16 }}>
       <AddTripItemCardContents {...props} />
     </CardContent>
   </Card>

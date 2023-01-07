@@ -159,10 +159,10 @@ const tripSlice = createSlice({
 
         const { category, ...filteredPayload } = payload;
 
-        const newTripItem: TripItineraryItemBase = {
+        let newTripItem: TripItineraryItemBase = {
           startsAtTimezone: 'Europe/London', // @TODO: custom tz
           ...filteredPayload,
-          title: filteredPayload?.title ?? getTripItemTypeLabel(filteredPayload.type)
+          title: filteredPayload?.title || getTripItemTypeLabel(filteredPayload.type),
         };
 
         const items: TripItineraryItemBase[] = [

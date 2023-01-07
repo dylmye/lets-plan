@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
+  Collapse,
   Divider,
   IconButton,
   Skeleton,
@@ -14,7 +15,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { Add, FilterAlt } from "@mui/icons-material";
+import {
+  Add,
+  // FilterAlt,
+ } from "@mui/icons-material";
 
 import styles from "./styles.module.css";
 import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
@@ -27,6 +31,7 @@ import TripItineraryItem from "../../components/TripItineraryItem";
 import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
+import AddTripItemCard from "../../components/AddTripItemCard";
 
 interface TripDetailsProps {
   /** In edit mode? */
@@ -37,14 +42,17 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
   const [trip, loading] = useSelectTripById(tripId as string);
+  const [activeAddTripItemCardDay, setActiveTripItemCardDay] = useState<
+    string | undefined | null
+  >(null);
 
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
   const tripIsExample = tripId === "example";
 
-  const renderTripItem = (item: TripItineraryItemBase) => (
-    <TripItineraryItem item={item} key={item.startsAt} />
+  const renderTripItem = (item: TripItineraryItemBase): JSX.Element => (
+    <TripItineraryItem item={item} key={`trip-item-${item.startsAt}-${item.type}`} />
   );
 
   const xsItemHeaderStyles: SxProps<Theme> = {
@@ -55,7 +63,10 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     backgroundColor: "background.default",
   };
 
-  const renderItemDay = (day: string, items: TripItineraryItemBase[]) => (
+  const renderItemDay = (
+    day: string,
+    items: TripItineraryItemBase[]
+  ): JSX.Element => (
     <Container key={day} disableGutters>
       <Box
         className={styles.itemDayHeaderContainer}
@@ -73,19 +84,44 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         <Stack direction="row" spacing={1}>
           {!tripIsExample && (
             <Tooltip title="Add to day">
-              <IconButton aria-label="Add an item this day">
+              <IconButton
+                aria-label="Add an item this day"
+                onClick={() =>
+                  setActiveTripItemCardDay(
+                    activeAddTripItemCardDay !== day ? day : null
+                  )
+                }
+              >
                 <Add fontSize="inherit" />
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip title="Filter day">
+          {/* <Tooltip title="Filter day">
             <IconButton aria-label="Filter the items in this day">
               <FilterAlt fontSize="inherit" />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Stack>
       </Box>
       <Stack spacing={2}>
+        <Collapse
+          in={activeAddTripItemCardDay === day}
+          key={`add-trip-item-card-${day}`}
+          unmountOnExit
+        >
+          <AddTripItemCard
+            initialValues={{ date: day }}
+            tripDetails={{
+              id: trip?.id,
+              title: trip?.title as string,
+              location: trip?.location,
+              startsAt: trip?.startsAt as string,
+              endsAt: trip?.endsAt as string,
+            }}
+            showCancel
+            onCancel={() => setActiveTripItemCardDay(null)}
+          />
+        </Collapse>
         {items
           .sort((a, b) => dateCompare(a.startsAt, b.startsAt))
           .map(renderTripItem)}

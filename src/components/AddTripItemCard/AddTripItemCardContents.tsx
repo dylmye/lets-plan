@@ -26,6 +26,7 @@ import AutocompleteField from "../fields/AutocompleteField";
 import {
   getTripItemIcon,
   getTripItemTypeLabel,
+  locationFieldSettings,
   renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";
@@ -38,6 +39,8 @@ import { addTripItemByTripId } from "../../features/tripList/tripSlice";
 const AddTripItemCardContents = ({
   initialValues,
   tripDetails,
+  showCancel = false,
+  onCancel,
 }: AddTripItemCardProps) => {
   const dispatch = useAppDispatch();
   const currentTheme = useAppSelector(selectThemeMode);
@@ -56,7 +59,8 @@ const AddTripItemCardContents = ({
     ),
   };
 
-  const fieldIsRequired = (value: string): string | null => !value ? 'This field is required' : null;
+  const fieldIsRequired = (value: string): string | null =>
+    !value ? "This field is required" : null;
 
   return (
     <Formik<TripItemDraft>
@@ -64,16 +68,27 @@ const AddTripItemCardContents = ({
         category: TravelTypes.includes(initialValues.type as TripItemType)
           ? "travel"
           : "activity",
-        type: initialValues.type as TripItemType,
-        startsAt: initialValues.date as string,
+        type: (initialValues.type as TripItemType) ?? null,
         title: "",
+        startsAt: initialValues.date as string,
+        endsAt: null,
       }}
       onSubmit={(values) => {
         if (!tripDetails?.id) {
           console.error("Couldn't add trip item, no trip id specified");
           return;
-        };
-        dispatch(addTripItemByTripId({ ...values, id: tripDetails.id }))
+        }
+
+        dispatch(
+          addTripItemByTripId({
+            ...values,
+            id: tripDetails.id,
+            startsAt: dayjs(values.startsAt).format(),
+            endsAt: values.endsAt && dayjs(values.endsAt).format(),
+          })
+        );
+
+        onCancel && onCancel();
       }}
       // validationSchema={validationSchema} We can't use validation here because the type is a dictionary (to allow extra fields)
     >
@@ -155,19 +170,23 @@ const AddTripItemCardContents = ({
                     validate={fieldIsRequired}
                   />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Field
-                    component={DateTimePicker}
-                    label="Finishes At"
-                    name="endsAt"
-                    textField={{
-                      helperText: values.category === "activity" && "Optional",
-                      fullWidth: true,
-                    }}
-                    minDate={values.startsAt && dayjs(values.startsAt)}
-                    maxDate={dayjs(tripDetails?.endsAt)}
-                  />
-                </Grid>
+                {locationFieldSettings(values.type).hasEndsAt && (
+                  <Grid item xs={12} md={6}>
+                    <Field
+                      component={DateTimePicker}
+                      label="Finishes At"
+                      name="endsAt"
+                      textField={{
+                        helperText:
+                          values.category === "activity" && "Optional",
+                        fullWidth: true,
+                      }}
+                      defaultCalendarMonth={dayjs(values.startsAt)}
+                      minDate={values.startsAt && dayjs(values.startsAt)}
+                      maxDate={dayjs(tripDetails?.endsAt)}
+                    />
+                  </Grid>
+                )}
                 <Grid item xs={12}>
                   <Divider flexItem />
                 </Grid>
@@ -179,12 +198,9 @@ const AddTripItemCardContents = ({
                         ? "originLocation"
                         : "location"
                     }
-                    label={
-                      values.category === "travel"
-                        ? "Starting Location"
-                        : "Location"
-                    }
+                    label={locationFieldSettings(values.type).originLocationLabel ?? "Location"}
                     inputProps={googleAttributionHelperText}
+                    autocompletionRequest={values.type === TripItemType.Plane && { types: ["airport"] }}
                   />
                 </Grid>
                 {values.category === "travel" && (
@@ -192,7 +208,7 @@ const AddTripItemCardContents = ({
                     <Field
                       component={GooglePlacesAutocompleteField}
                       name="destinationLocation"
-                      label="Ending Location"
+                      label={locationFieldSettings(values.type).destinationLocationLabel}
                       inputProps={googleAttributionHelperText}
                     />
                   </Grid>
@@ -210,7 +226,22 @@ const AddTripItemCardContents = ({
               ))}
           </Grid>
           <CardActions sx={{ justifyContent: "right" }}>
-            <Button type="submit" variant="contained" disabled={isSubmitting}>
+            {showCancel && onCancel && (
+              <Button
+                variant="contained"
+                color="secondary"
+                disabled={isSubmitting}
+                onClick={() => onCancel()}
+              >
+                Cancel
+              </Button>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isSubmitting}
+              color="primary"
+            >
               Add to trip
             </Button>
           </CardActions>

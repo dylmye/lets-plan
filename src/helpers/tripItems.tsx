@@ -24,14 +24,15 @@ import {
 } from "@mui/icons-material";
 import { SvgIconProps } from "@mui/material";
 import { Field } from "formik";
-import { Switch, TextField } from "formik-mui";
+import { TextField } from "formik-mui";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import { COLOURS } from "./colours";
-import { TripItemType } from "../types/TripItemType";
+import { TravelTypes, TripItemType } from "../types/TripItemType";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import TripItineraryItemBase from "../types/TripItineraryItemBase";
 import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
+import BetterSwitchField from "../components/fields/BetterSwitchField";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -145,7 +146,6 @@ export const getTripItemTypeLabel = (t: TripItemType): string =>
 
 /**
  * An object of types with their extra fields. The field type is either 'text' (TextField), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
- * - connected-dropdown:airport - a list of airports with english name and ICAO/IATA codes
  * - connected-dropdown:airline - a list of airliners with english name and ICAO/IATA codes
  * - connected-dropdown:places - google maps places api
  * You can also use 'optional-dropdown:x,y,z' to allow users to select one of your options, or enter their own.
@@ -157,8 +157,6 @@ export const tripItemExtraFields: Record<
   [TripItemType.Plane]: {
     flightDesignator: "text",
     airline: "connected-dropdown:airline",
-    originAirport: "connected-dropdown:airport",
-    destinationAirport: "connected-dropdown:airport",
   },
   [TripItemType.Ferry]: {
     ferryOperator: "text",
@@ -210,6 +208,36 @@ export const tripItemExtraFields: Record<
   [TripItemType["Other Activity"]]: {},
 };
 
+/** Determine settings for startsAt/endsAt fields for the given type */
+export const locationFieldSettings = (type: TripItemType): { hasEndsAt: boolean, originLocationLabel?: string; destinationLocationLabel?: string; } => {
+  // for some activities: no ends at
+  const hasEndsAt = ![TripItemType["Meet-up"], TripItemType.Note].includes(type);
+  let originLocationLabel: string;
+  let destinationLocationLabel: string;
+
+  switch (type) {
+    case TripItemType.Plane: {
+      originLocationLabel = "Origin Airport";
+      destinationLocationLabel = "Destination Airport";
+      break;
+    }
+    case TripItemType["Car Rental"]: {
+      originLocationLabel = "Pickup Location";
+      destinationLocationLabel = "Destination";
+      break;
+    }
+    default:
+      originLocationLabel = TravelTypes.includes(type) ? "Starting Location" : "Location";
+      destinationLocationLabel = "Ending Location";
+  }
+
+  return {
+    hasEndsAt,
+    originLocationLabel,
+    destinationLocationLabel,
+  }
+};
+
 const fieldNameToLabel = (name: string): string => {
   const result = name.replace(/([A-Z]{1,})/g, " $1");
   return result.charAt(0).toUpperCase() + result.slice(1);
@@ -230,9 +258,8 @@ export const renderExtraField = (
       return (
         <Field
           name={field}
+          component={BetterSwitchField}
           label={fieldNameToLabel(field)}
-          component={Switch}
-          type="checkbox"
         />
       );
     }
