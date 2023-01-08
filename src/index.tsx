@@ -5,7 +5,7 @@ import { SnackbarProvider } from "notistack";
 import { PersistGate } from "redux-persist/integration/react";
 import { CssBaseline } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { onServiceWorkerUpdate } from "@3m1/service-worker-updater";
 
 import "./index.css";

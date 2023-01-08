@@ -14,7 +14,8 @@ header a {
   transition: clip-path 275ms ease;
 }
 
-header a:hover span::before, header a:focus span::before {
+header a:hover span::before,
+header a:focus span::before {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   color: rgba(235, 228, 223, 1);
 }

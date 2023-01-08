@@ -23,7 +23,7 @@ startAppListening({
   matcher: isAnyOf(addTrip),
   effect: (action, _) => {
     if (action.type === `${SliceNames.TRIPS}/addTrip`) {
-      analytics.track('trip_created');
+      analytics.track("trip_created");
     }
   },
 });

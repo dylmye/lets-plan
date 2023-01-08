@@ -3,7 +3,7 @@ import { Card, CardContent } from "@mui/material";
 
 import AddTripItemCardContents from "./AddTripItemCardContents";
 import { TripItemType } from "../../types/TripItemType";
-import TripDetails from '../../types/TripDetails';
+import TripDetails from "../../types/TripDetails";
 
 export interface AddTripItemCardProps {
   initialValues: {

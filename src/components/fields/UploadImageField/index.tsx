@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FieldProps } from "formik";
-import { isMobile } from 'react-device-detect';
+import { isMobile } from "react-device-detect";
 
 import styles from "./styles.module.css";
 

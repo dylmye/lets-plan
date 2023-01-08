@@ -39,8 +39,22 @@ const VerifyField = forwardRef<HCaptcha, FieldProps<string>>(
         />
         <Typography variant="caption">
           This site is protected by hCaptcha and its{" "}
-          <Link href="https://www.hcaptcha.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</Link> and{" "}
-          <Link href="https://www.hcaptcha.com/terms" target="_blank" rel="noreferrer">Terms of Service</Link> apply.
+          <Link
+            href="https://www.hcaptcha.com/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy Policy
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="https://www.hcaptcha.com/terms"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Terms of Service
+          </Link>{" "}
+          apply.
         </Typography>
       </>
     );

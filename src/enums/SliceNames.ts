@@ -1,8 +1,8 @@
 enum SliceNames {
-  TRIPS = 'trips',
-  SUGGESTIONS = 'suggestions',
-  THEME = 'theme',
-  AUTH = 'auth'
+  TRIPS = "trips",
+  SUGGESTIONS = "suggestions",
+  THEME = "theme",
+  AUTH = "auth",
 }
 
 export default SliceNames;

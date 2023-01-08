@@ -23,7 +23,10 @@ import {
   convertTripItemDocuments,
 } from "../../helpers/converters";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
-import { getTripItemTypeLabel, groupTripItemsByDay } from "../../helpers/tripItems";
+import {
+  getTripItemTypeLabel,
+  groupTripItemsByDay,
+} from "../../helpers/tripItems";
 import Trip from "../../types/Trip";
 import TripDraft from "../../types/TripDraft";
 import { TripItemType } from "../../types/TripItemType";
@@ -119,7 +122,9 @@ const tripsAdapter = createEntityAdapter<Trip>({
   sortComparer: (a, b) => dateCompare(a.startsAt, b.startsAt),
 });
 
-export const addTripItemByTripId = createAction<{ id: EntityId } & TripItemDraft>('trips/addTripItemByTripId');
+export const addTripItemByTripId = createAction<
+  { id: EntityId } & TripItemDraft
+>("trips/addTripItemByTripId");
 
 const tripSlice = createSlice({
   name,
@@ -153,25 +158,25 @@ const tripSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(addTripItemByTripId, (state, { payload }) => {
-        if (!payload?.id) return;
+    builder.addCase(addTripItemByTripId, (state, { payload }) => {
+      if (!payload?.id) return;
 
-        const { category, ...filteredPayload } = payload;
+      const { category, ...filteredPayload } = payload;
 
-        let newTripItem: TripItineraryItemBase = {
-          startsAtTimezone: 'Europe/London', // @TODO: custom tz
-          ...filteredPayload,
-          title: filteredPayload?.title || getTripItemTypeLabel(filteredPayload.type),
-        };
+      let newTripItem: TripItineraryItemBase = {
+        startsAtTimezone: "Europe/London", // @TODO: custom tz
+        ...filteredPayload,
+        title:
+          filteredPayload?.title || getTripItemTypeLabel(filteredPayload.type),
+      };
 
-        const items: TripItineraryItemBase[] = [
-          ...(state.entities[payload.id]?.items || []),
-          newTripItem,
-        ];
+      const items: TripItineraryItemBase[] = [
+        ...(state.entities[payload.id]?.items || []),
+        newTripItem,
+      ];
 
-        tripsAdapter.updateOne(state, { id: payload.id, changes: { items } })
-      })
+      tripsAdapter.updateOne(state, { id: payload.id, changes: { items } });
+    });
   },
 });
 

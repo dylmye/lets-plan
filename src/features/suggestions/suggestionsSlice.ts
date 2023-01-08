@@ -23,8 +23,8 @@ export const suggestionsSlice = createSlice({
     setCollapsed: (state, { payload }: PayloadAction<boolean>) => {
       return {
         ...state,
-        collapsed: payload
-      }
+        collapsed: payload,
+      };
     },
   },
 });

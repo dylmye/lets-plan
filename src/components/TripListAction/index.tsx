@@ -5,11 +5,11 @@ import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import styles from "./styles.module.css";
 
 export enum TripListActions {
-  'ACTION_ADD'
+  "ACTION_ADD",
 }
 
 const actionLabels: Record<TripListActions, string> = {
-  [TripListActions.ACTION_ADD]: 'Add Trip',
+  [TripListActions.ACTION_ADD]: "Add Trip",
 };
 
 const actionIcons: Record<TripListActions, JSX.Element> = {
@@ -22,11 +22,22 @@ export interface TripListActionProps {
 }
 
 const TripListAction = ({ onClick, actionType }: TripListActionProps) => (
-  <Card key="card-add" className={styles.tripListActionCard} sx={{ borderColor: "palette.text.secondary" }}>
+  <Card
+    key="card-add"
+    className={styles.tripListActionCard}
+    sx={{ borderColor: "palette.text.secondary" }}
+  >
     <CardActionArea onClick={onClick}>
       <CardContent>
-        <Typography variant="h4" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          {actionIcons[actionType]} {actionLabels[actionType] ?? 'Click Here'}
+        <Typography
+          variant="h4"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {actionIcons[actionType]} {actionLabels[actionType] ?? "Click Here"}
         </Typography>
       </CardContent>
     </CardActionArea>

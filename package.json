@@ -79,7 +79,10 @@
   "resolutions": {
     "mini-css-extract-plugin": "2.4.5"
   },
+  "prettier": {
+    "singleQuote": false
+  },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,ts,tsx,json,html}": "prettier --write"
   }
 }

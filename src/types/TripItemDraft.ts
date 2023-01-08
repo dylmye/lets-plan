@@ -2,7 +2,7 @@ import { TripItemType } from "./TripItemType";
 
 export default interface TripItemDraft {
   /** General category of itemTypes */
-  category: 'travel' | 'activity';
+  category: "travel" | "activity";
   type: TripItemType;
   title?: string;
   details?: string;

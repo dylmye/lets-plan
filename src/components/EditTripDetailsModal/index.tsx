@@ -37,10 +37,12 @@ const EditTripDetailsModal = ({
   const { title, location, startsAt, endsAt } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
-    dispatch(updateTripById({
-      ...values,
-      id
-    }));
+    dispatch(
+      updateTripById({
+        ...values,
+        id,
+      })
+    );
     props.onClose();
   };
 

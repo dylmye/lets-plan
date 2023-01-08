@@ -9,7 +9,8 @@
   justify-content: center;
 }
 
-.tripItemText, .tripItemTitle {
+.tripItemText,
+.tripItemTitle {
   text-align: left;
 }
 
@@ -18,7 +19,7 @@
 }
 
 .tripItemIcon {
-  margin-right: .25rem;
+  margin-right: 0.25rem;
   vertical-align: text-top;
   margin-top: 2px;
 }

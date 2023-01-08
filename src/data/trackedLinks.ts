@@ -8,7 +8,8 @@ const trackedLinks: (TrackedLinkAlertProps & { key: string })[] = [
    */
   {
     key: "tiquets-20220506",
-    description: "Book mobile tickets for museums, shows and attractions and skip the lines.",
+    description:
+      "Book mobile tickets for museums, shows and attractions and skip the lines.",
     linkText: "Tiqets makes culture more accessible.",
     link: "https://tp.media/r?marker=361923&trs=169273&p=2074&u=https%3A%2F%2Ftiqets.com",
   },

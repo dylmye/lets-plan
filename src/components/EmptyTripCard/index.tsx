@@ -9,7 +9,7 @@ import {
 import TripItemTypeCard from "../TripItemTypeCard";
 import styles from "./styles.module.css";
 import AddTripItemCardContents from "../AddTripItemCard/AddTripItemCardContents";
-import TripDetails from '../../types/TripDetails';
+import TripDetails from "../../types/TripDetails";
 
 /** Combined display for trips with no items */
 const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {

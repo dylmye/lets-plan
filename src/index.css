@@ -1,12 +1,12 @@
 /** https://colorhunt.co/palette/fff8f3a3e4db1c6dd0fed1ef **/
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Paytone+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Paytone+One&display=swap");
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 ::selection {
-  background-color: #A3E4DB;
+  background-color: #a3e4db;
 }

@@ -57,6 +57,6 @@ We receive the above information from you when you:
 
 ## How do we store that information?
 
-* All offline data, like trips not connected to an account, is stored on your device using [IndexedDB technology](https://developer.mozilla.org/docs/Web/API/IndexedDB_API/Basic_Terminology), that only lets the _Let's Plan_ website access it.
-* All trips linked to an account are stored securely (encrypted and access restricted) on Google servers.
-* All other data is stored according to the privacy policies of the relevant partners.
+- All offline data, like trips not connected to an account, is stored on your device using [IndexedDB technology](https://developer.mozilla.org/docs/Web/API/IndexedDB_API/Basic_Terminology), that only lets the _Let's Plan_ website access it.
+- All trips linked to an account are stored securely (encrypted and access restricted) on Google servers.
+- All other data is stored according to the privacy policies of the relevant partners.

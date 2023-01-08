@@ -1,7 +1,7 @@
-declare module 'redux-persist-indexeddb-storage' {
+declare module "redux-persist-indexeddb-storage" {
   import { Storage } from "redux-persist";
 
   export default function (dbName: string): {
-    db: any
+    db: any;
   } & Storage;
-};
+}

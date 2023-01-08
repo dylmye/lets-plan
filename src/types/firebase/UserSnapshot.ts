@@ -1,4 +1,4 @@
-import { Timestamp, DocumentData } from 'firebase/firestore';
+import { Timestamp, DocumentData } from "firebase/firestore";
 
 export default interface UserSnapshot extends DocumentData {
   userSchemaRevision: 1;
