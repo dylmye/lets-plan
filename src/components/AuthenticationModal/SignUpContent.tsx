@@ -142,8 +142,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
             captchaRef.current.resetCaptcha();
           }
         }}
-        validationSchema={validationSchema}
-      >
+        validationSchema={validationSchema}>
         <Form className={styles.formFieldsContainer}>
           {!!emailErrors && (
             <Alert severity="error">
@@ -184,8 +183,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
           <Button
             type="submit"
             variant="contained"
-            disabled={emailSignupLoading}
-          >
+            disabled={emailSignupLoading}>
             Register
           </Button>
           <Field component={VerifyField} name="verify" />

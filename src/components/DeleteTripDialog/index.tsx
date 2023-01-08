@@ -42,8 +42,7 @@ const DeleteTripDialog = ({
       open={visible}
       onClose={onClose}
       aria-labelledby="delete-trip-dialog-title"
-      aria-describedby="delete-trip-dialog-description"
-    >
+      aria-describedby="delete-trip-dialog-description">
       <DialogTitle id="delete-trip-dialog-title">Delete This Trip?</DialogTitle>
       <DialogContent>
         <DialogContentText id="reset-dialog-description">

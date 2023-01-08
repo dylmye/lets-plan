@@ -155,8 +155,7 @@ const AddTripModal = (props: ModalProps) => {
     <Modal
       {...props}
       onClose={onModalClose}
-      aria-labelledby="modal-addtrip-title"
-    >
+      aria-labelledby="modal-addtrip-title">
       <Box sx={dialogStyle}>
         <Typography variant="h5">
           <strong id="modal-addtrip-title">Add A Trip</strong>
@@ -172,8 +171,7 @@ const AddTripModal = (props: ModalProps) => {
             coverImageBlob: null,
           }}
           onSubmit={onFormSubmit}
-          validationSchema={validationSchema}
-        >
+          validationSchema={validationSchema}>
           <Form>
             {formError && <Alert severity="error">{formError}</Alert>}
             {renderFormStep()}

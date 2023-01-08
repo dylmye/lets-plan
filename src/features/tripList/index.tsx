@@ -47,8 +47,7 @@ const TripList = () => {
               <Typography
                 key="header-no-current-items"
                 variant="h4"
-                sx={{ marginY: 4 }}
-              >
+                sx={{ marginY: 4 }}>
                 Add a trip to get started :&#41;
               </Typography>
             ) : null}
@@ -65,8 +64,7 @@ const TripList = () => {
           <Typography
             key="header-past-trips"
             variant="h4"
-            sx={{ fontWeight: "bold", marginTop: 6, marginBottom: 2 }}
-          >
+            sx={{ fontWeight: "bold", marginTop: 6, marginBottom: 2 }}>
             Past Trips
           </Typography>
           <Stack spacing={2}>

@@ -74,15 +74,13 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     <Container key={day} disableGutters>
       <Box
         className={styles.itemDayHeaderContainer}
-        sx={!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}}
-      >
+        sx={!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}}>
         <Typography
           variant="h5"
           sx={{
             fontWeight: "bold",
             textAlign: "left",
-          }}
-        >
+          }}>
           <time dateTime={day}>{formatDate(day, "long")}</time>
         </Typography>
         <Stack direction="row" spacing={1}>
@@ -94,8 +92,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
                   setActiveTripItemCardDay(
                     activeAddTripItemCardDay !== day ? day : null
                   )
-                }
-              >
+                }>
                 <Add fontSize="inherit" />
               </IconButton>
             </Tooltip>
@@ -111,8 +108,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         <Collapse
           in={activeAddTripItemCardDay === day}
           key={`add-trip-item-card-${day}`}
-          unmountOnExit
-        >
+          unmountOnExit>
           <AddTripItemCard
             initialValues={{ date: day }}
             tripDetails={{
@@ -205,8 +201,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
                 fontWeight: "bold",
                 marginBottom: 2,
                 color: titleBackgroundImageStyle && COLOURS.white,
-              }}
-            >
+              }}>
               {trip?.title}
             </Typography>
             {trip?.id && !tripIsExample && <TripDetailsAction id={trip.id} />}
@@ -217,8 +212,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
               fontWeight: "bold",
               marginBottom: 2,
               color: titleBackgroundImageStyle && COLOURS.white,
-            }}
-          >
+            }}>
             {trip?.startsAt ? (
               <time dateTime={trip.startsAt}>
                 {formatDate(trip.startsAt, "long", false)}

@@ -80,8 +80,7 @@ const UserNavbarItem = ({
             authenticated
               ? "Access your settings"
               : "Access settings and login/signup options"
-          }
-        >
+          }>
           {authenticated ? (
             <AccountCircle fontSize="inherit" htmlColor="#fff" />
           ) : (
@@ -97,15 +96,13 @@ const UserNavbarItem = ({
         keepMounted
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={!!anchor}
-        onClose={() => onToggle()}
-      >
+        onClose={() => onToggle()}>
         {user?.displayName && (
           <Typography
             variant="overline"
             fontWeight="bold"
             key="menu-user-item_displayname"
-            sx={{ marginLeft: 2 }}
-          >
+            sx={{ marginLeft: 2 }}>
             {user.displayName}
           </Typography>
         )}
@@ -144,8 +141,7 @@ const UserNavbarItem = ({
             sx={{ display: "flex", flexDirection: "column" }}
             onClick={() =>
               window?.open("https://dylmye.me/?ref=lp", "_blank")?.focus()
-            }
-          >
+            }>
             <small>
               {process.env.REACT_APP_RELEASE_VERSION ?? "unknown"} -{" "}
               {process.env.NODE_ENV ?? "unknown"}

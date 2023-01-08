@@ -26,8 +26,7 @@ const ResetAppDialog = ({
     open={visible}
     onClose={onClose}
     aria-labelledby="reset-dialog-title"
-    aria-describedby="reset-dialog-description"
-  >
+    aria-describedby="reset-dialog-description">
     <DialogTitle id="reset-dialog-title">Reset The App?</DialogTitle>
     <DialogContent>
       <DialogContentText id="reset-dialog-description">

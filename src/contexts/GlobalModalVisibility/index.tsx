@@ -72,8 +72,7 @@ const GlobalModalVisibility: React.FC = ({ children }) => {
         setTrip,
         deleteTrip,
         setDeleteTrip,
-      }}
-    >
+      }}>
       {children}
     </GlobalModalVisibilityContext.Provider>
   );

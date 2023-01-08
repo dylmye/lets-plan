@@ -114,8 +114,7 @@ const AddTripItemCardContents = ({
                       setFieldValue("type", null);
                     }
                   }}
-                  disabled={isSubmitting}
-                >
+                  disabled={isSubmitting}>
                   <ToggleButton value="travel">Travel</ToggleButton>
                   <ToggleButton value="activity">Activity</ToggleButton>
                 </Field>
@@ -133,8 +132,7 @@ const AddTripItemCardContents = ({
                     <Box
                       component="li"
                       sx={{ "& > svg": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
+                      {...props}>
                       {getTripItemIcon(option)}
                       {getTripItemTypeLabel(option)}
                     </Box>
@@ -230,8 +228,7 @@ const AddTripItemCardContents = ({
                     item
                     xs={12}
                     md={6}
-                    key={`extra-field-griditem-${field}`}
-                  >
+                    key={`extra-field-griditem-${field}`}>
                     {renderExtraField(
                       field,
                       tripItemExtraFields[values.type][field]
@@ -245,8 +242,7 @@ const AddTripItemCardContents = ({
                   variant="contained"
                   color="secondary"
                   disabled={isSubmitting}
-                  onClick={() => onCancel()}
-                >
+                  onClick={() => onCancel()}>
                   Cancel
                 </Button>
               )}
@@ -254,8 +250,7 @@ const AddTripItemCardContents = ({
                 type="submit"
                 variant="contained"
                 disabled={isSubmitting}
-                color="primary"
-              >
+                color="primary">
                 Add to trip
               </Button>
             </CardActions>

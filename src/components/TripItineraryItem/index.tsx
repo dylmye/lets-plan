@@ -116,8 +116,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                 item.type === TripItemType.Taxi
                   ? "Ride there with Uber"
                   : "View on Google Maps"
-              }
-            >
+              }>
               <strong>From</strong>{" "}
               {(item as TripItineraryTravelItem).originLocation}{" "}
               <strong>to</strong>
@@ -173,8 +172,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                 )}
                 target="_blank"
                 rel="noreferrer"
-                title="View on Google Maps"
-              >
+                title="View on Google Maps">
                 {(item as TripItineraryActivityItem)?.location}
               </Link>
             </Typography>
@@ -193,8 +191,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
                   (item as TripItineraryActivityItem).location
                 )}
                 target="_blank"
-                rel="noreferrer"
-              >
+                rel="noreferrer">
                 View on Google Maps
               </Link>
             </Typography>
@@ -249,8 +246,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
               width: 64,
               height: 64,
               backgroundColor: iconBackgroundColour,
-            }}
-          >
+            }}>
             <Icon />
           </Paper>
         </Box>
@@ -263,8 +259,7 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
               xs: 2,
               sm: 0,
             },
-          }}
-        >
+          }}>
           <Box>
             <CardContent>
               <Typography variant="body2" className={styles.tripItemText}>

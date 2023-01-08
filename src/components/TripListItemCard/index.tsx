@@ -34,13 +34,11 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
         backgroundPosition: "50%",
       }}
       component={Link}
-      to={`/trip/${trip.id}`}
-    >
+      to={`/trip/${trip.id}`}>
       <Box
         className={`${styles.tripListTextContent} ${
           trip.image ? styles.tripListTextOverImage : ""
-        }`}
-      >
+        }`}>
         <CardHeader
           title={trip.title}
           titleTypographyProps={{
@@ -60,15 +58,13 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
           }}
           classes={{
             root: styles.cardContentPaddingOverride,
-          }}
-        >
+          }}>
           <Box className={styles.tripListDetails}>
             {trip.location && (
               <Typography
                 variant="body2"
                 textAlign="left"
-                className={styles.tripListLocationText}
-              >
+                className={styles.tripListLocationText}>
                 <Place fontSize="small" className={styles.tripListTextIcon} />
                 {trip.location}
               </Typography>
@@ -78,23 +74,20 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
                 <Typography
                   variant="body2"
                   textAlign="left"
-                  sx={{ display: { xs: "none", sm: "block" } }}
-                >
+                  sx={{ display: { xs: "none", sm: "block" } }}>
                   {formatDate(trip.startsAt, "long", false)} -{" "}
                   {trip.endsAt ? formatDate(trip.endsAt, "long", false) : ""}
                 </Typography>
                 <Typography
                   variant="body2"
                   textAlign="left"
-                  sx={{ display: { xs: "block", sm: "none" } }}
-                >
+                  sx={{ display: { xs: "block", sm: "none" } }}>
                   {formatDate(trip.startsAt, "short", false)} -{" "}
                   {trip.endsAt ? formatDate(trip.endsAt, "short", false) : ""}
                 </Typography>
                 <Typography
                   variant="body2"
-                  textAlign={trip.location ? "right" : "left"}
-                >
+                  textAlign={trip.location ? "right" : "left"}>
                   {formatDaysUntil(trip.startsAt, now)}
                 </Typography>
               </Box>

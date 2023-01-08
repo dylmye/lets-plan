@@ -49,8 +49,7 @@ const SuggestionsCard = () => {
               isCollapsed ? "Open" : "Collapse"
             } the Suggestions section`}
             size="medium"
-            onClick={onToggleCollapse}
-          >
+            onClick={onToggleCollapse}>
             {isCollapsed ? (
               <Tooltip title="Open">
                 <ArrowDropDown fontSize="inherit" />
@@ -71,8 +70,7 @@ const SuggestionsCard = () => {
             </Box>
             <Typography
               variant="caption"
-              className={styles.emptyTripSuggestionSubtitle}
-            >
+              className={styles.emptyTripSuggestionSubtitle}>
               <em>Let's Plan</em> earns a small commission if you buy anything
               through the above links.{" "}
               <StyledLink to="/sponsored-links">Learn more</StyledLink>.

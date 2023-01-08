@@ -91,8 +91,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
         onSubmit={async ({ email, password }) => {
           signInWithEmailAndPassword(email, password);
         }}
-        validationSchema={validationSchema}
-      >
+        validationSchema={validationSchema}>
         <Form className={styles.formFieldsContainer}>
           {!!emailErrors && (
             <Alert severity="error">
@@ -114,8 +113,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
           <Button
             type="submit"
             variant="contained"
-            disabled={emailSignInLoading}
-          >
+            disabled={emailSignInLoading}>
             Login
           </Button>
         </Form>

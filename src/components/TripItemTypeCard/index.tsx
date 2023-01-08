@@ -26,8 +26,7 @@ const TripItemTypeCard = ({ item, onClick }: Props) => {
         textTransform: "capitalize",
         color: "#ffffff",
         borderColor: "#ffffff",
-      }}
-    >
+      }}>
       {friendlyName ?? item}
     </Button>
   );

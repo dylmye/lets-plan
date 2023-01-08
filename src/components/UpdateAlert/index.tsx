@@ -22,12 +22,10 @@ const UpdateAlert = ({
         <Button
           color="inherit"
           size="small"
-          onClick={onLoadNewServiceWorkerAccept}
-        >
+          onClick={onLoadNewServiceWorkerAccept}>
           Reload
         </Button>
-      }
-    >
+      }>
       Reload now to get the latest version of <em>Let's Plan</em>.
     </Alert>
   ) : null;

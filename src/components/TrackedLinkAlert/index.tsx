@@ -32,8 +32,7 @@ const TrackedLinkAlert = ({
         href={link}
         target="_blank"
         rel="noreferrer"
-        sx={{ color: themeMode === "dark" ? "#fff" : "#000" }}
-      >
+        sx={{ color: themeMode === "dark" ? "#fff" : "#000" }}>
         {linkText}
       </Link>
     </Alert>

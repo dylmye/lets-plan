@@ -59,14 +59,12 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
         keepMounted
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={!!anchorEl}
-        onClose={() => onButtonPress()}
-      >
+        onClose={() => onButtonPress()}>
         <MenuList disablePadding>
           <MenuItem
             key={`menu-trip-${id}-editdetails`}
             dense
-            onClick={() => onEditTrip()}
-          >
+            onClick={() => onEditTrip()}>
             <ListItemIcon>
               <Edit fontSize="inherit" />
             </ListItemIcon>
@@ -75,8 +73,7 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
           <MenuItem
             key={`menu-trip-${id}-delete`}
             dense
-            onClick={() => onDeleteTrip()}
-          >
+            onClick={() => onDeleteTrip()}>
             <ListItemIcon>
               <Delete fontSize="inherit" />
             </ListItemIcon>

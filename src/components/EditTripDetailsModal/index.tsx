@@ -59,8 +59,7 @@ const EditTripDetailsModal = ({
             startsAt,
             endsAt,
           }}
-          onSubmit={onFormSubmit}
-        >
+          onSubmit={onFormSubmit}>
           <Form className={styles.formFieldsContainer}>
             <Field
               component={TextField}

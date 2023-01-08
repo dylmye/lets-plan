@@ -42,16 +42,14 @@ const VerifyField = forwardRef<HCaptcha, FieldProps<string>>(
           <Link
             href="https://www.hcaptcha.com/privacy"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Privacy Policy
           </Link>{" "}
           and{" "}
           <Link
             href="https://www.hcaptcha.com/terms"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Terms of Service
           </Link>{" "}
           apply.

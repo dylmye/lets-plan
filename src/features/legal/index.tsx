@@ -36,8 +36,7 @@ const Legal = () => {
       <Typography
         variant="h4"
         className={styles.legalSubheader}
-        id="privacy--data-collected"
-      >
+        id="privacy--data-collected">
         Data Collected
       </Typography>
       <p>
@@ -69,24 +68,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in Europe (europe-west) and is governed by the{" "}
             <MuiLink
               href="https://cloud.google.com/terms/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Google Cloud Platform Terms of Service
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -102,24 +98,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Firebase Data Processing and Security Terms
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -135,16 +128,14 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             and is governed by the{" "}
             <MuiLink
               href="https://policies.google.com/privacy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Google Privacy Policy
             </MuiLink>
             .
@@ -164,16 +155,14 @@ const Legal = () => {
             <MuiLink
               href="https://www.imachines.com/about"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Intuition Machines, Inc.</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://www.hcaptcha.com/privacy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               hCaptcha Privacy Policy
             </MuiLink>
             .
@@ -189,16 +178,14 @@ const Legal = () => {
             <MuiLink
               href="https://docs.simpleanalytics.com/what-we-collect"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             . You can opt-out of this anonymous data analysis by{" "}
             <MuiLink
               href="https://allaboutdnt.com"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               enabling Do Not Track
             </MuiLink>{" "}
             in your browser.
@@ -207,16 +194,14 @@ const Legal = () => {
             <MuiLink
               href="https://simpleanalytics.com/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Simple Analytics</strong>
             </MuiLink>{" "}
             in the Netherlands and is governed by the{" "}
             <MuiLink
               href="https://docs.simpleanalytics.com/what-we-collect"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Privacy Policy
             </MuiLink>
             .
@@ -233,16 +218,14 @@ const Legal = () => {
             <MuiLink
               href="https://www.cloudflare.com/about-overview/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Cloudflare, Inc.</strong>
             </MuiLink>{" "}
             in the United States and Europe and is governed by the{" "}
             <MuiLink
               href="https://www.cloudflare.com/privacypolicy/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Cloudflare Privacy Policy
             </MuiLink>{" "}
             (wherein you apply as an "End User".)
@@ -281,8 +264,7 @@ const Legal = () => {
             <MuiLink
               href="https://www.awin.com/privacy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>AWIN Ltd</strong> or <strong>AWIN AG</strong>
             </MuiLink>
             , wherein you are an "End User" and The Service is a "Publisher",
@@ -290,8 +272,7 @@ const Legal = () => {
             <MuiLink
               href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Go Travel Un Limited</strong>
             </MuiLink>
             .
@@ -301,8 +282,7 @@ const Legal = () => {
       <Typography
         variant="h4"
         className={styles.legalSubheader}
-        id="privacy--if-you-have-an-account"
-      >
+        id="privacy--if-you-have-an-account">
         If You Have An Account
       </Typography>
       <p>
@@ -331,24 +311,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Firebase Data Processing and Security Terms
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -368,24 +345,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Firebase Data Processing and Security Terms
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -404,24 +378,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Firebase Data Processing and Security Terms
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -446,24 +417,21 @@ const Legal = () => {
             <MuiLink
               href="https://about.google"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               <strong>Google LLC</strong>
             </MuiLink>{" "}
             in the United States and is governed by the{" "}
             <MuiLink
               href="https://firebase.google.com/terms/data-processing-terms"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Firebase Data Processing and Security Terms
             </MuiLink>
             . More information available{" "}
             <MuiLink
               href="https://firebase.google.com/support/privacy#examples-end-user-data-processed-by-firebase"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               here
             </MuiLink>
             .
@@ -473,8 +441,7 @@ const Legal = () => {
       <Typography
         variant="h4"
         className={styles.legalSubheader}
-        id="privacy--access-and-deletion"
-      >
+        id="privacy--access-and-deletion">
         Access And Deletion
       </Typography>
       <p>
@@ -492,8 +459,7 @@ const Legal = () => {
         <MuiLink
           href="https://developer.chrome.com/docs/devtools/storage/indexeddb/#delete"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           this guide
         </MuiLink>{" "}
         on how to manually access and delete your local storage.
@@ -511,8 +477,7 @@ const Legal = () => {
             <MuiLink
               href="https://support.google.com/accounts/answer/3024190"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               consult this article
             </MuiLink>
             .
@@ -526,8 +491,7 @@ const Legal = () => {
             <MuiLink
               href="https://www.hcaptcha.com/privacy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               privacy policy
             </MuiLink>
             .
@@ -547,8 +511,7 @@ const Legal = () => {
             <MuiLink
               href="https://www.cloudflare.com/privacypolicy/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               privacy policy
             </MuiLink>
             .
@@ -561,8 +524,7 @@ const Legal = () => {
             <MuiLink
               href="https://www.awin.com/gb/privacy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               fair processing notice and privacy policy
             </MuiLink>
             .
@@ -576,8 +538,7 @@ const Legal = () => {
             <MuiLink
               href="https://support.travelpayouts.com/hc/en-us/articles/360004121052-Privacy-Policy"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               privacy policy
             </MuiLink>
             .

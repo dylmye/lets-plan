@@ -23,8 +23,7 @@ const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {
             <Grid
               container
               columnSpacing={2}
-              className={styles.tripListItemGrid}
-            >
+              className={styles.tripListItemGrid}>
               <Grid item xs={6}>
                 <Typography variant="h5" fontWeight="bold">
                   Travelling
