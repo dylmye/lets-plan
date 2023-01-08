@@ -18,7 +18,7 @@ import { useParams } from "react-router-dom";
 import {
   Add,
   // FilterAlt,
- } from "@mui/icons-material";
+} from "@mui/icons-material";
 
 import styles from "./styles.module.css";
 import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
@@ -32,6 +32,7 @@ import EmptyTripCard from "../../components/EmptyTripCard";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
 import AddTripItemCard from "../../components/AddTripItemCard";
+import TripDetailsAction from "../../components/TripDetailsAction";
 
 interface TripDetailsProps {
   /** In edit mode? */
@@ -52,7 +53,10 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const tripIsExample = tripId === "example";
 
   const renderTripItem = (item: TripItineraryItemBase): JSX.Element => (
-    <TripItineraryItem item={item} key={`trip-item-${item.startsAt}-${item.type}`} />
+    <TripItineraryItem
+      item={item}
+      key={`trip-item-${item.startsAt}-${item.type}`}
+    />
   );
 
   const xsItemHeaderStyles: SxProps<Theme> = {
@@ -194,16 +198,19 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         <TripHeaderPlaceholder />
       ) : (
         <Box sx={titleBackgroundImageStyle}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: "bold",
-              marginBottom: 2,
-              color: titleBackgroundImageStyle && COLOURS.white,
-            }}
-          >
-            {trip?.title}
-          </Typography>
+          <div className={styles.headerTextContainer}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: "bold",
+                marginBottom: 2,
+                color: titleBackgroundImageStyle && COLOURS.white,
+              }}
+            >
+              {trip?.title}
+            </Typography>
+            {trip?.id && !tripIsExample && <TripDetailsAction id={trip.id} />}
+          </div>
           <Typography
             variant="body1"
             sx={{

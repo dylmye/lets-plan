@@ -2,14 +2,14 @@ import React from "react";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
+import { Check } from "@mui/icons-material";
+import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
 import { updateTripById } from "../../features/tripList/tripSlice";
 import styles from "./styles.module.css";
-import { Check } from "@mui/icons-material";
-import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;

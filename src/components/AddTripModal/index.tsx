@@ -32,6 +32,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { addTrip } from "../../features/tripList/tripSlice";
 import ModalProps from "../../types/ModalProps";
 import { useOnlineStatus } from "../../contexts/OnlineStatus";
+import { useSnackbar } from "notistack";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",
@@ -47,6 +48,7 @@ const dialogStyle: SxProps<Theme> = {
 
 const AddTripModal = (props: ModalProps) => {
   const { online } = useOnlineStatus();
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
@@ -141,6 +143,7 @@ const AddTripModal = (props: ModalProps) => {
     setActiveStep(0);
     props.onClose();
     navigate(`/trip/${values.id}/edit`);
+    enqueueSnackbar("Trip created!");
   };
 
   const onModalClose = () => {

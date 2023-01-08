@@ -6,11 +6,18 @@
   padding: 1rem 0;
 }
 
-.tripItemPlaceholder, .tripDayHeaderPlaceholder {
+.tripItemPlaceholder,
+.tripDayHeaderPlaceholder {
   border-radius: 4px;
   margin-bottom: 1rem;
 }
 
 .tripDayHeaderPlaceholder {
   font-size: 2.5rem;
+}
+
+.headerTextContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

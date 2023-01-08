@@ -5,8 +5,4 @@ export default interface FlightItem extends TripItineraryTravelItem {
   flightDesignator?: string;
   /** The name of the business selling the flight */
   airline?: string;
-  /** The three letter airport designator for origin */
-  originAirport?: string;
-  /** The three letter airport designator for destination */
-  destinationAirport?: string;
 }

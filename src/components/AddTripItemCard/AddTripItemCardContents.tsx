@@ -26,7 +26,7 @@ import AutocompleteField from "../fields/AutocompleteField";
 import {
   getTripItemIcon,
   getTripItemTypeLabel,
-  locationFieldSettings,
+  customFieldSettings,
   renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";
@@ -92,161 +92,165 @@ const AddTripItemCardContents = ({
       }}
       // validationSchema={validationSchema} We can't use validation here because the type is a dictionary (to allow extra fields)
     >
-      {({ values, setFieldValue, isSubmitting }) => (
-        <Form className={styles.formFieldsContainer}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Field
-                component={ToggleButtonGroup}
-                name="category"
-                type="checkbox"
-                exclusive
-                fullWidth
-                onChange={(
-                  _event: any,
-                  newValue: "travel" | "activity" | null
-                ) => {
-                  if (newValue !== null) {
-                    setFieldValue("category", newValue);
-                    setFieldValue("type", null);
-                  }
-                }}
-                disabled={isSubmitting}
-              >
-                <ToggleButton value="travel">Travel</ToggleButton>
-                <ToggleButton value="activity">Activity</ToggleButton>
-              </Field>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                component={AutocompleteField}
-                options={
-                  values.category === "travel" ? TravelTypes : ActivityTypes
-                }
-                renderOption={(
-                  props: React.HTMLAttributes<HTMLLIElement>,
-                  option: TripItemType
-                ) => (
-                  <Box
-                    component="li"
-                    sx={{ "& > svg": { mr: 2, flexShrink: 0 } }}
-                    {...props}
-                  >
-                    {getTripItemIcon(option)}
-                    {getTripItemTypeLabel(option)}
-                  </Box>
-                )}
-                getOptionLabel={getTripItemTypeLabel}
-                name="type"
-                label={`Type of ${values.category}`}
-                validate={fieldIsRequired}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Field
-                component={TextField}
-                name="title"
-                label="Title"
-                fullWidth
-                helperText="Optional"
-              />
-            </Grid>
-            {values.type && (
-              <>
+      {({ values, setFieldValue, isSubmitting }) => {
+        const currentFieldSettings = customFieldSettings(values.type);
+
+        return (
+            <Form className={styles.formFieldsContainer}>
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Divider flexItem />
+                  <Field
+                    component={ToggleButtonGroup}
+                    name="category"
+                    type="checkbox"
+                    exclusive
+                    fullWidth
+                    onChange={(
+                      _event: any,
+                      newValue: "travel" | "activity" | null
+                    ) => {
+                      if (newValue !== null) {
+                        setFieldValue("category", newValue);
+                        setFieldValue("type", null);
+                      }
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    <ToggleButton value="travel">Travel</ToggleButton>
+                    <ToggleButton value="activity">Activity</ToggleButton>
+                  </Field>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Field
-                    component={DateTimePicker}
-                    label="Starts At"
-                    name="startsAt"
-                    textField={{
-                      helperText: "'All day' option coming soon",
-                      fullWidth: true,
-                    }}
-                    minDate={dayjs(tripDetails?.startsAt)}
-                    maxDate={dayjs(tripDetails?.endsAt)}
+                    component={AutocompleteField}
+                    options={
+                      values.category === "travel" ? TravelTypes : ActivityTypes
+                    }
+                    renderOption={(
+                      props: React.HTMLAttributes<HTMLLIElement>,
+                      option: TripItemType
+                    ) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > svg": { mr: 2, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        {getTripItemIcon(option)}
+                        {getTripItemTypeLabel(option)}
+                      </Box>
+                    )}
+                    getOptionLabel={getTripItemTypeLabel}
+                    name="type"
+                    label={`Type of ${values.category}`}
                     validate={fieldIsRequired}
                   />
                 </Grid>
-                {locationFieldSettings(values.type).hasEndsAt && (
-                  <Grid item xs={12} md={6}>
-                    <Field
-                      component={DateTimePicker}
-                      label="Finishes At"
-                      name="endsAt"
-                      textField={{
-                        helperText:
-                          values.category === "activity" && "Optional",
-                        fullWidth: true,
-                      }}
-                      defaultCalendarMonth={dayjs(values.startsAt)}
-                      minDate={values.startsAt && dayjs(values.startsAt)}
-                      maxDate={dayjs(tripDetails?.endsAt)}
-                    />
-                  </Grid>
-                )}
-                <Grid item xs={12}>
-                  <Divider flexItem />
-                </Grid>
                 <Grid item xs={12} md={6}>
                   <Field
-                    component={GooglePlacesAutocompleteField}
-                    name={
-                      values.category === "travel"
-                        ? "originLocation"
-                        : "location"
-                    }
-                    label={locationFieldSettings(values.type).originLocationLabel ?? "Location"}
-                    inputProps={googleAttributionHelperText}
-                    autocompletionRequest={values.type === TripItemType.Plane && { types: ["airport"] }}
+                    component={TextField}
+                    name="title"
+                    label="Title"
+                    fullWidth
+                    helperText="Optional"
                   />
                 </Grid>
-                {values.category === "travel" && (
-                  <Grid item xs={12} md={6}>
-                    <Field
-                      component={GooglePlacesAutocompleteField}
-                      name="destinationLocation"
-                      label={locationFieldSettings(values.type).destinationLocationLabel}
-                      inputProps={googleAttributionHelperText}
-                    />
-                  </Grid>
+                {values.type && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider flexItem />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        component={DateTimePicker}
+                        label="Starts At"
+                        name="startsAt"
+                        textField={{
+                          helperText: "'All day' option coming soon",
+                          fullWidth: true,
+                        }}
+                        minDate={dayjs(tripDetails?.startsAt)}
+                        maxDate={dayjs(tripDetails?.endsAt)}
+                        validate={fieldIsRequired}
+                      />
+                    </Grid>
+                    {currentFieldSettings.hasDestination && (
+                      <Grid item xs={12} md={6}>
+                        <Field
+                          component={DateTimePicker}
+                          label="Finishes At"
+                          name="endsAt"
+                          textField={{
+                            helperText:
+                              values.category === "activity" && "Optional",
+                            fullWidth: true,
+                          }}
+                          defaultCalendarMonth={dayjs(values.startsAt)}
+                          minDate={values.startsAt && dayjs(values.startsAt)}
+                          maxDate={dayjs(tripDetails?.endsAt)}
+                        />
+                      </Grid>
+                    )}
+                    <Grid item xs={12}>
+                      <Divider flexItem />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        component={GooglePlacesAutocompleteField}
+                        name={
+                          values.category === "travel"
+                            ? "originLocation"
+                            : "location"
+                        }
+                        label={currentFieldSettings.originLocationLabel ?? "Location"}
+                        inputProps={googleAttributionHelperText}
+                        autocompletionRequest={values.type === TripItemType.Plane && { types: ["airport"] }}
+                      />
+                    </Grid>
+                    {values.category === "travel" && (
+                      <Grid item xs={12} md={6}>
+                        <Field
+                          component={GooglePlacesAutocompleteField}
+                          name="destinationLocation"
+                          label={currentFieldSettings.destinationLocationLabel}
+                          inputProps={googleAttributionHelperText}
+                        />
+                      </Grid>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-            {values.type &&
-              Object.keys(tripItemExtraFields[values.type]).map((field) => (
-                <Grid item xs={12} md={6} key={`extra-field-griditem-${field}`}>
-                  {renderExtraField(
-                    field,
-                    tripItemExtraFields[values.type][field]
-                  )}
-                </Grid>
-              ))}
-          </Grid>
-          <CardActions sx={{ justifyContent: "right" }}>
-            {showCancel && onCancel && (
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled={isSubmitting}
-                onClick={() => onCancel()}
-              >
-                Cancel
-              </Button>
-            )}
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isSubmitting}
-              color="primary"
-            >
-              Add to trip
-            </Button>
-          </CardActions>
-        </Form>
-      )}
+                {values.type &&
+                  Object.keys(tripItemExtraFields[values.type]).map((field) => (
+                    <Grid item xs={12} md={6} key={`extra-field-griditem-${field}`}>
+                      {renderExtraField(
+                        field,
+                        tripItemExtraFields[values.type][field]
+                      )}
+                    </Grid>
+                  ))}
+              </Grid>
+              <CardActions sx={{ justifyContent: "right" }}>
+                {showCancel && onCancel && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    disabled={isSubmitting}
+                    onClick={() => onCancel()}
+                  >
+                    Cancel
+                  </Button>
+                )}
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isSubmitting}
+                  color="primary"
+                >
+                  Add to trip
+                </Button>
+              </CardActions>
+            </Form>
+          )
+      }}
     </Formik>
   );
 };

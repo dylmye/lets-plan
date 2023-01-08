@@ -33,6 +33,7 @@ import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import TripItineraryItemBase from "../types/TripItineraryItemBase";
 import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
 import BetterSwitchField from "../components/fields/BetterSwitchField";
+import CustomFieldSettings from "../types/CustomFieldSettings";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -166,8 +167,6 @@ export const tripItemExtraFields: Record<
   },
   [TripItemType.Train]: {
     trainOperator: "text",
-    originStation: "text",
-    destinationStation: "text",
     class: "optional-dropdown:Business,First,Standard,Third",
     fare: "text",
   },
@@ -185,7 +184,6 @@ export const tripItemExtraFields: Record<
   },
   [TripItemType["Car Rental"]]: {
     rentalOperator: "text",
-    pickupLocation: "text",
     selectedVehicleType: "text",
   },
   [TripItemType.Car]: {},
@@ -209,16 +207,22 @@ export const tripItemExtraFields: Record<
 };
 
 /** Determine settings for startsAt/endsAt fields for the given type */
-export const locationFieldSettings = (type: TripItemType): { hasEndsAt: boolean, originLocationLabel?: string; destinationLocationLabel?: string; } => {
+export const customFieldSettings = (
+  type: TripItemType
+): CustomFieldSettings => {
   // for some activities: no ends at
-  const hasEndsAt = ![TripItemType["Meet-up"], TripItemType.Note].includes(type);
+  const hasDestination = ![TripItemType["Meet-up"], TripItemType.Note].includes(
+    type
+  );
   let originLocationLabel: string;
   let destinationLocationLabel: string;
+  let autoCompleteTypes: string[] = [];
 
   switch (type) {
     case TripItemType.Plane: {
       originLocationLabel = "Origin Airport";
       destinationLocationLabel = "Destination Airport";
+      autoCompleteTypes = ["airport"];
       break;
     }
     case TripItemType["Car Rental"]: {
@@ -226,16 +230,25 @@ export const locationFieldSettings = (type: TripItemType): { hasEndsAt: boolean,
       destinationLocationLabel = "Destination";
       break;
     }
+    case TripItemType.Train: {
+      originLocationLabel = "Origin Station";
+      destinationLocationLabel = "Destination Station";
+      autoCompleteTypes = ["train_station"];
+      break;
+    }
     default:
-      originLocationLabel = TravelTypes.includes(type) ? "Starting Location" : "Location";
+      originLocationLabel = TravelTypes.includes(type)
+        ? "Starting Location"
+        : "Location";
       destinationLocationLabel = "Ending Location";
   }
 
   return {
-    hasEndsAt,
+    hasDestination,
     originLocationLabel,
     destinationLocationLabel,
-  }
+    autoCompleteTypes,
+  };
 };
 
 const fieldNameToLabel = (name: string): string => {
