@@ -4,12 +4,16 @@ import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { Check } from "@mui/icons-material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
+import { DatePicker } from "formik-mui-x-date-pickers";
+import dayjs from "dayjs";
 
 import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
 import { updateTripById } from "../../features/tripList/tripSlice";
 import styles from "./styles.module.css";
+import CardActions from "@mui/material/CardActions";
+import { useSnackbar } from "notistack";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;
@@ -34,6 +38,7 @@ const EditTripDetailsModal = ({
   ...props
 }: EditTripDetailsModalProps) => {
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { title, location, startsAt, endsAt } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
@@ -44,6 +49,7 @@ const EditTripDetailsModal = ({
       })
     );
     props.onClose();
+    enqueueSnackbar("Trip details updated!");
   };
 
   return (
@@ -60,23 +66,58 @@ const EditTripDetailsModal = ({
             endsAt,
           }}
           onSubmit={onFormSubmit}>
-          <Form className={styles.formFieldsContainer}>
-            <Field
-              component={TextField}
-              name="title"
-              label="Name of your trip"
-              fullWidth
-            />
-            <Field
-              component={GooglePlacesAutocompleteField}
-              name="location"
-              label="Where is your trip?"
-            />
-            <Button size="small" type="submit">
-              <Check />
-              Update Trip
-            </Button>
-          </Form>
+          {({ values }) => (
+            <Form className={styles.formFieldsContainer}>
+              <Field
+                component={TextField}
+                name="title"
+                label="Name"
+                fullWidth
+              />
+              <Field
+                component={GooglePlacesAutocompleteField}
+                name="location"
+                label="Location"
+              />
+              <Field
+                component={DatePicker}
+                label="Start date"
+                name="startsAt"
+                textField={{
+                  fullWidth: true,
+                }}
+              />
+              <Field
+                component={DatePicker}
+                label="End date"
+                name="endsAt"
+                textField={{
+                  fullWidth: true,
+                }}
+                defaultCalendarMonth={
+                  values?.startsAt && dayjs(values.startsAt)
+                }
+                minDate={values?.startsAt && dayjs(values.startsAt)}
+              />
+              <CardActions sx={{ justifyContent: "right" }}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => props.onClose()}>
+                  Cancel
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  type="submit">
+                  <Check />
+                  Update Trip
+                </Button>
+              </CardActions>
+            </Form>
+          )}
         </Formik>
       </Box>
     </Modal>

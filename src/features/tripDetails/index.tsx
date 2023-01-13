@@ -33,6 +33,7 @@ import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
 import AddTripItemCard from "../../components/AddTripItemCard";
 import TripDetailsAction from "../../components/TripDetailsAction";
+import DeleteTripItemDialog from "../../components/DeleteTripItemDialog";
 
 interface TripDetailsProps {
   /** In edit mode? */
@@ -46,6 +47,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const [activeAddTripItemCardDay, setActiveTripItemCardDay] = useState<
     string | undefined | null
   >(null);
+  const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
 
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
@@ -56,6 +58,8 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     <TripItineraryItem
       item={item}
       key={`trip-item-${item.startsAt}-${item.type}`}
+      tripId={trip?.id as string}
+      onDeleteTripItem={(itemId: string) => setDeleteItemId(itemId)}
     />
   );
 
@@ -258,6 +262,12 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
         <Divider />
         <SuggestionsCard />
       </Stack>
+      <DeleteTripItemDialog
+        visible={!!deleteItemId}
+        onClose={() => setDeleteItemId(null)}
+        id={deleteItemId || ""}
+        tripId={trip?.id as string}
+      />
     </Container>
   );
 };

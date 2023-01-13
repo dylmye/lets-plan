@@ -4,6 +4,14 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/dylmye/lets-plan/actions/workflows/firebase-hosting-merge.yml"><img alt="The status badge for this project's build" src="https://img.shields.io/github/actions/workflow/status/dylmye/lets-plan/firebase-hosting-merge.yml?logo=github"></a>
+  <a href="https://github.com/dylmye/lets-plan/blob/main/LICENSE"><img alt="The status badge for the licence of this project" src="https://img.shields.io/github/license/dylmye/lets-plan"></a>
+  <a href="https://snyk.io"><img alt="The status badge for the Snyk-detected vulnerabilities count for this project" src="https://img.shields.io/snyk/vulnerabilities/github/dylmye/lets-plan?logo=snyk"></a>
+</p>
+
+---
+
 A simple React/Redux based trip planner. Let's Plan is designed to be mobile- and offline- first, with added support for sync and sharing with friends. Cloud services (accounts, sync, image hosting) are provided through Firebase.
 
 ## Current roadmap/to-do

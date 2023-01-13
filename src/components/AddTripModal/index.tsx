@@ -88,10 +88,10 @@ const AddTripModal = (props: ModalProps) => {
   const validationSchema: SchemaOf<TripDraft> = yObject().shape({
     tripSchemaRevision: yMixed().oneOf([1]).required(),
     id: yString().required(),
-    title: yString().required(),
-    location: yString().required(),
-    startsAt: yString().required(),
-    endsAt: yString().required(),
+    title: yString().required("You need to give your trip a title"),
+    location: yString().required("Trips need to be somewhere"),
+    startsAt: yString().nullable().required("Trips need a start date"),
+    endsAt: yString().nullable().required("Trips need an end date"),
     image: yString().optional(),
     // keep these rules in sync with your storage rules in Firebase
     coverImageBlob: yMixed()

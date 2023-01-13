@@ -11,7 +11,6 @@ import {
 import { Box } from "@mui/system";
 import { User } from "firebase/auth";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
 
 import { auth } from "../../firebase";
 import { uninstallWorker } from "../../helpers/worker";
@@ -35,7 +34,6 @@ const UserNavbarItem = ({
   const { toggleVisible, setAuthType } = useGlobalModalVisibility();
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [signOut] = useSignOut(auth);
-  const navigate = useNavigate();
   const authenticated = useMemo<boolean>(() => !!user, [user]);
 
   const showAuthModal = () => toggleVisible(true);
@@ -67,7 +65,8 @@ const UserNavbarItem = ({
       console.error("Couldn't uninstall sw", e);
     }
     await reduxStorage.db.clear();
-    navigate("/");
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
   };
 
   return (

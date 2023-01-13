@@ -12,6 +12,7 @@ import {
 } from "@reduxjs/toolkit";
 import { doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
@@ -55,6 +56,7 @@ const exampleTrip: Trip = {
     "https://firebasestorage.googleapis.com/v0/b/lets-plan-firebase.appspot.com/o/default-trip-thumbs%2Fdefault-yorkshire-1555795622.webp?alt=media",
   items: [
     {
+      id: "example_item_0",
       type: TripItemType.Car,
       title: "Taking mum's campervan to Whitby",
       details: "Mum's okay with us borrowing the Transporter for the week",
@@ -66,6 +68,7 @@ const exampleTrip: Trip = {
       endsAtTimezone: "Europe/London",
     } as CarItem,
     {
+      id: "example_item_1",
       type: TripItemType["Eating Out"],
       location:
         "Hadleys Fish Restaurant & Accommodation, 11 Bridge St, Whitby YO22 4BG, England",
@@ -76,6 +79,7 @@ const exampleTrip: Trip = {
       endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
+      id: "example_item_2",
       type: TripItemType.Museum,
       location:
         "Captain Cook Memorial Museum, Grape Ln, Whitby YO22 4BA, England",
@@ -91,6 +95,7 @@ const exampleTrip: Trip = {
       priceCurrency: "GBP",
     } as TripItineraryActivityItem,
     {
+      id: "example_item_3",
       type: TripItemType["Meet-up"],
       location: "Upgang Beach, Whitby, England",
       details: "Let's meet Janelle and Hanna by the rocks.",
@@ -100,6 +105,7 @@ const exampleTrip: Trip = {
       endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
+      id: "example_item_4",
       type: TripItemType.Car,
       title: "Driving back home",
       originLocation: "Whitby, Yorkshire, UK",
@@ -125,6 +131,11 @@ const tripsAdapter = createEntityAdapter<Trip>({
 export const addTripItemByTripId = createAction<
   { id: EntityId } & TripItemDraft
 >("trips/addTripItemByTripId");
+
+export const deleteTripItemByTripId = createAction<{
+  tripId: EntityId;
+  itemId: string;
+}>("trips/deleteTripItemByTripId");
 
 const tripSlice = createSlice({
   name,
@@ -158,24 +169,46 @@ const tripSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    /**
+     * Trip Item Actions
+     */
+
+    /** Add Trip Item */
     builder.addCase(addTripItemByTripId, (state, { payload }) => {
       if (!payload?.id) return;
+
+      const trip = state.entities[payload.id];
 
       const { category, ...filteredPayload } = payload;
 
       let newTripItem: TripItineraryItemBase = {
         startsAtTimezone: "Europe/London", // @TODO: custom tz
         ...filteredPayload,
+        id: uuidv4(),
         title:
           filteredPayload?.title || getTripItemTypeLabel(filteredPayload.type),
       };
 
       const items: TripItineraryItemBase[] = [
-        ...(state.entities[payload.id]?.items || []),
+        ...(trip?.items || []),
         newTripItem,
       ];
 
       tripsAdapter.updateOne(state, { id: payload.id, changes: { items } });
+    });
+
+    /** Delete Trip Item */
+    builder.addCase(deleteTripItemByTripId, (state, { payload }) => {
+      const trip = state.entities[payload.tripId];
+
+      if (!trip) return;
+
+      const items = trip.items?.filter((x) => x.id !== payload.itemId);
+
+      tripsAdapter.updateOne(state, {
+        id: payload.tripId,
+        changes: { items },
+      });
     });
   },
 });

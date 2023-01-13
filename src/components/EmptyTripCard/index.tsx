@@ -24,7 +24,7 @@ const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {
               container
               columnSpacing={2}
               className={styles.tripListItemGrid}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Typography variant="h5" fontWeight="bold">
                   Travelling
                 </Typography>
@@ -40,7 +40,7 @@ const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {
                 </Stack>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Typography variant="h5" fontWeight="bold">
                   Activities
                 </Typography>

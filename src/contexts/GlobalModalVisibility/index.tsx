@@ -51,6 +51,7 @@ export const useGlobalModalVisibility = () => {
  * 4. Where the button to trigger the modal is, set the two props as required.
  *
  * A good example of this is deleteTrip, used to show a delete confirmation dialog for a given trip. The trigger code is in the `TripDetailsAction` component.
+ * If you are sure your modal will only show on one page, there's no need to put it here :)
  */
 const GlobalModalVisibility: React.FC = ({ children }) => {
   const [visible, toggleVisible] = useState<boolean>(false);

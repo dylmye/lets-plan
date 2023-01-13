@@ -168,7 +168,24 @@ const AddTripItemCardContents = ({
                       }}
                       minDate={dayjs(tripDetails?.startsAt)}
                       maxDate={dayjs(tripDetails?.endsAt)}
-                      validate={fieldIsRequired}
+                      validate={(value: string) => {
+                        const requireCheck = fieldIsRequired(value);
+                        const startsAtAfterTripStart = dayjs(
+                          value
+                        ).isSameOrAfter(tripDetails?.startsAt);
+                        const startsAtBeforeTripEnd = dayjs(
+                          value
+                        ).isSameOrBefore(tripDetails?.endsAt);
+
+                        return (
+                          requireCheck ??
+                          (!startsAtAfterTripStart
+                            ? "Can't start before the start of the trip"
+                            : !startsAtBeforeTripEnd
+                            ? "Can't start after the trip ends"
+                            : null)
+                        );
+                      }}
                     />
                   </Grid>
                   {currentFieldSettings.hasDestination && (
@@ -185,31 +202,52 @@ const AddTripItemCardContents = ({
                         defaultCalendarMonth={dayjs(values.startsAt)}
                         minDate={values.startsAt && dayjs(values.startsAt)}
                         maxDate={dayjs(tripDetails?.endsAt)}
+                        validate={(value: string) => {
+                          // don't show errors when startsAt will be erroring
+                          if (!values.startsAt) {
+                            return null;
+                          }
+
+                          const endsAtAfterStartsAt = dayjs(value).isAfter(
+                            values.startsAt
+                          );
+                          const endsAtBeforeTripEnd = dayjs(
+                            value
+                          ).isSameOrBefore(tripDetails?.endsAt as string);
+
+                          return !endsAtAfterStartsAt
+                            ? "Can't finish before starting"
+                            : !endsAtBeforeTripEnd
+                            ? "Can't finish after the end of the trip"
+                            : null;
+                        }}
                       />
                     </Grid>
                   )}
                   <Grid item xs={12}>
                     <Divider flexItem />
                   </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Field
-                      component={GooglePlacesAutocompleteField}
-                      name={
-                        values.category === "travel"
-                          ? "originLocation"
-                          : "location"
-                      }
-                      label={
-                        currentFieldSettings.originLocationLabel ?? "Location"
-                      }
-                      inputProps={googleAttributionHelperText}
-                      autocompletionRequest={
-                        values.type === TripItemType.Plane && {
-                          types: ["airport"],
+                  {currentFieldSettings.hasOrigin && (
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        component={GooglePlacesAutocompleteField}
+                        name={
+                          values.category === "travel"
+                            ? "originLocation"
+                            : "location"
                         }
-                      }
-                    />
-                  </Grid>
+                        label={
+                          currentFieldSettings.originLocationLabel ?? "Location"
+                        }
+                        inputProps={googleAttributionHelperText}
+                        autocompletionRequest={
+                          values.type === TripItemType.Plane && {
+                            types: ["airport"],
+                          }
+                        }
+                      />
+                    </Grid>
+                  )}
                   {values.category === "travel" && (
                     <Grid item xs={12} md={6}>
                       <Field

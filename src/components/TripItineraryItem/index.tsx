@@ -17,6 +17,7 @@ import {
   MonetizationOn,
   Tag,
 } from "@mui/icons-material";
+import CardHeader from "@mui/material/CardHeader";
 
 import {
   convertTripItemTypeToGoogleMapsTravelMode,
@@ -39,13 +40,20 @@ import {
   generateGoogleMapsQueryUrl,
   generateUberUniversalLink,
 } from "../../helpers/url";
+import TripItemDetailsAction from "../TripItemDetailsAction";
 
 export interface TripItineraryItemProps {
   item: TripItineraryItemBase;
+  tripId: string;
+  onDeleteTripItem: (tripItemId: string) => void;
 }
 
 /** Index item with a preview of the trip */
-const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
+const TripItineraryItem = ({
+  item,
+  tripId,
+  onDeleteTripItem,
+}: TripItineraryItemProps) => {
   const { palette } = useTheme();
   const Icon = () =>
     getTripItemIcon(item.type, { htmlColor: palette.background.paper });
@@ -261,42 +269,52 @@ const TripItineraryItem = ({ item }: TripItineraryItemProps) => {
             },
           }}>
           <Box>
-            <CardContent>
-              <Typography variant="body2" className={styles.tripItemText}>
-                <time dateTime={item.startsAt}>
-                  {formatTime(
-                    item.startsAt,
-                    true,
-                    false,
-                    item.startsAtTimezone
+            <CardHeader
+              title={
+                <Typography variant="body2" className={styles.tripItemText}>
+                  <time dateTime={item.startsAt}>
+                    {formatTime(
+                      item.startsAt,
+                      true,
+                      false,
+                      item.startsAtTimezone
+                    )}
+                  </time>
+                  {(item as TripItineraryActivityItem | TripItineraryTravelItem)
+                    ?.endsAt && (
+                    <>
+                      {` - `}
+                      <time dateTime={(item as any)?.endsAt}>
+                        {formatTime(
+                          (item as any)?.endsAt,
+                          true,
+                          false,
+                          (item as any)?.endsAtTimeZone
+                        )}
+                      </time>
+                    </>
                   )}
-                </time>
-                {(item as TripItineraryActivityItem | TripItineraryTravelItem)
-                  ?.endsAt && (
-                  <>
-                    {` - `}
-                    <time dateTime={(item as any)?.endsAt}>
-                      {formatTime(
-                        (item as any)?.endsAt,
-                        true,
-                        false,
-                        (item as any)?.endsAtTimeZone
-                      )}
-                    </time>
-                  </>
-                )}
-                {` \u30fb ${
-                  item.type &&
-                  ![
-                    TripItemType["Other Activity"],
-                    TripItemType["Other Mode of Transport"],
-                  ].includes(item.type)
-                    ? getTripItemTypeLabel(item.type)
-                    : "Other"
-                }`}
-              </Typography>
-              {renderItemText(item)}
-            </CardContent>
+                  {` \u30fb ${
+                    item.type &&
+                    ![
+                      TripItemType["Other Activity"],
+                      TripItemType["Other Mode of Transport"],
+                    ].includes(item.type)
+                      ? getTripItemTypeLabel(item.type)
+                      : "Other"
+                  }`}
+                </Typography>
+              }
+              sx={{ paddingBottom: 0 }}
+              action={
+                <TripItemDetailsAction
+                  id={item.id}
+                  tripId={tripId}
+                  onDelete={onDeleteTripItem}
+                />
+              }
+            />
+            <CardContent>{renderItemText(item)}</CardContent>
           </Box>
         </Card>
       </Grid>

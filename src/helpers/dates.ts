@@ -3,6 +3,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import localeData from "dayjs/plugin/localeData";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "dayjs/locale/en-gb";
 import "dayjs/locale/en";
@@ -13,6 +14,7 @@ dayjs.extend(utc);
 dayjs.extend(localeData);
 dayjs.extend(localizedFormat);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 export const userLanguage: string =
@@ -141,5 +143,6 @@ export const formatDaysUntil = (
   if (isUnder24Hours) {
     return "In less than a day";
   }
-  return `In ${dayjs(target).diff(now, "day")} days`;
+  const numDaysDiff = dayjs(target).diff(now, "day");
+  return `In ${numDaysDiff} day${numDaysDiff === 1 ? "!" : "s"}`;
 };

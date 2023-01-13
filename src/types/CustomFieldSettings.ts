@@ -1,4 +1,6 @@
 export default interface CustomFieldSettings {
+  /** if the form should have a origin location */
+  hasOrigin: boolean;
   /** if the form should have a destination location */
   hasDestination: boolean;
   /** Custom label to use for "location"/"originLocation" field  */

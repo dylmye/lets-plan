@@ -146,7 +146,7 @@ export const getTripItemTypeLabel = (t: TripItemType): string =>
   Object.keys(TripItemType)[Object.values(TripItemType).indexOf(t)];
 
 /**
- * An object of types with their extra fields. The field type is either 'text' (TextField), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
+ * An object of types with their extra fields. The field type is either 'text' (TextField), 'textarea' (TextField with multiline), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
  * - connected-dropdown:airline - a list of airliners with english name and ICAO/IATA codes
  * - connected-dropdown:places - google maps places api
  * You can also use 'optional-dropdown:x,y,z' to allow users to select one of your options, or enter their own.
@@ -202,7 +202,9 @@ export const tripItemExtraFields: Record<
   [TripItemType.Concert]: {},
   [TripItemType.Shopping]: {},
   [TripItemType.Sports]: {},
-  [TripItemType.Note]: {},
+  [TripItemType.Note]: {
+    details: "textarea",
+  },
   [TripItemType["Other Activity"]]: {},
 };
 
@@ -244,6 +246,7 @@ export const customFieldSettings = (
   }
 
   return {
+    hasOrigin: type !== TripItemType.Note,
     hasDestination,
     originLocationLabel,
     destinationLocationLabel,
@@ -273,6 +276,17 @@ export const renderExtraField = (
           name={field}
           component={BetterSwitchField}
           label={fieldNameToLabel(field)}
+        />
+      );
+    }
+    case "textarea": {
+      return (
+        <Field
+          name={field}
+          label={fieldNameToLabel(field)}
+          component={TextField}
+          fullWidth
+          multiline
         />
       );
     }
