@@ -237,6 +237,11 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
           </Typography>
         </Box>
       )}
+      {trip?.details && (
+        <Typography variant="body1" sx={{ marginTop: 2, whiteSpace: "pre" }}>
+          {trip.details}
+        </Typography>
+      )}
       <Stack spacing={2}>
         {isEmptyTrip && trip ? (
           <Box sx={{ marginTop: 2 }}>

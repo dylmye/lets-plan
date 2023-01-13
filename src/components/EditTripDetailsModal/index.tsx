@@ -39,7 +39,7 @@ const EditTripDetailsModal = ({
 }: EditTripDetailsModalProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const { title, location, startsAt, endsAt } = tripDetails;
+  const { title, location, startsAt, details, endsAt } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
     dispatch(
@@ -64,6 +64,7 @@ const EditTripDetailsModal = ({
             location,
             startsAt,
             endsAt,
+            details,
           }}
           onSubmit={onFormSubmit}>
           {({ values }) => (
@@ -98,6 +99,13 @@ const EditTripDetailsModal = ({
                   values?.startsAt && dayjs(values.startsAt)
                 }
                 minDate={values?.startsAt && dayjs(values.startsAt)}
+              />
+              <Field
+                component={TextField}
+                name="details"
+                label="Details"
+                fullWidth
+                multiline
               />
               <CardActions sx={{ justifyContent: "right" }}>
                 <Button
