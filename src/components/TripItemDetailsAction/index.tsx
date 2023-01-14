@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Delete, MoreVert } from "@mui/icons-material";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   IconButton,
   ListItemIcon,
@@ -18,12 +18,15 @@ export interface TripItemDetailsActionProps {
   tripId: string;
   /** Action to trigger delete modal */
   onDelete: (tripItemId: string) => void;
+  /** Toggle the edit mode */
+  toggleEdit: (tripItemId: string, isEdit: boolean) => void;
 }
 
 const TripItemDetailsAction = ({
   id,
   tripId,
   onDelete,
+  toggleEdit,
 }: TripItemDetailsActionProps) => {
   const trip = useAppSelector((state) => selectLocalTripById(state, tripId));
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -60,15 +63,15 @@ const TripItemDetailsAction = ({
         open={!!anchorEl}
         onClose={() => onButtonPress()}>
         <MenuList disablePadding>
-          {/* <MenuItem
+          <MenuItem
             key={`menu-trip-${id}-editdetails`}
             dense
-            onClick={() => onEditTrip()}>
+            onClick={() => toggleEdit(id, true)}>
             <ListItemIcon>
               <Edit fontSize="inherit" />
             </ListItemIcon>
             Edit Details
-          </MenuItem> */}
+          </MenuItem>
           <MenuItem
             key={`menu-trip-item-${id}-delete`}
             dense

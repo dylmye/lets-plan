@@ -10,7 +10,7 @@ export interface AddTripItemCardProps {
     type?: TripItemType;
     date?: string | null;
   };
-  tripDetails?: TripDetails;
+  tripDetails: TripDetails;
   showCancel?: boolean;
   onCancel?: () => void;
 }

@@ -28,3 +28,8 @@
   text-align: left;
   font-family: monospace;
 }
+
+.tripItemHeader {
+  padding-top: 0;
+  padding-bottom: 0;
+}

@@ -8,6 +8,7 @@ import {
   MenuList,
   Tooltip,
 } from "@mui/material";
+
 import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 import { useAppSelector } from "../../app/hooks";
 import { selectLocalTripById } from "../../features/tripList/tripSlice";

@@ -1,5 +1,3 @@
-import { ActionMeta } from "react-select";
-
 export default interface TripDraft {
   tripSchemaRevision: 1;
   /** assigned on creation. GUID format for local trips, alphanumeric 20-char format for sync'd trips. */

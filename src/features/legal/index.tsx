@@ -59,9 +59,9 @@ const Legal = () => {
           <p>
             <strong>Trip images:</strong> Images you upload for your trips are
             stored securely. Image metadata (EXIF data) is not kept. The purpose
-            of keeping this data is to provide functionality. When your trip is
-            deleted, related imagery is also deleted. Your IP address may be
-            retained for anti-abuse purposes.
+            of keeping this data is to provide functionality. Images are deleted
+            12 months after upload. Your IP address may be retained for
+            anti-abuse purposes.
             <br />
             This data is controlled by <strong>Dylan Myers</strong> acting as{" "}
             <em>Let's Plan</em> and processed by{" "}

@@ -3,7 +3,7 @@ import { TripItemType } from "./TripItemType";
 export default interface TripItineraryItemBase {
   id: string;
   /** Category of the item, blank for misc items */
-  type?: TripItemType;
+  type: TripItemType;
   /** User-provided headline text with category as default */
   title?: string;
   /** Brand image, if undefined then use the thumb linked to the type */

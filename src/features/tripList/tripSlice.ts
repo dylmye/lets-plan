@@ -233,7 +233,12 @@ export const selectTripItemsByDay = (id: string) => (store: RootState) => {
 
 export const selectCurrentTrips = createDraftSafeSelector(
   selectTrips,
-  (state) => state.filter((trip) => tripIsInState(trip, "future"))
+  (state) =>
+    state
+      .filter((trip) => tripIsInState(trip, "future"))
+      .sort((a, b) =>
+        dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt)
+      )
 );
 
 export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>

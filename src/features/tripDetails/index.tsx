@@ -48,18 +48,38 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     string | undefined | null
   >(null);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
+  const [itemEditModeState, setEditModeState] = useState<
+    Record<string, boolean>
+  >({});
 
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
   const tripIsExample = tripId === "example";
 
+  const setEditModeForTripItem = (
+    tripItemId: string,
+    newValue: boolean
+  ): void => {
+    setEditModeState({
+      ...itemEditModeState,
+      [tripItemId]: newValue,
+    });
+  };
+
   const renderTripItem = (item: TripItineraryItemBase): JSX.Element => (
     <TripItineraryItem
       item={item}
       key={`trip-item-${item.startsAt}-${item.type}`}
-      tripId={trip?.id as string}
+      tripDetails={{
+        id: trip?.id,
+        title: trip?.title as string,
+        startsAt: trip?.startsAt as string,
+        endsAt: trip?.endsAt as string,
+      }}
       onDeleteTripItem={(itemId: string) => setDeleteItemId(itemId)}
+      showEditMode={itemEditModeState[item.id] ?? false}
+      onToggleEditTripItem={setEditModeForTripItem}
     />
   );
 

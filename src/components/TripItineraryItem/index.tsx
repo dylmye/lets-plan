@@ -9,7 +9,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { useTheme } from "@mui/system";
+import { SxProps, useTheme } from "@mui/system";
 import {
   Assignment,
   Directions,
@@ -17,7 +17,7 @@ import {
   MonetizationOn,
   Tag,
 } from "@mui/icons-material";
-import CardHeader from "@mui/material/CardHeader";
+import { CardHeader } from "@mui/material";
 
 import {
   convertTripItemTypeToGoogleMapsTravelMode,
@@ -41,23 +41,51 @@ import {
   generateUberUniversalLink,
 } from "../../helpers/url";
 import TripItemDetailsAction from "../TripItemDetailsAction";
+import AddEditTripForm from "../AddTripItemCard/AddEditTripForm";
+import TripDetails from "../../types/TripDetails";
+import { Formik } from "formik";
+import TripItemDraft from "../../types/TripItemDraft";
 
 export interface TripItineraryItemProps {
+  /** The item to show */
   item: TripItineraryItemBase;
-  tripId: string;
+  /** The details of the trip this item belongs to */
+  tripDetails: TripDetails;
+  /** The action to call to show the delete item dialog */
   onDeleteTripItem: (tripItemId: string) => void;
+  /** Whether to show the edit mode for this item */
+  showEditMode: boolean;
+  /** The action to call to toggle the edit status */
+  onToggleEditTripItem: (tripItemId: string, isEdit: boolean) => void;
 }
 
 /** Index item with a preview of the trip */
 const TripItineraryItem = ({
   item,
-  tripId,
+  tripDetails,
   onDeleteTripItem,
+  showEditMode,
+  onToggleEditTripItem,
 }: TripItineraryItemProps) => {
   const { palette } = useTheme();
   const Icon = () =>
     getTripItemIcon(item.type, { htmlColor: palette.background.paper });
   const iconBackgroundColour = getTripItemColour(item.type);
+  const isOtherType = [
+    TripItemType["Other Activity"],
+    TripItemType["Other Mode of Transport"],
+  ].includes(item.type as TripItemType);
+
+  const rootContainerStyle: SxProps = {
+    flexDirection: { xs: "column", sm: "row" },
+  };
+  const mainContainerStyle: SxProps = {
+    paddingY: 2,
+    marginY: {
+      xs: 2,
+      sm: 0,
+    },
+  };
 
   const renderUrls = (urls: Record<string, string>): JSX.Element => (
     <>
@@ -243,7 +271,7 @@ const TripItineraryItem = ({
   };
 
   return (
-    <Grid container sx={{ flexDirection: { xs: "column", sm: "row" } }}>
+    <Grid container sx={rootContainerStyle}>
       <Grid item xs className={styles.tripItemIconContainer}>
         <Box className={styles.tripItemIconBox}>
           <Paper
@@ -260,62 +288,75 @@ const TripItineraryItem = ({
         </Box>
       </Grid>
       <Grid item sm={10}>
-        <Card
-          sx={{
-            paddingY: 2,
-            marginY: {
-              xs: 2,
-              sm: 0,
-            },
-          }}>
-          <Box>
-            <CardHeader
-              title={
-                <Typography variant="body2" className={styles.tripItemText}>
-                  <time dateTime={item.startsAt}>
-                    {formatTime(
-                      item.startsAt,
-                      true,
-                      false,
-                      item.startsAtTimezone
+        <Card sx={mainContainerStyle}>
+          {!showEditMode ? (
+            <Box>
+              <CardHeader
+                title={
+                  <Typography variant="body2" className={styles.tripItemText}>
+                    <time dateTime={item.startsAt}>
+                      {formatTime(
+                        item.startsAt,
+                        true,
+                        false,
+                        item.startsAtTimezone
+                      )}
+                    </time>
+                    {(
+                      item as
+                        | TripItineraryActivityItem
+                        | TripItineraryTravelItem
+                    )?.endsAt && (
+                      <>
+                        {` - `}
+                        <time dateTime={(item as any)?.endsAt}>
+                          {formatTime(
+                            (item as any)?.endsAt,
+                            true,
+                            false,
+                            (item as any)?.endsAtTimeZone
+                          )}
+                        </time>
+                      </>
                     )}
-                  </time>
-                  {(item as TripItineraryActivityItem | TripItineraryTravelItem)
-                    ?.endsAt && (
-                    <>
-                      {` - `}
-                      <time dateTime={(item as any)?.endsAt}>
-                        {formatTime(
-                          (item as any)?.endsAt,
-                          true,
-                          false,
-                          (item as any)?.endsAtTimeZone
-                        )}
-                      </time>
-                    </>
-                  )}
-                  {` \u30fb ${
-                    item.type &&
-                    ![
-                      TripItemType["Other Activity"],
-                      TripItemType["Other Mode of Transport"],
-                    ].includes(item.type)
-                      ? getTripItemTypeLabel(item.type)
-                      : "Other"
-                  }`}
-                </Typography>
-              }
-              sx={{ paddingBottom: 0 }}
-              action={
-                <TripItemDetailsAction
-                  id={item.id}
-                  tripId={tripId}
-                  onDelete={onDeleteTripItem}
-                />
-              }
-            />
-            <CardContent>{renderItemText(item)}</CardContent>
-          </Box>
+                    {` \u30fb ${
+                      item.type && !isOtherType
+                        ? getTripItemTypeLabel(item.type)
+                        : "Other"
+                    }`}
+                  </Typography>
+                }
+                className={styles.tripItemHeader}
+                action={
+                  <TripItemDetailsAction
+                    id={item.id}
+                    tripId={tripDetails.id as string}
+                    onDelete={onDeleteTripItem}
+                    toggleEdit={onToggleEditTripItem}
+                  />
+                }
+              />
+              <CardContent>{renderItemText(item)}</CardContent>
+            </Box>
+          ) : (
+            <Box>
+              <CardContent>
+                <Formik<TripItemDraft>
+                  initialValues={{
+                    ...item,
+                    category: "travel",
+                  }}
+                  onSubmit={console.log}>
+                  <AddEditTripForm
+                    showCancel
+                    onCancel={() => onToggleEditTripItem(item.id, false)}
+                    tripDetails={tripDetails}
+                    formMode="edit"
+                  />
+                </Formik>
+              </CardContent>
+            </Box>
+          )}
         </Card>
       </Grid>
     </Grid>
