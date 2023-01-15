@@ -10,13 +10,22 @@ import {
   EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { doc, collection, getDoc, getDocs } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  FieldPath,
+  Timestamp,
+} from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import { tripsRef } from "../../firebase";
+import { auth, tripsRef } from "../../firebase";
 import SliceNames from "../../enums/SliceNames";
 import { isLoggedIn } from "../login/authSlice";
 import {
@@ -35,6 +44,7 @@ import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import TripItemDraft from "../../types/TripItemDraft";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const name = SliceNames.TRIPS;
 
@@ -248,6 +258,68 @@ export const selectPastTrips = createDraftSafeSelector(selectTrips, (state) =>
       dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt, true)
     )
 );
+
+/**
+ * Grab all trips, split by current and past. If the user
+ * is logged in, fetch trips from Firebase.
+ * @returns A tuple: [current trips, past trips, loading state]
+ */
+export const useSelectTrips = (): [Trip[], Trip[], boolean] => {
+  const currentTrips = useAppSelector(selectCurrentTrips);
+  const pastTrips = useAppSelector(selectPastTrips);
+  const loggedIn = useAppSelector(isLoggedIn);
+  const [user, userLoading] = useAuthState(auth);
+  const [state, setState] = useState<[Trip[], Trip[], boolean]>([[], [], true]);
+
+  useEffect(() => {
+    if (!loggedIn || !user?.uid) {
+      // set loading to either loggedIn (so false when there is no user), or userLoading (because user check will be )
+      setState([currentTrips, pastTrips, loggedIn || userLoading]);
+    } else {
+      const userIdMatches = where(
+        new FieldPath("userId"),
+        "==",
+        user?.uid as string
+      );
+      const tripIsInPast = where(
+        new FieldPath("endsAt"),
+        "<",
+        new Timestamp(dayjs().unix(), 0)
+      );
+      const tripIsCurrent = where(
+        new FieldPath("endsAt"),
+        ">=",
+        new Timestamp(dayjs().unix(), 0)
+      );
+
+      const currentTripsQuery = query(
+        tripsRef,
+        userIdMatches,
+        tripIsCurrent
+      ).withConverter<Trip>(convertTripDocument);
+
+      const pastTripsQuery = query(
+        tripsRef,
+        userIdMatches,
+        tripIsInPast
+      ).withConverter<Trip>(convertTripDocument);
+
+      Promise.all([getDocs(currentTripsQuery), getDocs(pastTripsQuery)])
+        .then(([current, past]) => {
+          setState([
+            current.docs.map((x) => x.data()),
+            past.docs.map((x) => x.data()),
+            false,
+          ]);
+        })
+        .catch((e) => {
+          console.error("error fetching list of trips:", e);
+        });
+    }
+  }, [currentTrips, loggedIn, pastTrips, user, userLoading]);
+
+  return state;
+};
 
 export const useSelectFirebaseTripById = (tripId: string) => {
   return useDocumentData(

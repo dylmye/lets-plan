@@ -7,13 +7,10 @@ import TripListItemCard from "../../components/TripListItemCard";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
-import { useAppSelector } from "../../app/hooks";
-import { selectCurrentTrips, selectPastTrips } from "./tripSlice";
+import { useSelectTrips } from "./tripSlice";
 
 const TripList = () => {
-  const loading = false;
-  const currentTrips = useAppSelector(selectCurrentTrips);
-  const pastTrips = useAppSelector(selectPastTrips);
+  const [currentTrips, pastTrips, loading] = useSelectTrips();
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
