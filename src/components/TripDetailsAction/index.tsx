@@ -8,20 +8,28 @@ import {
   MenuList,
   Tooltip,
 } from "@mui/material";
+import { useAuthState } from "react-firebase-hooks/auth";
 
+import { auth } from "../../firebase";
 import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
-import { useAppSelector } from "../../app/hooks";
-import { selectLocalTripById } from "../../features/tripList/tripSlice";
+import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import Trip from "../../types/Trip";
 
 export interface TripDetailsActionProps {
-  id: string;
+  trip: Trip;
 }
 
-const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
-  const trip = useAppSelector((state) => selectLocalTripById(state, id));
+/** Context menu for trips */
+const TripDetailsAction = ({ trip }: TripDetailsActionProps) => {
+  const [user] = useAuthState(auth);
+  const isOwned = !!trip && tripIsOwnedByUser(trip, user?.uid);
+  const isExample = !trip || tripIsExample(trip.id);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { setTrip, setDeleteTrip } = useGlobalModalVisibility();
+
+  if (!isOwned) {
+    return null;
+  }
 
   const onButtonPress = (
     event?: React.MouseEvent<HTMLElement | null>
@@ -35,7 +43,7 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
   };
 
   const onEditTrip = () => {
-    setTrip(trip as Trip);
+    setTrip(trip);
   };
 
   const onDeleteTrip = () => {
@@ -54,7 +62,7 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
       </Tooltip>
       <Menu
         sx={{ mt: "45px" }}
-        id={`menu-trip-${id}`}
+        id={`menu-trip-${trip.id}`}
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         keepMounted
@@ -63,16 +71,17 @@ const TripDetailsAction = ({ id }: TripDetailsActionProps) => {
         onClose={() => onButtonPress()}>
         <MenuList disablePadding>
           <MenuItem
-            key={`menu-trip-${id}-editdetails`}
+            key={`menu-trip-${trip.id}-editdetails`}
             dense
-            onClick={() => onEditTrip()}>
+            onClick={() => onEditTrip()}
+            disabled={isExample}>
             <ListItemIcon>
               <Edit fontSize="inherit" />
             </ListItemIcon>
             Edit Details
           </MenuItem>
           <MenuItem
-            key={`menu-trip-${id}-delete`}
+            key={`menu-trip-${trip.id}-delete`}
             dense
             onClick={() => onDeleteTrip()}>
             <ListItemIcon>

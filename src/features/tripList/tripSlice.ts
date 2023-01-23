@@ -19,11 +19,13 @@ import {
   where,
   FieldPath,
   Timestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { v4 as uuidv4 } from "uuid";
 
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { auth, tripsRef } from "../../firebase";
 import SliceNames from "../../enums/SliceNames";
@@ -33,10 +35,7 @@ import {
   convertTripItemDocuments,
 } from "../../helpers/converters";
 import { dateCompare, tripIsInState } from "../../helpers/dates";
-import {
-  getTripItemTypeLabel,
-  groupTripItemsByDay,
-} from "../../helpers/tripItems";
+import { getTripItemTypeLabel } from "../../helpers/tripItems";
 import Trip from "../../types/Trip";
 import TripDraft from "../../types/TripDraft";
 import { TripItemType } from "../../types/TripItemType";
@@ -44,7 +43,6 @@ import { CarItem } from "../../types/tripItineraryTypes";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import TripItemDraft from "../../types/TripItemDraft";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 const name = SliceNames.TRIPS;
 
@@ -231,16 +229,6 @@ export const {
   selectById: selectLocalTripById,
 } = tripsAdapter.getSelectors<RootState>((state) => state.trips);
 
-export const selectTripItemsByDay = (id: string) => (store: RootState) => {
-  const trip = selectLocalTripById(store, id);
-
-  if (trip === undefined || !trip.items?.length) {
-    return {};
-  }
-
-  return groupTripItemsByDay(trip?.items);
-};
-
 export const selectCurrentTrips = createDraftSafeSelector(
   selectTrips,
   (state) =>
@@ -357,7 +345,7 @@ export const useSelectTripById = (
   }, [localTrip]);
 
   useEffect(() => {
-    if (!loggedIn || tripId === "example") {
+    if (!loggedIn) {
       setLocalAsState();
     } else {
       const tripDoc = doc(tripsRef, tripId).withConverter<Trip>(
@@ -390,7 +378,10 @@ export const useSelectTripById = (
                     loading: false,
                   });
                 } else {
-                  setLocalAsState();
+                  setState({
+                    data: tripData,
+                    loading: false,
+                  });
                 }
               })
               .catch((e) =>
@@ -408,6 +399,30 @@ export const useSelectTripById = (
   }, [tripId, localTrip, loggedIn, setLocalAsState]);
 
   return [state.data, state.loading];
+};
+
+/**
+ * Creates a callback to delete a local or remote
+ * trip, depending on user logged-in state.
+ * @returns The callback to trigger the delete
+ */
+export const useDeleteTripById = () => {
+  const loggedIn = useAppSelector(isLoggedIn);
+  const dispatch = useAppDispatch();
+
+  return useCallback(
+    (tripId: string) => {
+      if (!loggedIn) {
+        return dispatch(deleteTripById(tripId));
+      }
+
+      // items subcollection is deleted with a cloud
+      // function - see api-function `removeRelatedOnTripDelete`
+
+      return deleteDoc(doc(tripsRef, tripId));
+    },
+    [dispatch, loggedIn]
+  );
 };
 
 export default tripSlice.reducer;

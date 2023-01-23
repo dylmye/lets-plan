@@ -42,15 +42,15 @@ import {
 } from "../../helpers/url";
 import TripItemDetailsAction from "../TripItemDetailsAction";
 import AddEditTripForm from "../AddTripItemCard/AddEditTripForm";
-import TripDetails from "../../types/TripDetails";
 import { Formik } from "formik";
 import TripItemDraft from "../../types/TripItemDraft";
+import Trip from "../../types/Trip";
 
 export interface TripItineraryItemProps {
   /** The item to show */
   item: TripItineraryItemBase;
-  /** The details of the trip this item belongs to */
-  tripDetails: TripDetails;
+  /** The parent trip */
+  trip: Trip;
   /** The action to call to show the delete item dialog */
   onDeleteTripItem: (tripItemId: string) => void;
   /** Whether to show the edit mode for this item */
@@ -62,7 +62,7 @@ export interface TripItineraryItemProps {
 /** Index item with a preview of the trip */
 const TripItineraryItem = ({
   item,
-  tripDetails,
+  trip,
   onDeleteTripItem,
   showEditMode,
   onToggleEditTripItem,
@@ -330,7 +330,7 @@ const TripItineraryItem = ({
                 action={
                   <TripItemDetailsAction
                     id={item.id}
-                    tripId={tripDetails.id as string}
+                    trip={trip}
                     onDelete={onDeleteTripItem}
                     toggleEdit={onToggleEditTripItem}
                   />
@@ -350,7 +350,7 @@ const TripItineraryItem = ({
                   <AddEditTripForm
                     showCancel
                     onCancel={() => onToggleEditTripItem(item.id, false)}
-                    tripDetails={tripDetails}
+                    tripDetails={trip}
                     formMode="edit"
                   />
                 </Formik>

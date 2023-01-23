@@ -11,6 +11,13 @@ import {
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import {
+  SchemaOf,
+  object as yObject,
+  string as yString,
+  mixed as yMixed,
+} from "yup";
+import { useSnackbar } from "notistack";
 
 import TripDraft from "../../types/TripDraft";
 import FormStepOne from "./FormStepOne";
@@ -21,18 +28,12 @@ import {
   getExtensionByMimetype,
   getUploadErrorFriendlyText,
 } from "../../helpers/upload";
-import {
-  SchemaOf,
-  object as yObject,
-  string as yString,
-  mixed as yMixed,
-} from "yup";
+
 import FormPagination from "./FormPagination";
 import { useAppDispatch } from "../../app/hooks";
 import { addTrip } from "../../features/tripList/tripSlice";
 import ModalProps from "../../types/ModalProps";
 import { useOnlineStatus } from "../../contexts/OnlineStatus";
-import { useSnackbar } from "notistack";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",

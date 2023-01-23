@@ -6,13 +6,19 @@
 
 <p align="center">
   <a href="https://github.com/dylmye/lets-plan/actions/workflows/firebase-hosting-merge.yml"><img alt="The status badge for this project's build" src="https://img.shields.io/github/actions/workflow/status/dylmye/lets-plan/firebase-hosting-merge.yml?logo=github"></a>
-  <a href="https://github.com/dylmye/lets-plan/blob/main/LICENSE"><img alt="The status badge for the licence of this project" src="https://img.shields.io/github/license/dylmye/lets-plan"></a>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fdylmye%2Flets-plan?ref=badge_shield"><img alt="FOSSA status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdylmye%2Flets-plan.svg?type=shield"></a>
   <a href="https://snyk.io"><img alt="The status badge for the Snyk-detected vulnerabilities count for this project" src="https://img.shields.io/snyk/vulnerabilities/github/dylmye/lets-plan?logo=snyk"></a>
 </p>
 
----
+<p align="center">
+    <strong>Webapp</strong> •
+    <a href="https://github.com/dylmye/lets-plan-infra">Infrastructure</a> •
+    <a href="https://github.com/dylmye/lets-plan-firebase-functions">Firebase Functions</a>
+</p>
 
 A simple React/Redux based trip planner. Let's Plan is designed to be mobile- and offline- first, with added support for sync and sharing with friends. Cloud services (accounts, sync, image hosting) are provided through Firebase.
+
+---
 
 ## Current roadmap/to-do
 
@@ -26,7 +32,9 @@ Before you start, create a Firebase project with a web app to host storage for i
 
 First, install dependencies:
 
-`> yarn`
+```bash
+$ yarn
+```
 
 Secondly, if you're not using Firebase for hosting you can remove `.firebaserc`, `.firebase.json` and the firebase scripts in the `.github` folder.
 

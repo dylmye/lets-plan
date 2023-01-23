@@ -47,7 +47,7 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
             className: styles.tripListTitle,
             fontWeight: "bold",
           }}
-          action={<TripDetailsAction id={trip.id} />}
+          action={<TripDetailsAction trip={trip} />}
         />
         <CardContent
           sx={{

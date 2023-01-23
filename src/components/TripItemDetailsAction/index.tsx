@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   IconButton,
   ListItemIcon,
@@ -8,14 +7,18 @@ import {
   MenuList,
   Tooltip,
 } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
-import { selectLocalTripById } from "../../features/tripList/tripSlice";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
+import { auth } from "../../firebase";
+import Trip from "../../types/Trip";
 
 export interface TripItemDetailsActionProps {
   /** Trip Item ID */
   id: string;
-  /** Parent ID */
-  tripId: string;
+  /** Parent Trip */
+  trip: Trip;
   /** Action to trigger delete modal */
   onDelete: (tripItemId: string) => void;
   /** Toggle the edit mode */
@@ -24,11 +27,13 @@ export interface TripItemDetailsActionProps {
 
 const TripItemDetailsAction = ({
   id,
-  tripId,
+  trip,
   onDelete,
   toggleEdit,
 }: TripItemDetailsActionProps) => {
-  const trip = useAppSelector((state) => selectLocalTripById(state, tripId));
+  const [user] = useAuthState(auth);
+  const isOwned = !!trip && tripIsOwnedByUser(trip, user?.uid);
+  const isExample = !trip || tripIsExample(trip.id);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const onButtonPress = (
@@ -42,7 +47,7 @@ const TripItemDetailsAction = ({
     return false;
   };
 
-  if (trip?.id === "example") {
+  if (isExample || !isOwned) {
     return null;
   }
 

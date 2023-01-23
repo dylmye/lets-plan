@@ -27,8 +27,10 @@ export const convertTripDocument: FirestoreDataConverter<Trip> = {
     options
   ): Trip {
     const data = tripSnapshot.data(options);
+    const id = tripSnapshot.id;
     return {
       ...data,
+      id,
       startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
       endsAt: data.endsAt && dayjs.unix(data.endsAt.seconds).format(),
       createdAtUtc:

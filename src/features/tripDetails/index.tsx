@@ -19,6 +19,7 @@ import {
   Add,
   // FilterAlt,
 } from "@mui/icons-material";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import styles from "./styles.module.css";
 import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
@@ -34,6 +35,9 @@ import StyledLink from "../../components/StyledLink";
 import AddTripItemCard from "../../components/AddTripItemCard";
 import TripDetailsAction from "../../components/TripDetailsAction";
 import DeleteTripItemDialog from "../../components/DeleteTripItemDialog";
+import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
+import { auth } from "../../firebase";
+import Trip from "../../types/Trip";
 
 interface TripDetailsProps {
   /** In edit mode? */
@@ -44,6 +48,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
   const [trip, loading] = useSelectTripById(tripId as string);
+  const [user] = useAuthState(auth);
   const [activeAddTripItemCardDay, setActiveTripItemCardDay] = useState<
     string | undefined | null
   >(null);
@@ -55,7 +60,9 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
   const deviceIsBiggerThanXs = useMediaQuery(theme.breakpoints.up("sm"));
-  const tripIsExample = tripId === "example";
+  const isExample = !tripId || tripIsExample(tripId);
+  const isOwned = !!trip && tripIsOwnedByUser(trip, user?.uid);
+  const isEditable = !isExample && isOwned;
 
   const setEditModeForTripItem = (
     tripItemId: string,
@@ -71,12 +78,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
     <TripItineraryItem
       item={item}
       key={`trip-item-${item.startsAt}-${item.type}`}
-      tripDetails={{
-        id: trip?.id,
-        title: trip?.title as string,
-        startsAt: trip?.startsAt as string,
-        endsAt: trip?.endsAt as string,
-      }}
+      trip={trip as Trip}
       onDeleteTripItem={(itemId: string) => setDeleteItemId(itemId)}
       showEditMode={itemEditModeState[item.id] ?? false}
       onToggleEditTripItem={setEditModeForTripItem}
@@ -108,7 +110,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
           <time dateTime={day}>{formatDate(day, "long")}</time>
         </Typography>
         <Stack direction="row" spacing={1}>
-          {!tripIsExample && (
+          {isEditable && (
             <Tooltip title="Add to day">
               <IconButton
                 aria-label="Add an item this day"
@@ -228,7 +230,7 @@ const TripDetails = ({ edit = false }: TripDetailsProps) => {
               }}>
               {trip?.title}
             </Typography>
-            {trip?.id && !tripIsExample && <TripDetailsAction id={trip.id} />}
+            {trip && <TripDetailsAction trip={trip} />}
           </div>
           <Typography
             variant="body1"

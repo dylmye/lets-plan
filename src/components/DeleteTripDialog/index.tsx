@@ -8,10 +8,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
 
-import { useAppDispatch } from "../../app/hooks";
-import { deleteTripById } from "../../features/tripList/tripSlice";
+import { useDeleteTripById } from "../../features/tripList/tripSlice";
 
 interface DeleteTripDialogProps {
   visible: boolean;
@@ -26,14 +24,13 @@ const DeleteTripDialog = ({
   id,
   title,
 }: DeleteTripDialogProps) => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const deleteTrip = useDeleteTripById();
 
   const onAccepted = () => {
-    dispatch(deleteTripById(id));
+    deleteTrip(id);
     onClose();
-    navigate("/");
+    window.location.reload();
     enqueueSnackbar("Trip deleted!");
   };
 
