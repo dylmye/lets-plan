@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
+import { useNavigate } from 'react-router-dom';
 
 import { useDeleteTripById } from "../../features/tripList/tripSlice";
 
@@ -24,12 +25,14 @@ const DeleteTripDialog = ({
   id,
   title,
 }: DeleteTripDialogProps) => {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const deleteTrip = useDeleteTripById();
 
   const onAccepted = () => {
     deleteTrip(id);
     onClose();
+    navigate("/");
     window.location.reload();
     enqueueSnackbar("Trip deleted!");
   };

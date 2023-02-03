@@ -156,7 +156,9 @@ const TripItineraryItem = ({
                         item.startsAt,
                         true,
                         false,
-                        item.startsAtTimezone
+                        // item.startsAtTimezone
+                        // fix temp issues where SAT is hard set
+                        undefined
                       )}
                     </time>
                     {(
@@ -171,7 +173,7 @@ const TripItineraryItem = ({
                             (item as any)?.endsAt,
                             true,
                             false,
-                            (item as any)?.endsAtTimeZone
+                            (item as any)?.endsAtTimezone
                           )}
                         </time>
                       </>
@@ -192,9 +194,11 @@ const TripItineraryItem = ({
                     toggleEdit={onToggleEditTripItem}
                   />
                 }
+                sx={{ paddingBottom: 0 }}
               />
-              {/* <CardContent>{renderItemText(item)}</CardContent> */}
-              <CardContent>{renderItemText(item)}</CardContent>
+              <CardContent sx={{ paddingTop: 0 }}>
+                {renderItemText(item)}
+              </CardContent>
             </Box>
           ) : (
             <Box>

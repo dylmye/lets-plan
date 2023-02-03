@@ -473,12 +473,12 @@ const Legal = () => {
       <ul className={styles.legalList}>
         <li>
           <p>
-            To request the data Google, LLC holds on you, please{" "}
+            To request the data Google, LLC holds on you, please contact them{" "}
             <MuiLink
-              href="https://support.google.com/accounts/answer/3024190"
+              href="https://support.google.com/policies/contact/sar"
               target="_blank"
               rel="noreferrer">
-              consult this article
+              here
             </MuiLink>
             .
           </p>
@@ -486,8 +486,7 @@ const Legal = () => {
         <li>
           <p>
             To request the data Intuition Machines, Inc. holds on you, please
-            contact them using the email in the "Notice to EU Data Subjects"
-            section in their{" "}
+            contact them using the email at the bottom of their{" "}
             <MuiLink
               href="https://www.hcaptcha.com/privacy"
               target="_blank"
@@ -507,25 +506,25 @@ const Legal = () => {
         <li>
           <p>
             To request the data Cloudflare, Inc. holds on you, please contact
-            them using the email in section 8 of their{" "}
+            them using the details
             <MuiLink
-              href="https://www.cloudflare.com/privacypolicy/"
+              href="https://www.datarequests.org/company/cloudflare"
               target="_blank"
               rel="noreferrer">
-              privacy policy
+              here
             </MuiLink>
             .
           </p>
         </li>
         <li>
           <p>
-            To request the data AWIN Ltd and/or AWIN AG holds on you, please
-            contact them using the email under the "Questions?" section of their{" "}
+            To request the data AWIN AG and affiliates holds on you, please
+            contact them using the details
             <MuiLink
-              href="https://www.awin.com/gb/privacy"
+              href="https://www.datarequests.org/company/awin/"
               target="_blank"
               rel="noreferrer">
-              fair processing notice and privacy policy
+              here
             </MuiLink>
             .
           </p>

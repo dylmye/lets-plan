@@ -117,7 +117,6 @@ export const convertTripItemTypeToGoogleMapsTravelMode = (
   switch (travelType) {
     case TripItemType.Bus:
     case TripItemType.Train:
-    case TripItemType.Shuttle:
     case TripItemType.Subway: {
       return "transit";
     }
@@ -127,6 +126,7 @@ export const convertTripItemTypeToGoogleMapsTravelMode = (
     case TripItemType.Cycle: {
       return "bicycling";
     }
+    case TripItemType.Shuttle:
     case TripItemType.Car:
     case TripItemType["Car Rental"]: {
       return "driving";
@@ -333,6 +333,33 @@ const fieldNameIcon = (
         iconHint: "Line / Service",
       };
     }
+    case "rentalOperator": {
+      return {
+        iconName: "Store",
+        iconHint: "Operator",
+      }
+    }
+    case "trainOperator":
+    case "shuttleOperator":
+    case "taxiOperator":
+    case "operatorName": {
+      return {
+        iconName: "Badge",
+        iconHint: "Operator",
+      };
+    }
+    case "selectedVehicleType": {
+      return {
+        iconName: "Workspaces",
+        iconHint: "Vehicle Class",
+      }
+    }
+    case "serviceName": {
+      return {
+        iconName: "WorkspacePremium",
+        iconHint: "Service Level"
+      }
+    }
   }
   return {
     iconName: "Edit",
@@ -478,6 +505,10 @@ export const renderExtraText = (
         break;
       }
       case "originLocation": {
+        if (!field.originLocation) {
+          break;
+        }
+
         const journeyLink =
           field.type === TripItemType.Taxi
             ? generateUberUniversalLink(
@@ -542,6 +573,13 @@ export const renderExtraText = (
               </IconButton>
             </>
           ),
+        });
+        break;
+      }
+      case "prebooked": {
+        nodes.push({
+          iconName: "Receipt",
+          body: field[k] ? "Booked in advance" : "Not booked in advance"
         });
         break;
       }

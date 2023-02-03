@@ -49,7 +49,7 @@ const AddEditTripItemForm = ({
   formMode = "add",
   tripDetails,
 }: AddEditTripItemFormProps) => {
-  const { isSubmitting, setFieldValue, values } =
+  const { isSubmitting, setFieldValue, values, errors } =
     useFormikContext<TripItemDraft>();
   const currentTheme = useAppSelector(selectThemeMode);
   const currentFieldSettings = customFieldSettings(values.type);
@@ -88,7 +88,7 @@ const AddEditTripItemForm = ({
               }
             }}
             disabled={isSubmitting}>
-            <ToggleButton value="travel">Travel</ToggleButton>
+            <ToggleButton value="travel" autoFocus>Travel</ToggleButton>
             <ToggleButton value="activity">Activity</ToggleButton>
           </Field>
         </Grid>
@@ -220,7 +220,19 @@ const AddEditTripItemForm = ({
                   component={GooglePlacesAutocompleteField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
-                  inputProps={googleAttributionHelperText}
+                  disabled={(!values.originLocation && !values.destinationLocation) || isSubmitting}
+                  inputProps={{
+                    helperText:
+                      errors?.destinationLocation ??
+                      googleAttributionHelperText.helperText,
+                    error: !!errors?.destinationLocation,
+                  }}
+                  validate={(value: string) => {
+                    if (!!values.originLocation && !value) {
+                      return "Destination required";
+                    }
+                    return null;
+                  }}
                 />
               </Grid>
             )}
