@@ -105,6 +105,7 @@ const exampleTrip: Trip = {
     {
       id: "example_item_3",
       type: TripItemType["Meet-up"],
+      title: "Beach Time!",
       location: "Upgang Beach, Whitby, England",
       details: "Let's meet Janelle and Hanna by the rocks.",
       startsAt: exampleStartDate.add(16, "hour").add(30, "minute").format(),
@@ -144,6 +145,11 @@ export const deleteTripItemByTripId = createAction<{
   tripId: EntityId;
   itemId: string;
 }>("trips/deleteTripItemByTripId");
+
+export const updateTripItemByTripId = createAction<{
+  tripId: EntityId;
+  item: TripItemDraft & { id: string };
+}>("trips/updateTripItemByTripId");
 
 const tripSlice = createSlice({
   name,
@@ -212,6 +218,28 @@ const tripSlice = createSlice({
       if (!trip) return;
 
       const items = trip.items?.filter((x) => x.id !== payload.itemId);
+
+      tripsAdapter.updateOne(state, {
+        id: payload.tripId,
+        changes: { items },
+      });
+    });
+
+    /** Update Trip Item */
+    builder.addCase(updateTripItemByTripId, (state, { payload }) => {
+      const trip = state.entities[payload.tripId];
+
+      if (!trip) return;
+
+      const allOtherItems = trip.items?.filter((x) => x.id !== (payload.item.id as string)) || [];
+
+      const { category, ...updatedItem } = payload.item;
+
+      const items: TripItineraryItemBase[] = [
+        ...allOtherItems,
+        // @TODO: fix typing here - object is valid but type on EditTripItem is draft
+        updatedItem as unknown as TripItineraryItemBase,
+      ];
 
       tripsAdapter.updateOne(state, {
         id: payload.tripId,

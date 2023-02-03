@@ -56,6 +56,21 @@ export const generateGoogleMapsDirectionsUrl = (
 };
 
 /**
+ * Like `generateGoogleMapsDirectionsUrl`, but the origin is not set, making G Maps
+ * use the user's current location. Use when not navigating point A to point B.
+ * @param location The location to set as destination
+ * @param placeId The G Maps ID provided by API for destination, optional
+ * @returns The full URL to link to
+ */
+export const generateGoogleMapsDirectionFromUserLocationUrl = (location: string, placeId?: string): string => {
+  let url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}`;
+  if (placeId) {
+    url += `destination_place_id=${placeId}`
+  }
+  return url;
+};
+
+/**
  * Generates an Uber Universal Deeplink for a journey
  * @param origin The formatted address that acts as the pickup
  * @param destination The formatted address that acts as the destination

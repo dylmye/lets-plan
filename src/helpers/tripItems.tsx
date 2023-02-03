@@ -21,8 +21,9 @@ import {
   DirectionsBike,
   DirectionsRailway,
   Notes,
+  ContentCopy,
 } from "@mui/icons-material";
-import { SvgIconProps } from "@mui/material";
+import { SvgIconProps, Link, IconButton } from "@mui/material";
 import { Field } from "formik";
 import { TextField } from "formik-mui";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
@@ -34,6 +35,14 @@ import TripItineraryItemBase from "../types/TripItineraryItemBase";
 import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
 import BetterSwitchField from "../components/fields/BetterSwitchField";
 import CustomFieldSettings from "../types/CustomFieldSettings";
+import ExtraText from "../types/ExtraText";
+import { AllItineraryTypes } from "../types/tripItineraryTypes";
+import { userLanguage } from "./dates";
+import {
+  generateGoogleMapsDirectionsUrl,
+  generateUberUniversalLink,
+  generateGoogleMapsQueryUrl,
+} from "./url";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -87,7 +96,7 @@ export const getTripItemIcon = (
   return null;
 };
 
-/** Detemine icon colour based on category */
+/** Determine icon colour based on category */
 export const getTripItemColour = (item?: TripItemType): string | null => {
   if (!item) {
     return null;
@@ -145,6 +154,22 @@ export const groupTripItemsByDay = (
 export const getTripItemTypeLabel = (t: TripItemType): string =>
   Object.keys(TripItemType)[Object.values(TripItemType).indexOf(t)];
 
+export const renderTripItemUrls = (
+  urls: Record<string, string>
+): JSX.Element => (
+  <ul style={{ margin: 0 }}>
+    {Object.keys(urls).map((k) => (
+      <li key={k ?? "link"}>
+        <span style={{ marginTop: 2, marginBottom: 2 }}>
+          <Link href={urls[k]} target="_blank" rel="noreferrer">
+            {k ?? "link"}
+          </Link>
+        </span>
+      </li>
+    ))}
+  </ul>
+);
+
 /**
  * An object of types with their extra fields. The field type is either 'text' (TextField), 'textarea' (TextField with multiline), 'toggle' (Switch), or 'dropdown:x,y,z' where x, y and z are dropdown options. There are also some API dropdown options:
  * - connected-dropdown:airline - a list of airliners with english name and ICAO/IATA codes
@@ -158,6 +183,7 @@ export const tripItemExtraFields: Record<
   [TripItemType.Plane]: {
     flightDesignator: "text",
     airline: "connected-dropdown:airline",
+    class: "optional-dropdown:Business,First,Premium Economy,Economy",
   },
   [TripItemType.Ferry]: {
     ferryOperator: "text",
@@ -254,9 +280,64 @@ export const customFieldSettings = (
   };
 };
 
+/** Prettify a field name (miscText -> Misc Text) */
 const fieldNameToLabel = (name: string): string => {
   const result = name.replace(/([A-Z]{1,})/g, " $1");
   return result.charAt(0).toUpperCase() + result.slice(1);
+};
+
+/** Get the icon and tooltip text for a given field */
+const fieldNameIcon = (
+  name: keyof AllItineraryTypes
+): Pick<ExtraText, "iconName" | "iconHint"> => {
+  switch (name) {
+    case "airline": {
+      return {
+        iconName: "Airlines",
+        iconHint: "Airline (Seller or Operator)",
+      };
+    }
+    case "busOperator": {
+      return {
+        iconName: "DirectionsBus",
+        iconHint: "Bus Operator",
+      };
+    }
+    case "class": {
+      return {
+        iconName: "FlightClass",
+        iconHint: "Ticket Class",
+      };
+    }
+    case "fare": {
+      return {
+        iconName: "Toll",
+        iconHint: "Ticket Fare Type",
+      };
+    }
+    case "ferryOperator": {
+      return {
+        iconName: "DirectionsBoat",
+        iconHint: "Operator",
+      };
+    }
+    case "flightDesignator": {
+      return {
+        iconName: "AirplaneTicket",
+        iconHint: "Flight Designator/Number",
+      };
+    }
+    case "line": {
+      return {
+        iconName: "MyLocation",
+        iconHint: "Line / Service",
+      };
+    }
+  }
+  return {
+    iconName: "Edit",
+    iconHint: name,
+  };
 };
 
 /**
@@ -323,4 +404,156 @@ export const renderExtraField = (
         />
       );
   }
+};
+
+/**
+ * Render the body of the item card (read view).
+ * @returns an array of { icon, ReactChild } where the icon is
+ * what to display on the left, and the node is the text etc to display
+ */
+export const renderExtraText = (
+  field: Partial<AllItineraryTypes>
+): ExtraText[] => {
+  const copyTextToClipboard = async (text: string): Promise<void> => {
+    await navigator.clipboard.writeText(text);
+  };
+
+  // keys we don't render here
+  const excludedKeys: (keyof AllItineraryTypes)[] = [
+    "id",
+    "type",
+    "title",
+    "miscText",
+    "image",
+    "startsAt",
+    "startsAtTimezone",
+    "endsAt",
+    "endsAtTimezone",
+    "priceCurrency", // price incl. currency
+    "destinationLocation", // render with origin
+    "details", // this should always be last so we render it manually
+  ];
+
+  // @TODO: omit values from excludedKeys because filter doesn't
+  // do it for us. Making excludedKeys as const and using Omit
+  // with it doesn't work.
+  // we have to do this dumb typing to enforce the cases
+  // on the switch below :)
+  const keysToRender = (
+    Object.keys(field) as (keyof Partial<AllItineraryTypes>)[]
+  ).filter((x) => !excludedKeys.includes(x as any));
+
+  const nodes: ExtraText[] = [];
+
+  keysToRender.forEach((k) => {
+    switch (k) {
+      // use field[k] here so when
+      // doing multiple cases
+      // it doesn't break :)
+      // also end each case with a break
+      case "urls": {
+        nodes.push({
+          iconName: "Link",
+          iconHint: "Links",
+          body: (
+            <>
+              Related Links:
+              {renderTripItemUrls(field[k] as Record<string, string>)}
+            </>
+          ),
+        });
+        break;
+      }
+      case "price": {
+        const formatter = new Intl.NumberFormat([userLanguage, "en-GB"], {
+          style: "currency",
+          // @ts-ignore This field will exist if Price does
+          currency: field.priceCurrency,
+        });
+        nodes.push({
+          iconName: "MonetizationOn",
+          iconHint: "Price",
+          body: formatter.format(field[k] as number),
+        });
+        break;
+      }
+      case "originLocation": {
+        const journeyLink =
+          field.type === TripItemType.Taxi
+            ? generateUberUniversalLink(
+                field.originLocation as string,
+                field.destinationLocation as string
+              )
+            : generateGoogleMapsDirectionsUrl(
+                field.originLocation as string,
+                field.destinationLocation as string,
+                convertTripItemTypeToGoogleMapsTravelMode(
+                  field.type as TripItemType
+                )
+              );
+        nodes.push({
+          iconName: "Directions",
+          iconHint: "Directions",
+          body: (
+            <Link
+              href={journeyLink}
+              target="_blank"
+              rel="noreferrer"
+              title={
+                field.type === TripItemType.Taxi
+                  ? "Ride there with Uber"
+                  : "View on Google Maps"
+              }>
+              <strong>From</strong> {field.originLocation} <strong>to</strong>
+              {" " + field.destinationLocation}
+            </Link>
+          ),
+        });
+        break;
+      }
+      case "location": {
+        nodes.push({
+          iconName: "Directions",
+          iconHint: "Location",
+          body: (
+            <Link
+              href={generateGoogleMapsQueryUrl(field[k] as string)}
+              target="blank"
+              rel="noreferrer">
+              {/* This text is the backup to the title so avoid duplication */}
+              {!!field.title ? field[k] : "View on Google Maps"}
+            </Link>
+          ),
+        });
+        break;
+      }
+      case "reference": {
+        nodes.push({
+          iconName: "Tag",
+          iconHint: "Reference",
+          body: (
+            <>
+              {field[k] as string}
+              <IconButton
+                size="small"
+                aria-label="Copy the reference to your clipboard"
+                onClick={() => copyTextToClipboard(field[k] as string)}>
+                <ContentCopy fontSize="inherit" />
+              </IconButton>
+            </>
+          ),
+        });
+        break;
+      }
+      default:
+        const { iconName, iconHint } = fieldNameIcon(k);
+        nodes.push({
+          iconName,
+          iconHint,
+          body: field[k] as string,
+        });
+    }
+  });
+
+  return nodes;
 };

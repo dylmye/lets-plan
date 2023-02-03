@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Grid,
-  Link,
   Paper,
   Tooltip,
   Box,
@@ -10,41 +9,30 @@ import {
   Typography,
 } from "@mui/material";
 import { SxProps, useTheme } from "@mui/system";
-import {
-  Assignment,
-  Directions,
-  Link as LinkIcon,
-  MonetizationOn,
-  Tag,
-} from "@mui/icons-material";
+import { Assignment } from "@mui/icons-material";
+import * as MuiIcons from "@mui/icons-material";
 import { CardHeader } from "@mui/material";
 
 import {
-  convertTripItemTypeToGoogleMapsTravelMode,
   getTripItemColour,
   getTripItemIcon,
   getTripItemTypeLabel,
+  renderExtraText,
 } from "../../helpers/tripItems";
 import styles from "./styles.module.css";
-import {
-  ActivityTypes,
-  TravelTypes,
-  TripItemType,
-} from "../../types/TripItemType";
+import { TripItemType } from "../../types/TripItemType";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
 import TripItineraryItemBase from "../../types/TripItineraryItemBase";
-import { formatTime, userLanguage } from "../../helpers/dates";
-import {
-  generateGoogleMapsDirectionsUrl,
-  generateGoogleMapsQueryUrl,
-  generateUberUniversalLink,
-} from "../../helpers/url";
+import { formatTime } from "../../helpers/dates";
 import TripItemDetailsAction from "../TripItemDetailsAction";
-import AddEditTripForm from "../AddTripItemCard/AddEditTripForm";
+import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
 import { Formik } from "formik";
 import TripItemDraft from "../../types/TripItemDraft";
 import Trip from "../../types/Trip";
+import { useAppDispatch } from "../../app/hooks";
+import { updateTripItemByTripId } from "../../features/tripList/tripSlice";
+import { AllItineraryTypes } from "../../types/tripItineraryTypes";
 
 export interface TripItineraryItemProps {
   /** The item to show */
@@ -68,6 +56,7 @@ const TripItineraryItem = ({
   onToggleEditTripItem,
 }: TripItineraryItemProps) => {
   const { palette } = useTheme();
+  const dispatch = useAppDispatch();
   const Icon = () =>
     getTripItemIcon(item.type, { htmlColor: palette.background.paper });
   const iconBackgroundColour = getTripItemColour(item.type);
@@ -87,187 +76,55 @@ const TripItineraryItem = ({
     },
   };
 
-  const renderUrls = (urls: Record<string, string>): JSX.Element => (
-    <>
-      <Typography variant="body1" className={styles.tripItemText}>
-        <Tooltip title="Links">
-          <LinkIcon fontSize="inherit" className={styles.tripItemIcon} />
-        </Tooltip>
-        Related links:
-      </Typography>
-      <ul style={{ margin: 0 }} className={styles.tripItemText}>
-        {Object.keys(urls).map((k) => (
-          <li key={k ?? "link"}>
-            <span style={{ marginTop: 2, marginBottom: 2 }}>
-              <Link href={urls[k]} target="_blank" rel="noreferrer">
-                {k ?? "link"}
-              </Link>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
+  const renderItemText = (
+    item: TripItineraryItemBase & Partial<AllItineraryTypes>
+  ): JSX.Element => {
+    return (
+      <>
+        <Typography variant="h5" className={styles.tripItemTitle}>
+          {item.title ?? item.location}
+        </Typography>
+        {renderExtraText(item).map(({ iconName, iconHint, body }) => {
+          const IconWrapper = !!iconHint ? Tooltip : React.Fragment;
+          // @ts-ignore
+          const Icon = !!iconName ? MuiIcons[iconName] : React.Fragment;
 
-  const renderItemText = (item: TripItineraryItemBase): JSX.Element | null => {
-    if (!item.type) {
-      return null;
-    }
+          // @TODO: add logic for hiding fields - ExtraText should keep the key name
 
-    let formattedPrice: string | null = null;
-    if ((item as TripItineraryTravelItem | TripItineraryActivityItem)?.price) {
-      formattedPrice = new Intl.NumberFormat([userLanguage, "en-GB"], {
-        style: "currency",
-        currency: (item as any)?.priceCurrency,
-      }).format((item as any).price);
-    }
-
-    if (TravelTypes.includes(item.type)) {
-      const journeyLink =
-        item.type === TripItemType.Taxi
-          ? generateUberUniversalLink(
-              (item as TripItineraryTravelItem).originLocation,
-              (item as TripItineraryTravelItem).destinationLocation
-            )
-          : generateGoogleMapsDirectionsUrl(
-              (item as TripItineraryTravelItem).originLocation,
-              (item as TripItineraryTravelItem).destinationLocation,
-              convertTripItemTypeToGoogleMapsTravelMode(item.type)
-            );
-
-      return (
-        <>
-          <Typography variant="h5" className={styles.tripItemTitle}>
-            {(item as TripItineraryTravelItem).title}
-          </Typography>
+          return (
+            <Typography variant="body1" className={styles.tripItemText}>
+              {iconName && (
+                <IconWrapper title={iconHint}>
+                  <Icon fontSize="inherit" className={styles.tripItemIcon} />
+                </IconWrapper>
+              )}
+              {body}
+            </Typography>
+          );
+        })}
+        {item.details && (
           <Typography variant="body1" className={styles.tripItemText}>
-            <Tooltip title="Directions">
-              <Directions fontSize="inherit" className={styles.tripItemIcon} />
+            <Tooltip title="Notes">
+              <Assignment fontSize="inherit" className={styles.tripItemIcon} />
             </Tooltip>
-            <Link
-              href={journeyLink}
-              target="_blank"
-              rel="noreferrer"
-              title={
-                item.type === TripItemType.Taxi
-                  ? "Ride there with Uber"
-                  : "View on Google Maps"
-              }>
-              <strong>From</strong>{" "}
-              {(item as TripItineraryTravelItem).originLocation}{" "}
-              <strong>to</strong>
-              {" " + (item as TripItineraryTravelItem).destinationLocation}
-            </Link>
+            {item.details}
           </Typography>
-          {item.details && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Notes">
-                <Assignment
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              {(item as TripItineraryTravelItem).details}
-            </Typography>
-          )}
-          {item.urls && renderUrls(item.urls)}
-          {(item as TripItineraryTravelItem).price && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Price">
-                <MonetizationOn
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              {formattedPrice}
-            </Typography>
-          )}
-        </>
-      );
-    }
+        )}
+      </>
+    );
+  };
 
-    if (ActivityTypes.includes(item.type)) {
-      return (
-        <>
-          <Typography variant="h5" className={styles.tripItemTitle}>
-            {(item as TripItineraryActivityItem)?.title ??
-              (item as TripItineraryActivityItem).location}
-          </Typography>
-          {/* Show location if a title is provided */}
-          {item?.title && (item as TripItineraryActivityItem)?.location && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Directions">
-                <Directions
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              <Link
-                href={generateGoogleMapsQueryUrl(
-                  (item as TripItineraryActivityItem).location
-                )}
-                target="_blank"
-                rel="noreferrer"
-                title="View on Google Maps">
-                {(item as TripItineraryActivityItem)?.location}
-              </Link>
-            </Typography>
-          )}
-          {/* Show location link if no title */}
-          {!item?.title && (item as TripItineraryActivityItem)?.location && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Directions">
-                <Directions
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              <Link
-                href={generateGoogleMapsQueryUrl(
-                  (item as TripItineraryActivityItem).location
-                )}
-                target="_blank"
-                rel="noreferrer">
-                View on Google Maps
-              </Link>
-            </Typography>
-          )}
-          {item.details && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Notes">
-                <Assignment
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              {(item as TripItineraryActivityItem).details}
-            </Typography>
-          )}
-          {(item as TripItineraryActivityItem).reference && (
-            <Typography variant="body1" className={styles.tripItemReference}>
-              <Tooltip title="Reference">
-                <Tag fontSize="inherit" className={styles.tripItemIcon} />
-              </Tooltip>
-              {(item as TripItineraryActivityItem).reference}
-            </Typography>
-          )}
-          {item.urls && renderUrls(item.urls)}
-          {(item as TripItineraryActivityItem).price && (
-            <Typography variant="body1" className={styles.tripItemText}>
-              <Tooltip title="Price">
-                <MonetizationOn
-                  fontSize="inherit"
-                  className={styles.tripItemIcon}
-                />
-              </Tooltip>
-              {formattedPrice}
-            </Typography>
-          )}
-        </>
-      );
-    }
-
-    return null;
+  const onUpdateTripItem = (values: TripItemDraft): void => {
+    dispatch(
+      updateTripItemByTripId({
+        tripId: trip.id,
+        item: {
+          ...values,
+          id: item.id,
+        },
+      })
+    );
+    onToggleEditTripItem(item.id, false);
   };
 
   return (
@@ -336,6 +193,7 @@ const TripItineraryItem = ({
                   />
                 }
               />
+              {/* <CardContent>{renderItemText(item)}</CardContent> */}
               <CardContent>{renderItemText(item)}</CardContent>
             </Box>
           ) : (
@@ -346,8 +204,8 @@ const TripItineraryItem = ({
                     ...item,
                     category: "travel",
                   }}
-                  onSubmit={console.log}>
-                  <AddEditTripForm
+                  onSubmit={onUpdateTripItem}>
+                  <AddEditTripItemForm
                     showCancel
                     onCancel={() => onToggleEditTripItem(item.id, false)}
                     tripDetails={trip}

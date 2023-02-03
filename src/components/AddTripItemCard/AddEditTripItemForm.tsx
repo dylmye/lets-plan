@@ -7,11 +7,10 @@ import {
   CardActions,
   Divider,
   Button,
-  TextField,
   TextFieldProps,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { ToggleButtonGroup } from "formik-mui";
+import { ToggleButtonGroup, TextField } from "formik-mui";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
@@ -36,7 +35,7 @@ import poweredByGoogleLightMode from "../../assets/images/powered_by_google_ligh
 import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
 import styles from "./styles.module.css";
 
-export interface AddEditTripFormProps {
+export interface AddEditTripItemFormProps {
   showCancel?: boolean;
   onCancel?: () => void;
   formMode?: "add" | "edit";
@@ -44,12 +43,12 @@ export interface AddEditTripFormProps {
 }
 
 /** The actual form shape, for adding and editing Trip Items. */
-const AddEditTripForm = ({
+const AddEditTripItemForm = ({
   showCancel = false,
   onCancel = () => {},
   formMode = "add",
   tripDetails,
-}: AddEditTripFormProps) => {
+}: AddEditTripItemFormProps) => {
   const { isSubmitting, setFieldValue, values } =
     useFormikContext<TripItemDraft>();
   const currentTheme = useAppSelector(selectThemeMode);
@@ -256,4 +255,4 @@ const AddEditTripForm = ({
   );
 };
 
-export default AddEditTripForm;
+export default AddEditTripItemForm;

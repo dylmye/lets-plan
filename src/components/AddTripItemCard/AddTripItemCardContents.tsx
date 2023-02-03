@@ -7,7 +7,7 @@ import TripItemDraft from "../../types/TripItemDraft";
 import { TravelTypes, TripItemType } from "../../types/TripItemType";
 import { useAppDispatch } from "../../app/hooks";
 import { addTripItemByTripId } from "../../features/tripList/tripSlice";
-import AddEditTripForm from "./AddEditTripForm";
+import AddEditTripItemForm from "./AddEditTripItemForm";
 
 const AddTripItemCardContents = ({
   initialValues,
@@ -47,7 +47,7 @@ const AddTripItemCardContents = ({
       }}
       // validationSchema={validationSchema} We can't use validation here because the type is a dictionary (to allow extra fields)
     >
-      <AddEditTripForm
+      <AddEditTripItemForm
         showCancel={showCancel}
         onCancel={onCancel}
         tripDetails={tripDetails}
