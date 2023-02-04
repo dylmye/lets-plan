@@ -42,7 +42,7 @@ const SponsoredLinks = () => {
         Please see the{" "}
         <StyledLink to="/legal#tracked-links">privacy policy</StyledLink> (under
         "external paid links") for more information on how they work and the
-        middlemen who operate the links themsevles.
+        middlemen who operate the links themselves.
       </p>
     </div>
   );

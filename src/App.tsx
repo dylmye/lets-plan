@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,18 +13,24 @@ import EditTripDetailsModal from "./components/EditTripDetailsModal";
 import StyledLink from "./components/StyledLink";
 import UpdateAlert from "./components/UpdateAlert";
 import OfflineAlert from "./components/OfflineAlert";
+import DeleteTripDialog from "./components/DeleteTripDialog";
 import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
 import { useOnlineStatus } from "./contexts/OnlineStatus";
-import TripList from "./features/tripList";
-import Legal from "./features/legal";
-import TripDetailsContainer from "./features/tripDetailsContainer";
-import TripDetails from "./features/tripDetails";
-import LoginPage from "./features/login";
-import SponsoredLinks from "./features/sponsoredLinks";
 import { setLoggedIn } from "./features/login/authSlice";
-import DeleteTripDialog from "./components/DeleteTripDialog";
+import SponsoredLinks from "./features/sponsoredLinks";
 
-function App() {
+// lazy imports for code splitting
+// @see https://reactjs.org/docs/code-splitting.html#route-based-code-splitting
+const TripList = lazy(() => import("./features/tripList"));
+const TripDetailsContainer = lazy(
+  () => import("./features/tripDetailsContainer")
+);
+const TripDetails = lazy(() => import("./features/tripDetails"));
+const Legal = lazy(() => import("./features/legal"));
+// the name of the chunk breaks ad blockers + it's small :)
+// const SponsoredLinks = lazy(() => import("./features/sponsoredLinks"));
+
+const App = () => {
   const {
     visible: authModalVisible,
     toggleVisible: toggleAuthModalVisible,
@@ -75,18 +81,24 @@ function App() {
               <UpdateAlert isOnline={isOnline} />
             </Stack>
           </Container>
-          <Routes>
-            <Route path="/" element={<TripList />} />
-            <Route path="trips" element={<TripList />} />
-            <Route path="trip" element={<TripDetailsContainer />}>
-              <Route path=":tripId" element={<TripDetails />} />
-              <Route path=":tripId/edit" element={<TripDetails edit />} />
-            </Route>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="legal" element={<Legal />} />
-            <Route path="sponsored-links" element={<SponsoredLinks />} />
-            <Route path="*" element={<TripList />} />
-          </Routes>
+          <Suspense
+            fallback={
+              <div>
+                Loading... If you see this for more than 30 seconds, try
+                refreshing the page.
+              </div>
+            }>
+            <Routes>
+              <Route path="/" element={<TripList />} />
+              <Route path="trips" element={<TripList />} />
+              <Route path="trip" element={<TripDetailsContainer />}>
+                <Route path=":tripId" element={<TripDetails />} />
+              </Route>
+              <Route path="legal" element={<Legal />} />
+              <Route path="sponsored-links" element={<SponsoredLinks />} />
+              <Route path="*" element={<TripList />} />
+            </Routes>
+          </Suspense>
         </main>
         <footer>
           <StyledLink to="/legal">Terms & Privacy</StyledLink>
@@ -121,6 +133,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

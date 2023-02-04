@@ -1,6 +1,6 @@
-import CracoWorkboxPlugin from "craco-workbox";
+const CracoWorkboxPlugin = require("craco-workbox");
 
-module.exports = {
+export default {
   plugins: [
     {
       plugin: CracoWorkboxPlugin,

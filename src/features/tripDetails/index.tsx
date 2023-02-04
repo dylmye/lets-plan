@@ -39,12 +39,7 @@ import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { auth } from "../../firebase";
 import Trip from "../../types/Trip";
 
-interface TripDetailsProps {
-  /** In edit mode? */
-  edit?: boolean;
-}
-
-const TripDetails = ({ edit = false }: TripDetailsProps) => {
+const TripDetails = () => {
   const { tripId } = useParams();
   const tripIds = useAppSelector(selectTripIds);
   const [trip, loading] = useSelectTripById(tripId as string);
