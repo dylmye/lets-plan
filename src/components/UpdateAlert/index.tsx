@@ -9,7 +9,7 @@ interface UpdateAlertProps {
   isOnline: boolean;
 }
 
-/** Display a message + action when there's a new version of LP */
+/** Display a message + action when there's a new app version */
 const UpdateAlert = ({
   newServiceWorkerDetected,
   onLoadNewServiceWorkerAccept,

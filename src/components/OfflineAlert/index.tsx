@@ -5,6 +5,7 @@ interface OfflineAlertProps {
   isOnline: boolean;
 }
 
+/** Warn users when network can't be reached. Controlled component */
 const OfflineAlert = ({ isOnline }: OfflineAlertProps) =>
   !isOnline ? (
     <Alert severity="info">

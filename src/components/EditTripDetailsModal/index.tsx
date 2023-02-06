@@ -32,6 +32,7 @@ const dialogStyle: SxProps<Theme> = {
   p: 4,
 };
 
+/** Dialog with a form to edit a trip's key details */
 const EditTripDetailsModal = ({
   id,
   tripDetails,

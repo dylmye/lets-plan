@@ -47,7 +47,7 @@ export interface TripItineraryItemProps {
   onToggleEditTripItem: (tripItemId: string, isEdit: boolean) => void;
 }
 
-/** Index item with a preview of the trip */
+/** Individual trip item rendering within trip details */
 const TripItineraryItem = ({
   item,
   trip,

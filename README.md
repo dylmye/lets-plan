@@ -20,15 +20,21 @@ A simple React/Redux based trip planner. Let's Plan is designed to be mobile- an
 
 ---
 
-## Current roadmap/to-do
-
-Check the GitHub project board for feature to-dos and roadmap.
-
-Right now, all commits trigger a new prod build. Once MVP is feature-complete, this will be changed to prod builds per version tag, and a development
-
 ## Development
 
-Before you start, create a Firebase project with a web app to host storage for images. There is currently no option to store images in local storage.
+Please check [CONTRIBUTING.md](./CONTRIBUTING.md) first :)
+
+This project requires a few [Firebase](https://firebase.google.com/) resources, and isn't designed to work without it. Specifically, the following features are used:
+
+* [Storage](https://firebase.google.com/products/storage) - All trip images are stored here, because local storage has a low maximum capacity. Storage rules are set up so everyone can view but only the owner of a firestore document with the same ID can upload.
+* [Firestore](https://firebase.google.com/products/firestore) - Logged-in users store their documents here - this enables cloud sync and optionally sharing with others. Rules are set up to prevent other uses editing others trips or viewing private trips.
+* [Authentication](https://firebase.google.com/products/auth) - Users can log in via email/social, this lets us create the sync experience without handling authentication and security related functionality (e.g. password reset, MFA.)
+* [Hosting](https://firebase.google.com/products/hosting) - A GitHub action triggers deployments to upload the latest build to Hosting.
+* [Cloud Functions](https://firebase.google.com/products/functions) - See code in [dylmye/lets-plan-firebase-functions](https://github.com/dylmye/lets-plan-firebase-functions) - currently this feature is used to delete trip items (because Firestore is poorly designed such that it doesn't let you delete all items in subcollections automatically) as well as trip images when a cloud-synced trip is deleted.
+
+If you want this functionality without Firebase, you'll need to add that yourself.
+
+### Install
 
 First, install dependencies:
 
@@ -36,7 +42,7 @@ First, install dependencies:
 $ yarn
 ```
 
-Secondly, if you're not using Firebase for hosting you can remove `.firebaserc`, `.firebase.json` and the firebase scripts in the `.github` folder.
+Secondly, if you're not using Firebase you can remove `.firebaserc`, `.firebase.json` and the firebase scripts in the `.github` folder.
 
 Copy the `.env.example` file and rename it `.env`. Set the parameters as so:
 

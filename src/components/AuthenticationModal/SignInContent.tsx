@@ -24,6 +24,7 @@ type SignInEmailForm = {
   password: string;
 };
 
+/** Firebase Auth-linked Formik form for authentication */
 const SignInContent = ({ onClose }: AuthModalContentProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const [signInWithEmailAndPassword, user, emailSignInLoading, emailErrors] =

@@ -21,6 +21,7 @@ import {
 } from "../../features/theme/themeSlice";
 import UserNavbarItem from "./UserNavbarItem";
 
+/** Top level navigation */
 const Navbar = () => {
   const dispatch = useAppDispatch();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

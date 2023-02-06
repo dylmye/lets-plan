@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { useDeleteTripById } from "../../features/tripList/tripSlice";
 
@@ -19,6 +19,7 @@ interface DeleteTripDialogProps {
   title: string;
 }
 
+/** Confirmation dialog made visible globally when a trip delete action is called */
 const DeleteTripDialog = ({
   visible,
   onClose,

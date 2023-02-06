@@ -25,6 +25,7 @@ export interface TripItemDetailsActionProps {
   toggleEdit: (tripItemId: string, isEdit: boolean) => void;
 }
 
+/** Settings context menu for Trip Items */
 const TripItemDetailsAction = ({
   id,
   trip,

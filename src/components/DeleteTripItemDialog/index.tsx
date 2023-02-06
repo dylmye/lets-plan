@@ -19,6 +19,7 @@ interface DeleteTripItemDialogProps {
   tripId: string;
 }
 
+/** Confirmation dialog made visible globally when a trip item delete action is called */
 const DeleteTripItemDialog = ({
   visible,
   onClose,

@@ -1,4 +1,4 @@
-const CURRENCIES = {
+const CURRENCIES: Record<string, string> = {
   USD: "US Dollar",
   GBP: "British Pound Sterling",
   EUR: "Euro",

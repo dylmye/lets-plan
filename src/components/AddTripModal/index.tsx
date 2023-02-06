@@ -47,6 +47,10 @@ const dialogStyle: SxProps<Theme> = {
   p: 4,
 };
 
+/** Dialog for creating a new [`Trip`](../../types/Trip.ts). The form
+ * is made up of multiple steps - See FormStep*.tsx files. They are controlled
+ * via [`FormPagination`](./FormPagination.tsx)
+ */
 const AddTripModal = (props: ModalProps) => {
   const { online } = useOnlineStatus();
   const { enqueueSnackbar } = useSnackbar();

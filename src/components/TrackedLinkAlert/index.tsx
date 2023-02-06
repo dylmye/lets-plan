@@ -12,6 +12,7 @@ export interface TrackedLinkAlertProps {
   link: string;
 }
 
+/** Child unit for [`SuggestionsCard`](../SuggestionsCard/index.tsx) - displays a link with helper text */
 const TrackedLinkAlert = ({
   description,
   link,

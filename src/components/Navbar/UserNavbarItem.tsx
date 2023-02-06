@@ -25,6 +25,7 @@ interface UserNavbarItemProps {
   extraMenuItems?: Record<string, JSX.Element | string>;
 }
 
+/** Login/signup menu icon, with extra menu stuff */
 const UserNavbarItem = ({
   user,
   anchor,

@@ -47,6 +47,7 @@ type SignupEmailForm = {
   verify?: string;
 };
 
+/** Firebase Auth-linked Formik form for creating a new account */
 const SignUpContent = ({ onClose }: AuthModalContentProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const [

@@ -9,6 +9,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { addTripItemByTripId } from "../../features/tripList/tripSlice";
 import AddEditTripItemForm from "./AddEditTripItemForm";
 
+/** A wrapper for [`AddEditTripItemForm`](./AddEditTripItemForm.tsx) with the "Add Trip Item" Formik */
 const AddTripItemCardContents = ({
   initialValues,
   tripDetails,

@@ -1,5 +1,6 @@
 import { AuthError } from "firebase/auth";
 
+/** Determine the human-readable message for Firebase Auth error codes */
 export const renderFriendlyAuthMessages = (error: AuthError) => {
   switch (error.code) {
     case "auth/account-exists-with-different-credential": {

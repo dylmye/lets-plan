@@ -11,6 +11,7 @@ interface Props {
   onClose: () => void;
 }
 
+/** Visual controller for AddTripModal's form */
 const FormPagination = memo(
   ({ activeStep, totalSteps, onPressBack, onPressNext, onClose }: Props) => {
     const isFirstStep = activeStep === 0;

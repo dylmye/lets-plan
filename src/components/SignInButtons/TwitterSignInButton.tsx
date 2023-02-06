@@ -16,6 +16,7 @@ const buttonStyle: SxProps<Theme> = {
   },
 };
 
+/** Styled button: Twitter */
 const TwitterSignInButton = ({ onClick }: SignInButtonProps) => (
   <Button variant="contained" sx={buttonStyle} onClick={onClick}>
     <Twitter fontSize="inherit" className={styles.signInButtonIcon} />

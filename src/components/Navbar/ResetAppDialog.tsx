@@ -15,6 +15,7 @@ interface ResetAppDialogProps {
   authenticated?: boolean;
 }
 
+/** Confirmation for destroying everything locally */
 const ResetAppDialog = ({
   visible,
   onClose,

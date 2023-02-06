@@ -80,7 +80,8 @@
     ]
   },
   "resolutions": {
-    "mini-css-extract-plugin": "2.4.5"
+    "mini-css-extract-plugin": "2.4.5",
+    "react-device-detect/ua-parser-js": "1.0.33"
   },
   "prettier": {
     "singleQuote": false,

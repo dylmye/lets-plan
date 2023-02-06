@@ -21,6 +21,7 @@ export interface TripListActionProps {
   actionType: TripListActions;
 }
 
+/** Big call to action for the trip list */
 const TripListAction = ({ onClick, actionType }: TripListActionProps) => (
   <Card
     key="card-add"

@@ -16,6 +16,7 @@ const buttonStyle: SxProps<Theme> = {
   },
 };
 
+/** Styled button: Google */
 const GoogleSignInButton = ({ onClick }: SignInButtonProps) => (
   <Button variant="contained" sx={buttonStyle} onClick={onClick}>
     <Google fontSize="inherit" className={styles.signInButtonIcon} />

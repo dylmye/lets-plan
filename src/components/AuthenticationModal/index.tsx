@@ -25,6 +25,7 @@ const dialogStyle: SxProps<Theme> = {
   p: 4,
 };
 
+/** Sign In / Sign Up modal wrapper */
 const AuthenticationModal = ({
   open,
   type,

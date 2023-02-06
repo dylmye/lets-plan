@@ -15,6 +15,9 @@ export interface AddTripItemCardProps {
   onCancel?: () => void;
 }
 
+/** Style wrapper for [`AddTripItemCardContents`](./AddTripItemCardContents.tsx)
+ * with card styling, primarily for [`EmptyTripCard`](../EmptyTripCard/index.tsx)
+ */
 const AddTripItemCard = (props: AddTripItemCardProps) => (
   <Card>
     <CardContent sx={{ paddingBottom: 16 }}>
