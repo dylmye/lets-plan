@@ -1,0 +1,40 @@
+name: Feature Requests & Proposals
+description: Use this form if you want to see a feature that doesn't exist yet and hasn't already been proposed
+title: "[Proposal]: "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for sharing. Please fill out this form with your idea! We'll get back to you soon. Please submit in english only.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Share a 'one-liner' for what your feature will do
+      placeholder: Add a space travel type 🚀
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Please share what your idea is and why it would help you plan trips.
+      placeholder: I am an astronaut and want to plan my next trip to the Moon, adding a space travel type will let me plan the type of trips I go on.
+    validations:
+      required: true
+  - type: input
+    id: audience
+    attributes:
+      label: Who would benefit from this?
+      description: What kind of people would use this feature?
+      placeholder: Astronauts & billionaires
+  - type: checkboxes
+    id: legal
+    attributes:
+      label: Please check the following
+      description: By submitting this feature request, you agree to the following
+      options:
+        - label: If this feature is implemented, I won't be compensated for it and I don't own any rights or stake in the feature
+          required: true
+        - label: I've checked the other feature proposals and nobody has posted this already
+          required: true

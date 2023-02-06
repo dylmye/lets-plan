@@ -63,7 +63,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
   useEffect(() => {
     if (user || gUser || tUser) {
       onClose(true);
-      enqueueSnackbar(`You're in!`);
+      enqueueSnackbar("You're in!");
     }
   }, [user, gUser, tUser, onClose, enqueueSnackbar]);
 

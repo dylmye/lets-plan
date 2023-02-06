@@ -42,6 +42,7 @@ import {
   generateGoogleMapsQueryUrl,
 } from "./url";
 import TripItem from "../types/Tripitem";
+import CopyToClipboardButton from "../components/CopyToClipboardButton";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -438,10 +439,6 @@ export const renderExtraField = (
  * what to display on the left, and the node is the text etc to display
  */
 export const renderExtraText = (field: TripItem): ExtraText[] => {
-  const copyTextToClipboard = async (text: string): Promise<void> => {
-    await navigator.clipboard.writeText(text);
-  };
-
   // keys we don't render here
   const excludedKeys: (keyof TripItem)[] = [
     "id",
@@ -560,12 +557,7 @@ export const renderExtraText = (field: TripItem): ExtraText[] => {
           body: (
             <>
               {field[k] as string}
-              <IconButton
-                size="small"
-                aria-label="Copy the reference to your clipboard"
-                onClick={() => copyTextToClipboard(field[k] as string)}>
-                <ContentCopy fontSize="inherit" />
-              </IconButton>
+              <CopyToClipboardButton textToCopy={field[k] as string} />
             </>
           ),
         });
