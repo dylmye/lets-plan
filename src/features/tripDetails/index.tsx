@@ -24,7 +24,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./styles.module.css";
 import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
 import { useAppSelector } from "../../app/hooks";
-import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { COLOURS } from "../../helpers/colours";
 import { dateCompare, formatDate } from "../../helpers/dates";
 import { groupTripItemsByDay } from "../../helpers/tripItems";
@@ -38,6 +37,7 @@ import DeleteTripItemDialog from "../../components/DeleteTripItemDialog";
 import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { auth } from "../../firebase";
 import Trip from "../../types/Trip";
+import TripItem from "../../types/Tripitem";
 
 const TripDetails = () => {
   const { tripId } = useParams();
@@ -69,7 +69,7 @@ const TripDetails = () => {
     });
   };
 
-  const renderTripItem = (item: TripItineraryItemBase): JSX.Element => (
+  const renderTripItem = (item: TripItem): JSX.Element => (
     <TripItineraryItem
       item={item}
       key={`trip-item-${item.startsAt}-${item.type}`}
@@ -88,10 +88,7 @@ const TripDetails = () => {
     backgroundColor: "background.default",
   };
 
-  const renderItemDay = (
-    day: string,
-    items: TripItineraryItemBase[]
-  ): JSX.Element => (
+  const renderItemDay = (day: string, items: TripItem[]): JSX.Element => (
     <Container key={day} disableGutters>
       <Box
         className={styles.itemDayHeaderContainer}

@@ -27,7 +27,7 @@ const AddTripItemCardContents = ({
         type: (initialValues.type as TripItemType) ?? null,
         title: "",
         startsAt: initialValues.date as string,
-        endsAt: null,
+        startsAtTimezone: "Europe/London",
       }}
       onSubmit={(values) => {
         if (!tripDetails?.id) {

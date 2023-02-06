@@ -12,5 +12,5 @@ export default interface TripSnapshot
   endsAt: Timestamp;
   createdAtUtc: Timestamp;
   updatedAtUtc: Timestamp;
-  // subcollection of items: TripItineraryItemBase
+  // sub-collection of items: TripItem[]
 }

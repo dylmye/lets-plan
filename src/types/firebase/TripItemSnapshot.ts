@@ -1,12 +1,11 @@
 import { DocumentData, Timestamp } from "firebase/firestore";
-import TripItineraryItemBase from "../TripItineraryItemBase";
+import TripItem from "../Tripitem";
 
-interface TripItineraryItemBaseWithoutTimestamps
-  extends Omit<TripItineraryItemBase, "startsAt"> {}
+interface TripItemWithoutTimestamps extends Omit<TripItem, "startsAt"> {}
 
 /** Firebase stored version of TripItem type. Timestamps are converted to/from ISO8601 timestamps. */
 export default interface TripItemSnapshot
   extends DocumentData,
-    TripItineraryItemBaseWithoutTimestamps {
+    TripItemWithoutTimestamps {
   startsAt: Timestamp;
 }

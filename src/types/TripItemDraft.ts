@@ -1,6 +1,8 @@
 import { TripItemType } from "./TripItemType";
+import TripItem from "./Tripitem";
+import { WithOptional } from "../helpers/types";
 
-export default interface TripItemDraft {
+export default interface TripItemDraft extends WithOptional<TripItem, "id"> {
   /** General category of itemTypes */
   category: "travel" | "activity";
   type: TripItemType;
@@ -8,7 +10,6 @@ export default interface TripItemDraft {
   details?: string;
   urls?: Record<string, string> | null;
   startsAt: string;
-  endsAt?: string | null;
-  /** Fields from derived types */
-  [x: string]: unknown;
+  // @TODO: confirm we don't need to union this with null
+  endsAt?: string;
 }

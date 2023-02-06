@@ -31,18 +31,17 @@ import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocom
 import { COLOURS } from "./colours";
 import { TravelTypes, TripItemType } from "../types/TripItemType";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
-import TripItineraryItemBase from "../types/TripItineraryItemBase";
 import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
 import BetterSwitchField from "../components/fields/BetterSwitchField";
 import CustomFieldSettings from "../types/CustomFieldSettings";
 import ExtraText from "../types/ExtraText";
-import { AllItineraryTypes } from "../types/tripItineraryTypes";
 import { userLanguage } from "./dates";
 import {
   generateGoogleMapsDirectionsUrl,
   generateUberUniversalLink,
   generateGoogleMapsQueryUrl,
 } from "./url";
+import TripItem from "../types/Tripitem";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (
@@ -137,13 +136,13 @@ export const convertTripItemTypeToGoogleMapsTravelMode = (
 
 /** Group an array of trip items to an object of <startsAt>: TripItems[] */
 export const groupTripItemsByDay = (
-  tripItems: TripItineraryItemBase[]
-): Record<string, TripItineraryItemBase[]> => {
+  tripItems: TripItem[]
+): Record<string, TripItem[]> => {
   return tripItems?.reduce((r, a) => {
     const date = dayjs(a.startsAt).format("YYYY-MM-DD");
     r[date] = [...(r[date] ?? []), a];
     return r;
-  }, {} as Record<string, TripItineraryItemBase[]>);
+  }, {} as Record<string, TripItem[]>);
 };
 
 /**
@@ -288,7 +287,7 @@ const fieldNameToLabel = (name: string): string => {
 
 /** Get the icon and tooltip text for a given field */
 const fieldNameIcon = (
-  name: keyof AllItineraryTypes
+  name: keyof TripItem
 ): Pick<ExtraText, "iconName" | "iconHint"> => {
   switch (name) {
     case "airline": {
@@ -337,7 +336,7 @@ const fieldNameIcon = (
       return {
         iconName: "Store",
         iconHint: "Operator",
-      }
+      };
     }
     case "trainOperator":
     case "shuttleOperator":
@@ -352,13 +351,13 @@ const fieldNameIcon = (
       return {
         iconName: "Workspaces",
         iconHint: "Vehicle Class",
-      }
+      };
     }
     case "serviceName": {
       return {
         iconName: "WorkspacePremium",
-        iconHint: "Service Level"
-      }
+        iconHint: "Service Level",
+      };
     }
   }
   return {
@@ -438,15 +437,13 @@ export const renderExtraField = (
  * @returns an array of { icon, ReactChild } where the icon is
  * what to display on the left, and the node is the text etc to display
  */
-export const renderExtraText = (
-  field: Partial<AllItineraryTypes>
-): ExtraText[] => {
+export const renderExtraText = (field: TripItem): ExtraText[] => {
   const copyTextToClipboard = async (text: string): Promise<void> => {
     await navigator.clipboard.writeText(text);
   };
 
   // keys we don't render here
-  const excludedKeys: (keyof AllItineraryTypes)[] = [
+  const excludedKeys: (keyof TripItem)[] = [
     "id",
     "type",
     "title",
@@ -466,9 +463,9 @@ export const renderExtraText = (
   // with it doesn't work.
   // we have to do this dumb typing to enforce the cases
   // on the switch below :)
-  const keysToRender = (
-    Object.keys(field) as (keyof Partial<AllItineraryTypes>)[]
-  ).filter((x) => !excludedKeys.includes(x as any));
+  const keysToRender = (Object.keys(field) as (keyof TripItem)[]).filter(
+    (x) => !excludedKeys.includes(x)
+  );
 
   const nodes: ExtraText[] = [];
 
@@ -512,15 +509,13 @@ export const renderExtraText = (
         const journeyLink =
           field.type === TripItemType.Taxi
             ? generateUberUniversalLink(
-                field.originLocation as string,
+                field.originLocation,
                 field.destinationLocation as string
               )
             : generateGoogleMapsDirectionsUrl(
-                field.originLocation as string,
+                field.originLocation,
                 field.destinationLocation as string,
-                convertTripItemTypeToGoogleMapsTravelMode(
-                  field.type as TripItemType
-                )
+                convertTripItemTypeToGoogleMapsTravelMode(field.type)
               );
         nodes.push({
           iconName: "Directions",
@@ -579,7 +574,7 @@ export const renderExtraText = (
       case "prebooked": {
         nodes.push({
           iconName: "Receipt",
-          body: field[k] ? "Booked in advance" : "Not booked in advance"
+          body: field[k] ? "Booked in advance" : "Not booked in advance",
         });
         break;
       }

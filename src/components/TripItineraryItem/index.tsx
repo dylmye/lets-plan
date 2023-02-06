@@ -23,7 +23,6 @@ import styles from "./styles.module.css";
 import { TripItemType } from "../../types/TripItemType";
 import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
 import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
-import TripItineraryItemBase from "../../types/TripItineraryItemBase";
 import { formatTime } from "../../helpers/dates";
 import TripItemDetailsAction from "../TripItemDetailsAction";
 import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
@@ -32,11 +31,11 @@ import TripItemDraft from "../../types/TripItemDraft";
 import Trip from "../../types/Trip";
 import { useAppDispatch } from "../../app/hooks";
 import { updateTripItemByTripId } from "../../features/tripList/tripSlice";
-import { AllItineraryTypes } from "../../types/tripItineraryTypes";
+import TripItem from "../../types/Tripitem";
 
 export interface TripItineraryItemProps {
   /** The item to show */
-  item: TripItineraryItemBase;
+  item: TripItem;
   /** The parent trip */
   trip: Trip;
   /** The action to call to show the delete item dialog */
@@ -76,9 +75,7 @@ const TripItineraryItem = ({
     },
   };
 
-  const renderItemText = (
-    item: TripItineraryItemBase & Partial<AllItineraryTypes>
-  ): JSX.Element => {
+  const renderItemText = (item: TripItem): JSX.Element => {
     return (
       <>
         <Typography variant="h5" className={styles.tripItemTitle}>
@@ -161,19 +158,15 @@ const TripItineraryItem = ({
                         undefined
                       )}
                     </time>
-                    {(
-                      item as
-                        | TripItineraryActivityItem
-                        | TripItineraryTravelItem
-                    )?.endsAt && (
+                    {item?.endsAt && (
                       <>
                         {` - `}
-                        <time dateTime={(item as any)?.endsAt}>
+                        <time dateTime={item.endsAt}>
                           {formatTime(
-                            (item as any)?.endsAt,
+                            item.endsAt,
                             true,
                             false,
-                            (item as any)?.endsAtTimezone
+                            item?.endsAtTimezone
                           )}
                         </time>
                       </>

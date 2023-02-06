@@ -7,7 +7,7 @@ import {
 import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
 import TripSnapshot from "../types/firebase/TripSnapshot";
 import Trip from "../types/Trip";
-import TripItineraryItemBase from "../types/TripItineraryItemBase";
+import TripItem from "../types/Tripitem";
 
 /**
  * Translate timestamps on trips.
@@ -41,8 +41,8 @@ export const convertTripDocument: FirestoreDataConverter<Trip> = {
   },
 };
 
-/** A list of keys to convert to/from timestamps on classes based on TripItineraryItemBase */
-const tripItemTimestampKeys = [
+/** A list of keys to convert to/from timestamps on classes based on Tripitem type */
+const tripItemTimestampKeys: (keyof TripItem)[] = [
   // 'startsAt', Don't include this so types still work. startsAt is on the base model
   "endsAt",
 ];
@@ -50,38 +50,41 @@ const tripItemTimestampKeys = [
 /**
  * Translate timestamps on trip items.
  */
-export const convertTripItemDocuments: FirestoreDataConverter<TripItineraryItemBase> =
-  {
-    toFirestore(tripItem: TripItineraryItemBase): TripItemSnapshot {
-      Object.keys(tripItem)
-        .filter((k) => tripItemTimestampKeys.includes(k))
-        .forEach((k) => {
-          (tripItem as any)[k] =
-            (tripItem as any)[k] &&
-            new Timestamp(dayjs((tripItem as any)[k]).unix(), 0);
-        });
+export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
+  toFirestore(tripItem: TripItem): TripItemSnapshot {
+    // convert any
+    Object.keys(tripItem)
+      .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
+      .forEach((k) => {
+        // @ts-ignore typescript is stupid i promise this works
+        tripItem[k] =
+          tripItem[k as keyof TripItem] &&
+          new Timestamp(
+            dayjs(tripItem[k as keyof TripItem] as string).unix(),
+            0
+          );
+      });
 
-      return {
-        ...tripItem,
-        startsAt: new Timestamp(dayjs(tripItem.startsAt).unix(), 0),
-      };
-    },
-    fromFirestore(
-      tripItemSnapshot: QueryDocumentSnapshot<TripItemSnapshot>,
-      options
-    ): TripItineraryItemBase {
-      const data = tripItemSnapshot.data(options);
-      Object.keys(data)
-        .filter((k) => tripItemTimestampKeys.includes(k))
-        .forEach((k) => {
-          (data as any)[k] =
-            (data as any)[k] &&
-            dayjs.unix(((data as any)[k] as Timestamp).seconds).format();
-        });
+    return {
+      ...tripItem,
+      startsAt: new Timestamp(dayjs(tripItem.startsAt).unix(), 0),
+    };
+  },
+  fromFirestore(
+    tripItemSnapshot: QueryDocumentSnapshot<TripItemSnapshot>,
+    options
+  ): TripItem {
+    const data = tripItemSnapshot.data(options);
+    Object.keys(data)
+      .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
+      .forEach((k) => {
+        data[k] =
+          data[k] && dayjs.unix((data[k] as Timestamp).seconds).format();
+      });
 
-      return {
-        ...data,
-        startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
-      };
-    },
-  };
+    return {
+      ...data,
+      startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
+    };
+  },
+};

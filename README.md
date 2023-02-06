@@ -72,10 +72,6 @@ To manually build, run `yarn build`.
 
 > Note: if you're using Simple Analytics and converting this project to use SSR, you need to install it manually. The Simple Analytics ESM plugin [doesn't support SSR](https://github.com/DavidWells/analytics/blob/master/packages/analytics-plugin-simple-analytics/src/node.js).
 
-## Data Structure Explainer
-
-TBC
-
 ## Credits
 
 > This project was bootstrapped with [Create React App](https://create-react-app.dev/), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
