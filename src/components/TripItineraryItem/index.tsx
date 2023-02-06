@@ -21,8 +21,6 @@ import {
 } from "../../helpers/tripItems";
 import styles from "./styles.module.css";
 import { TripItemType } from "../../types/TripItemType";
-import TripItineraryActivityItem from "../../types/TripItineraryActivityItem";
-import TripItineraryTravelItem from "../../types/TripItineraryTravelItem";
 import { formatTime } from "../../helpers/dates";
 import TripItemDetailsAction from "../TripItemDetailsAction";
 import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
