@@ -338,6 +338,7 @@ const fieldNameIcon = (
         iconHint: "Operator",
       };
     }
+    case "subwayOperator":
     case "trainOperator":
     case "shuttleOperator":
     case "taxiOperator":
