@@ -30,10 +30,9 @@ import {
 } from "../../helpers/upload";
 
 import FormPagination from "./FormPagination";
-import { useAppDispatch } from "../../app/hooks";
-import { addTrip } from "../../features/tripList/tripSlice";
 import ModalProps from "../../types/ModalProps";
 import { useOnlineStatus } from "../../contexts/OnlineStatus";
+import { useAddTrip } from "../../store/features/trips";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",
@@ -54,7 +53,7 @@ const dialogStyle: SxProps<Theme> = {
 const AddTripModal = (props: ModalProps) => {
   const { online } = useOnlineStatus();
   const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useAppDispatch();
+  const addTrip = useAddTrip();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [formImageUploading, setFormImageUploading] = useState(false);
@@ -144,7 +143,7 @@ const AddTripModal = (props: ModalProps) => {
 
       coverImageUri = await getDownloadURL(storageRef);
     }
-    dispatch(addTrip({ ...values, image: coverImageUri }));
+    addTrip({ ...values, image: coverImageUri });
     setActiveStep(0);
     props.onClose();
     navigate(`/trip/${values.id}/edit`);

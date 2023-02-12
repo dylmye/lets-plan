@@ -1,4 +1,5 @@
 import {
+  ActionCreatorWithPayload,
   addListener,
   createListenerMiddleware,
   isAnyOf,
@@ -6,9 +7,10 @@ import {
   TypedStartListening,
 } from "@reduxjs/toolkit";
 import SliceNames from "../enums/SliceNames";
-import { addTrip } from "../features/tripList/tripSlice";
 import analytics from "../helpers/analytics";
 import { AppDispatch, RootState } from "./store";
+import { actions } from "../store/features/trips/redux";
+import TripDraft from "../types/TripDraft";
 
 /**
  * A middleware that automatically links redux events
@@ -25,7 +27,12 @@ export const startAppListening =
   eventAnalyticsLogMiddleware.startListening as AppStartListening;
 
 startAppListening({
-  matcher: isAnyOf(addTrip),
+  matcher: isAnyOf(
+    actions.addTrip as ActionCreatorWithPayload<
+      TripDraft,
+      `${SliceNames.TRIPS}/addTrip`
+    >
+  ),
   effect: (action, _) => {
     // add simple analytics events based on
     // redux actions here

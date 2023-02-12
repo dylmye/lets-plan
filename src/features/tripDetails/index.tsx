@@ -22,8 +22,6 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import styles from "./styles.module.css";
-import { selectTripIds, useSelectTripById } from "../tripList/tripSlice";
-import { useAppSelector } from "../../app/hooks";
 import { COLOURS } from "../../helpers/colours";
 import { dateCompare, formatDate } from "../../helpers/dates";
 import { groupTripItemsByDay } from "../../helpers/tripItems";
@@ -38,11 +36,11 @@ import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { auth } from "../../firebase";
 import Trip from "../../types/Trip";
 import TripItem from "../../types/Tripitem";
+import { useGetTripById } from "../../store/features/trips";
 
 const TripDetails = () => {
   const { tripId } = useParams();
-  const tripIds = useAppSelector(selectTripIds);
-  const [trip, loading] = useSelectTripById(tripId as string);
+  const { trip, loading } = useGetTripById(tripId as string);
   const [user] = useAuthState(auth);
   const [activeAddTripItemCardDay, setActiveTripItemCardDay] = useState<
     string | undefined | null
@@ -164,7 +162,7 @@ const TripDetails = () => {
     document.title = trip?.title
       ? `${trip?.title} - Let's Plan!`
       : "Trip Details - Let's Plan!";
-  }, [trip?.title, tripId, tripIds]);
+  }, [trip?.title, tripId]);
 
   const isEmptyTrip = !loading && Object.keys(groupedItems).length < 1;
 
@@ -252,7 +250,9 @@ const TripDetails = () => {
         </Box>
       )}
       {trip?.details && (
-        <Typography variant="body1" sx={{ marginTop: 2, whiteSpace: "pre" }}>
+        <Typography
+          variant="body1"
+          sx={{ marginTop: 2, whiteSpace: "pre-wrap" }}>
           {trip.details}
         </Typography>
       )}

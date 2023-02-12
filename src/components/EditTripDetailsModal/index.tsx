@@ -7,13 +7,12 @@ import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocom
 import { DatePicker } from "formik-mui-x-date-pickers";
 import dayjs from "dayjs";
 
-import { useAppDispatch } from "../../app/hooks";
 import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
-import { updateTripById } from "../../features/tripList/tripSlice";
 import styles from "./styles.module.css";
 import CardActions from "@mui/material/CardActions";
 import { useSnackbar } from "notistack";
+import { useUpdateTrip } from "../../store/features/trips";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;
@@ -38,17 +37,15 @@ const EditTripDetailsModal = ({
   tripDetails,
   ...props
 }: EditTripDetailsModalProps) => {
-  const dispatch = useAppDispatch();
+  const updateTrip = useUpdateTrip();
   const { enqueueSnackbar } = useSnackbar();
   const { title, location, startsAt, details, endsAt } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
-    dispatch(
-      updateTripById({
-        ...values,
-        id,
-      })
-    );
+    updateTrip({
+      ...values,
+      id,
+    });
     props.onClose();
     enqueueSnackbar("Trip details updated!");
   };

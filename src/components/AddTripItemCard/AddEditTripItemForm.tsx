@@ -88,7 +88,9 @@ const AddEditTripItemForm = ({
               }
             }}
             disabled={isSubmitting}>
-            <ToggleButton value="travel" autoFocus>Travel</ToggleButton>
+            <ToggleButton value="travel" autoFocus>
+              Travel
+            </ToggleButton>
             <ToggleButton value="activity">Activity</ToggleButton>
           </Field>
         </Grid>
@@ -220,7 +222,10 @@ const AddEditTripItemForm = ({
                   component={GooglePlacesAutocompleteField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
-                  disabled={(!values.originLocation && !values.destinationLocation) || isSubmitting}
+                  disabled={
+                    (!values.originLocation && !values.destinationLocation) ||
+                    isSubmitting
+                  }
                   inputProps={{
                     helperText:
                       errors?.destinationLocation ??
@@ -236,6 +241,18 @@ const AddEditTripItemForm = ({
                 />
               </Grid>
             )}
+            <Grid item xs={12} md={6}>
+              <Field
+                component={TextField}
+                name="details"
+                label="Notes"
+                fullWidth
+                multiline
+                helperText="Optional"
+                minRows={2}
+                maxRows={7}
+              />
+            </Grid>
           </>
         )}
         {values.type &&

@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import {
   createAction,
+  createDraftSafeSelector,
   createEntityAdapter,
   createSlice,
   Dictionary,
@@ -10,15 +11,17 @@ import {
 } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-import { RootState } from "../../app/store";
-import SliceNames from "../../enums/SliceNames";
-import { dateCompare } from "../../helpers/dates";
-import { getTripItemTypeLabel } from "../../helpers/tripItems";
-import Trip from "../../types/Trip";
-import TripDraft from "../../types/TripDraft";
-import TripItemDraft from "../../types/TripItemDraft";
-import exampleTrip from "../../data/exampleTrip";
-import TripItem from "../../types/Tripitem";
+import { RootState } from "../../../app/store";
+import exampleTrip from "../../../data/exampleTrip";
+import SliceNames from "../../../enums/SliceNames";
+import { dateCompare, tripIsInState } from "../../../helpers/dates";
+import { getTripItemTypeLabel } from "../../../helpers/tripItems";
+import { TripActions, TripSelectors } from "./interface";
+import TripItem from "../../../types/Tripitem";
+import TripItemDraft from "../../../types/TripItemDraft";
+import TripDetails from "../../../types/TripDetails";
+import Trip from "../../../types/Trip";
+import TripDraft from "../../../types/TripDraft";
 
 const name = SliceNames.TRIPS;
 
@@ -69,7 +72,7 @@ const tripSlice = createSlice({
       tripsAdapter.addOne(state, trip);
     },
     deleteTripById: tripsAdapter.removeOne,
-    updateTripById: (state, { payload }: PayloadAction<Partial<Trip>>) => {
+    updateTripById: (state, { payload }: PayloadAction<TripDetails>) => {
       if (!payload?.id) return;
 
       tripsAdapter.updateOne(state, { id: payload.id, changes: payload });
@@ -135,12 +138,39 @@ const tripSlice = createSlice({
   },
 });
 
-export const { addTrip, deleteTripById, updateTripById } = tripSlice.actions;
+const entitySelectors = tripsAdapter.getSelectors<RootState>(
+  (state) => state.trips
+);
 
-export const {
-  selectAll: selectTrips,
-  selectIds: selectTripIds,
-  selectById: selectLocalTripById,
-} = tripsAdapter.getSelectors<RootState>((state) => state.trips);
+/** custom selectors */
+const getTripsByDateSplit = createDraftSafeSelector(
+  entitySelectors.selectAll,
+  (state) => {
+    const past = state
+      .filter((trip) => tripIsInState(trip, "past"))
+      .sort((a, b) =>
+        dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt, true)
+      );
+
+    const futureCurrent = state
+      .filter((trip) => tripIsInState(trip, "future"))
+      .sort((a, b) =>
+        dateCompare(a.endsAt ?? a.startsAt, b.endsAt ?? b.startsAt)
+      );
+
+    return {
+      past,
+      futureCurrent,
+    };
+  }
+);
+
+export const actions: TripActions = tripSlice.actions;
+
+export const selectors: TripSelectors = {
+  getTrips: entitySelectors.selectAll,
+  getTripById: entitySelectors.selectById,
+  getTripsByDateSplit,
+};
 
 export default tripSlice.reducer;

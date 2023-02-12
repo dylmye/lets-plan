@@ -10,7 +10,7 @@ import {
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 
-import { useDeleteTripById } from "../../features/tripList/tripSlice";
+import { useDeleteTrip } from "../../store/features/trips";
 
 interface DeleteTripDialogProps {
   visible: boolean;
@@ -28,7 +28,7 @@ const DeleteTripDialog = ({
 }: DeleteTripDialogProps) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const deleteTrip = useDeleteTripById();
+  const deleteTrip = useDeleteTrip();
 
   const onAccepted = () => {
     deleteTrip(id);
@@ -47,7 +47,8 @@ const DeleteTripDialog = ({
       <DialogTitle id="delete-trip-dialog-title">Delete This Trip?</DialogTitle>
       <DialogContent>
         <DialogContentText id="reset-dialog-description">
-          Are you sure you want to delete the trip <em>{title}</em>?
+          Are you sure you want to delete the trip <em>{title}</em>? You can't
+          undo this!
         </DialogContentText>
       </DialogContent>
       <DialogActions>

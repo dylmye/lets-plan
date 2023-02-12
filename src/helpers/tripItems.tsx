@@ -21,6 +21,7 @@ import {
   DirectionsBike,
   DirectionsRailway,
   Notes,
+  ConfirmationNumber,
 } from "@mui/icons-material";
 import { SvgIconProps, Link } from "@mui/material";
 import { Field } from "formik";
@@ -89,6 +90,10 @@ export const getTripItemIcon = (
       return <ShoppingBag titleAccess="Shopping item" {...otherProps} />;
     case TripItemType.Sports:
       return <SportsSoccer titleAccess="Sports item" {...otherProps} />;
+    case TripItemType.Reservation:
+      return (
+        <ConfirmationNumber titleAccess="Reservation item" {...otherProps} />
+      );
     case TripItemType.Note:
       return <Notes titleAccess="Note item" {...otherProps} />;
   }
@@ -158,7 +163,7 @@ export const renderTripItemUrls = (
 ): JSX.Element => (
   <ul style={{ margin: 0 }}>
     {Object.keys(urls).map((k) => (
-      <li key={k ?? "link"}>
+      <li key={`trip-item-url-${k}`}>
         <span style={{ marginTop: 2, marginBottom: 2 }}>
           <Link href={urls[k]} target="_blank" rel="noreferrer">
             {k ?? "link"}
@@ -227,6 +232,7 @@ export const tripItemExtraFields: Record<
   [TripItemType.Concert]: {},
   [TripItemType.Shopping]: {},
   [TripItemType.Sports]: {},
+  [TripItemType.Reservation]: {},
   [TripItemType.Note]: {
     details: "textarea",
   },
@@ -482,6 +488,7 @@ export const renderExtraText = (field: TripItem): ExtraText[] => {
               {renderTripItemUrls(field[k] as Record<string, string>)}
             </>
           ),
+          parentComponentIsDiv: true,
         });
         break;
       }

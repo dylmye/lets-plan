@@ -7,10 +7,10 @@ import TripListItemCard from "../../components/TripListItemCard";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
-import { useSelectTrips } from "./tripSlice";
+import { useGetTripsByDateSplit } from "../../store/features/trips";
 
 const TripList = () => {
-  const [currentTrips, pastTrips, loading] = useSelectTrips();
+  const { past, futureCurrent, loading } = useGetTripsByDateSplit();
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
@@ -36,11 +36,11 @@ const TripList = () => {
           </>
         ) : (
           <>
-            {currentTrips?.length ? (
-              currentTrips.map((trip) => (
+            {futureCurrent?.length ? (
+              futureCurrent.map((trip) => (
                 <TripListItemCard trip={trip} key={`trip-${trip.id}`} />
               ))
-            ) : !pastTrips?.length ? (
+            ) : !past?.length ? (
               <Typography
                 key="header-no-current-items"
                 variant="h4"
@@ -56,7 +56,7 @@ const TripList = () => {
           actionType={TripListActions.ACTION_ADD}
         />
       </Stack>
-      {!loading && pastTrips?.length ? (
+      {!loading && past?.length ? (
         <>
           <Typography
             key="header-past-trips"
@@ -65,7 +65,7 @@ const TripList = () => {
             Past Trips
           </Typography>
           <Stack spacing={2}>
-            {pastTrips.map((trip) => (
+            {past.map((trip) => (
               <TripListItemCard trip={trip} key={`trip-${trip.id}`} />
             ))}
           </Stack>

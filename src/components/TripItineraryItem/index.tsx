@@ -79,26 +79,34 @@ const TripItineraryItem = ({
         <Typography variant="h5" className={styles.tripItemTitle}>
           {item.title ?? item.location}
         </Typography>
-        {renderExtraText(item).map(({ iconName, iconHint, body }) => {
-          const IconWrapper = !!iconHint ? Tooltip : React.Fragment;
-          // @ts-ignore
-          const Icon = !!iconName ? MuiIcons[iconName] : React.Fragment;
+        {renderExtraText(item).map(
+          ({ iconName, iconHint, body, parentComponentIsDiv }, i) => {
+            const IconWrapper = !!iconHint ? Tooltip : React.Fragment;
+            // @ts-ignore
+            const Icon = !!iconName ? MuiIcons[iconName] : React.Fragment;
 
-          // @TODO: add logic for hiding fields - ExtraText should keep the key name
+            // @TODO: add logic for hiding fields - ExtraText should keep the key name
 
-          return (
-            <Typography variant="body1" className={styles.tripItemText}>
-              {iconName && (
-                <IconWrapper title={iconHint}>
-                  <Icon fontSize="inherit" className={styles.tripItemIcon} />
-                </IconWrapper>
-              )}
-              {body}
-            </Typography>
-          );
-        })}
+            return (
+              <Typography
+                variant="body1"
+                className={styles.tripItemText}
+                key={`trip-item-${item.id}-text-row-${i}`}
+                component={parentComponentIsDiv ? "div" : "p"}>
+                {iconName && (
+                  <IconWrapper title={iconHint}>
+                    <Icon fontSize="inherit" className={styles.tripItemIcon} />
+                  </IconWrapper>
+                )}
+                {body}
+              </Typography>
+            );
+          }
+        )}
         {item.details && (
-          <Typography variant="body1" className={styles.tripItemText}>
+          <Typography
+            variant="body1"
+            className={`${styles.tripItemText} ${styles.tripItemDetails}`}>
             <Tooltip title="Notes">
               <Assignment fontSize="inherit" className={styles.tripItemIcon} />
             </Tooltip>

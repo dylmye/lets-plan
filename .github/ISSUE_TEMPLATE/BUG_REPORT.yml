@@ -1,0 +1,39 @@
+name: Bug Report
+description: Use this form if existing functionality is broken
+title: "[Bug]: "
+labels: ["bug fix"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for sharing. Please fill out this form with the bug you've spotted! We'll get back to you soon. Please submit in english only.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Share a 'one-liner' for what's wrong.
+      placeholder: Adding 50 flights in a row crashes my browser
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Enter the steps to trigger this bug.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      description: What do you expect to happen after following these steps?
+      placeholder: Browser doesn't crash
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+      description: What actually happens instead?
+      placeholder: Browser crashes
+    validations:
+      required: true

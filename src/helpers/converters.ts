@@ -9,6 +9,9 @@ import TripSnapshot from "../types/firebase/TripSnapshot";
 import Trip from "../types/Trip";
 import TripItem from "../types/Tripitem";
 
+export const convertDateStringToTimestamp = (date: string): Timestamp =>
+  new Timestamp(dayjs(date).unix(), 0);
+
 /**
  * Translate timestamps on trips.
  */
@@ -16,10 +19,10 @@ export const convertTripDocument: FirestoreDataConverter<Trip> = {
   toFirestore(trip: Trip): TripSnapshot {
     return {
       ...trip,
-      startsAt: new Timestamp(dayjs(trip.startsAt).unix(), 0),
-      endsAt: new Timestamp(dayjs(trip.endsAt).unix(), 0),
-      createdAtUtc: new Timestamp(dayjs(trip.createdAtUtc).unix(), 0),
-      updatedAtUtc: new Timestamp(dayjs(trip.updatedAtUtc).unix(), 0),
+      startsAt: convertDateStringToTimestamp(trip.startsAt as string),
+      endsAt: convertDateStringToTimestamp(trip.endsAt as string),
+      createdAtUtc: convertDateStringToTimestamp(trip.createdAtUtc),
+      updatedAtUtc: convertDateStringToTimestamp(trip.updatedAtUtc),
     };
   },
   fromFirestore(

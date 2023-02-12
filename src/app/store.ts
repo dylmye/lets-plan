@@ -21,7 +21,7 @@ import suggestionsReducer, {
   SuggestionsState,
 } from "../features/suggestions/suggestionsSlice";
 import themeReducer, { ThemeState } from "../features/theme/themeSlice";
-import tripsReducer, { TripState } from "../features/tripList/tripSlice";
+import { reducer as tripsReducer, TripState } from "../store/features/trips";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {

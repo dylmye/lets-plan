@@ -22,6 +22,7 @@ export enum TripItemType {
   "Concert" = "activity_concert",
   "Shopping" = "activity_shopping",
   "Sports" = "activity_sports",
+  "Reservation" = "activity_reservation",
   "Other Activity" = "activity_misc",
   "Note" = "activity_note",
 }
@@ -51,6 +52,7 @@ export const ActivityTypes: TripItemType[] = [
   TripItemType.Concert,
   TripItemType.Shopping,
   TripItemType.Sports,
+  TripItemType.Reservation,
   TripItemType.Note,
   TripItemType["Other Activity"],
 ];

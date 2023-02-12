@@ -1,9 +1,12 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 import Trip from "../types/Trip";
 import { TripItemType } from "../types/TripItemType";
 import TripItineraryActivityItem from "../types/TripItineraryActivityItem";
 import { CarItem } from "../types/tripItineraryTypes";
+
+dayjs.extend(utc);
 
 export const exampleStartDate = dayjs().local().startOf("day");
 
