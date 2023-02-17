@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from "react";
 import {
   AppBar,
+  Checkbox,
   Container,
   FormControlLabel,
-  Toolbar,
-  Checkbox,
   Switch,
+  Toolbar,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useAuthState } from "react-firebase-hooks/auth";

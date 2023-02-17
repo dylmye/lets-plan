@@ -1,19 +1,19 @@
 import {
-  configureStore,
-  ThunkAction,
   Action,
+  ThunkAction,
   combineReducers,
+  configureStore,
 } from "@reduxjs/toolkit";
 import {
-  PersistConfig,
-  persistReducer,
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
+  PersistConfig,
   REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
 } from "redux-persist";
 import storage from "redux-persist-indexeddb-storage";
 import authReducer, { AuthState } from "../features/login/authSlice";
@@ -21,7 +21,7 @@ import suggestionsReducer, {
   SuggestionsState,
 } from "../features/suggestions/suggestionsSlice";
 import themeReducer, { ThemeState } from "../features/theme/themeSlice";
-import { reducer as tripsReducer, TripState } from "../store/features/trips";
+import { TripState, reducer as tripsReducer } from "../store/features/trips";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {

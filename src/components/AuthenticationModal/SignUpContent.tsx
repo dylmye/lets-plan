@@ -16,13 +16,13 @@ import {
 } from "react-firebase-hooks/auth";
 import {
   SchemaOf,
+  bool as yBool,
   object as yObject,
   string as yString,
-  bool as yBool,
 } from "yup";
 import {
-  TextField as FormikTextField,
   CheckboxWithLabel,
+  TextField as FormikTextField,
   TextFieldProps,
 } from "formik-mui";
 import HCaptcha from "@hcaptcha/react-hcaptcha";

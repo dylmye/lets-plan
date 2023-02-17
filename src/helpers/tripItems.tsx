@@ -1,29 +1,29 @@
 import dayjs from "dayjs";
 import {
-  FlightTakeoff,
+  AirportShuttle,
+  CarRental,
+  ConfirmationNumber,
+  DirectionsBike,
   DirectionsBoat,
   DirectionsBus,
-  DirectionsSubway,
-  AirportShuttle,
-  Hail,
-  CarRental,
   DirectionsCar,
-  Museum,
-  RestaurantMenu,
+  DirectionsRailway,
+  DirectionsSubway,
+  DirectionsWalk,
+  FlightTakeoff,
   Groups,
-  Tour,
-  TheaterComedy,
-  Theaters,
+  Hail,
+  Museum,
   MusicNote,
+  Notes,
+  RestaurantMenu,
   ShoppingBag,
   SportsSoccer,
-  DirectionsWalk,
-  DirectionsBike,
-  DirectionsRailway,
-  Notes,
-  ConfirmationNumber,
+  TheaterComedy,
+  Theaters,
+  Tour,
 } from "@mui/icons-material";
-import { SvgIconProps, Link } from "@mui/material";
+import { Link, SvgIconProps } from "@mui/material";
 import { Field } from "formik";
 import { TextField } from "formik-mui";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
@@ -38,8 +38,8 @@ import ExtraText from "../types/ExtraText";
 import { userLanguage } from "./dates";
 import {
   generateGoogleMapsDirectionsUrl,
-  generateUberUniversalLink,
   generateGoogleMapsQueryUrl,
+  generateUberUniversalLink,
 } from "./url";
 import TripItem from "../types/Tripitem";
 import CopyToClipboardButton from "../components/CopyToClipboardButton";

@@ -65,7 +65,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "sort-imports": "warn"
+    }
   },
   "browserslist": {
     "production": [

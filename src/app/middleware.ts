@@ -1,10 +1,10 @@
 import {
   ActionCreatorWithPayload,
+  TypedAddListener,
+  TypedStartListening,
   addListener,
   createListenerMiddleware,
   isAnyOf,
-  TypedAddListener,
-  TypedStartListening,
 } from "@reduxjs/toolkit";
 import SliceNames from "../enums/SliceNames";
 import analytics from "../helpers/analytics";

@@ -1,8 +1,8 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
-  collection,
   CollectionReference,
+  collection,
   enableMultiTabIndexedDbPersistence,
   getFirestore,
 } from "firebase/firestore";

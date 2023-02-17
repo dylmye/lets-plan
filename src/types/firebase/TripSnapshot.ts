@@ -1,4 +1,4 @@
-import { Timestamp, DocumentData } from "firebase/firestore";
+import { DocumentData, Timestamp } from "firebase/firestore";
 import Trip from "../Trip";
 
 interface TripWithoutTimestamps

@@ -3,19 +3,19 @@ import { Alert, Box, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import dayjs from "dayjs";
 import {
+  UploadResult,
   getDownloadURL,
   ref,
   uploadBytes,
-  UploadResult,
 } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import {
   SchemaOf,
+  mixed as yMixed,
   object as yObject,
   string as yString,
-  mixed as yMixed,
 } from "yup";
 import { useSnackbar } from "notistack";
 

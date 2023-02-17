@@ -1,16 +1,16 @@
 import React from "react";
-import { Form, Field, useFormikContext } from "formik";
+import { Field, Form, useFormikContext } from "formik";
 import {
   Box,
-  Grid,
-  ToggleButton,
+  Button,
   CardActions,
   Divider,
-  Button,
+  Grid,
   TextFieldProps,
+  ToggleButton,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { ToggleButtonGroup, TextField } from "formik-mui";
+import { TextField, ToggleButtonGroup } from "formik-mui";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
@@ -23,9 +23,9 @@ import {
 import TripDetails from "../../types/TripDetails";
 import AutocompleteField from "../fields/AutocompleteField";
 import {
+  customFieldSettings,
   getTripItemIcon,
   getTripItemTypeLabel,
-  customFieldSettings,
   renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";

@@ -1,23 +1,23 @@
 import {
+  FieldPath,
   Timestamp,
   addDoc,
   deleteDoc,
   doc,
+  getDoc,
+  getDocs,
+  query,
   serverTimestamp,
   updateDoc,
-  FieldPath,
   where,
-  query,
-  getDocs,
-  getDoc,
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
-import { tripsRef, auth, getTripItemsCollection } from "../../../firebase";
+import { auth, getTripItemsCollection, tripsRef } from "../../../firebase";
 import { TripActions, TripSelectors } from "./interface";
 import {
-  convertTripDocument,
   convertDateStringToTimestamp,
+  convertTripDocument,
 } from "../../../helpers/converters";
 import Trip from "../../../types/Trip";
 import TripSnapshot from "../../../types/firebase/TripSnapshot";

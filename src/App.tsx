@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { onAuthStateChanged } from "firebase/auth";

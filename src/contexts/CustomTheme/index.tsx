@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
+import { ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {

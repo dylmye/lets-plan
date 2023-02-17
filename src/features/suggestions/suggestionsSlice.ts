@@ -1,7 +1,7 @@
 import {
+  PayloadAction,
   createDraftSafeSelector,
   createSlice,
-  PayloadAction,
 } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import SliceNames from "../../enums/SliceNames";

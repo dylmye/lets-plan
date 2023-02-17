@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Typography, Link as MuiLink } from "@mui/material";
+import { Link as MuiLink, Typography } from "@mui/material";
 
 import styles from "./styles.module.css";
 
