@@ -1,4 +1,5 @@
 import React from "react";
+import { Formik } from "formik";
 import {
   Grid,
   Paper,
@@ -24,12 +25,10 @@ import { TripItemType } from "../../types/TripItemType";
 import { formatTime } from "../../helpers/dates";
 import TripItemDetailsAction from "../TripItemDetailsAction";
 import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
-import { Formik } from "formik";
 import TripItemDraft from "../../types/TripItemDraft";
 import Trip from "../../types/Trip";
-import { useAppDispatch } from "../../app/hooks";
-import { updateTripItemByTripId } from "../../features/tripList/tripSlice";
 import TripItem from "../../types/Tripitem";
+import { useUpdateTripItem } from "../../store/features/trips";
 
 export interface TripItineraryItemProps {
   /** The item to show */
@@ -53,7 +52,7 @@ const TripItineraryItem = ({
   onToggleEditTripItem,
 }: TripItineraryItemProps) => {
   const { palette } = useTheme();
-  const dispatch = useAppDispatch();
+  const updateTripItem = useUpdateTripItem();
   const Icon = () =>
     getTripItemIcon(item.type, { htmlColor: palette.background.paper });
   const iconBackgroundColour = getTripItemColour(item.type);
@@ -118,15 +117,10 @@ const TripItineraryItem = ({
   };
 
   const onUpdateTripItem = (values: TripItemDraft): void => {
-    dispatch(
-      updateTripItemByTripId({
-        tripId: trip.id,
-        item: {
-          ...values,
-          id: item.id,
-        },
-      })
-    );
+    updateTripItem(trip.id, {
+      ...values,
+      id: item.id,
+    });
     onToggleEditTripItem(item.id, false);
   };
 

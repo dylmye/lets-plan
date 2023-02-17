@@ -5,7 +5,6 @@ import {
   createEntityAdapter,
   createSlice,
   Dictionary,
-  EntityId,
   EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
@@ -34,24 +33,24 @@ const tripsAdapter = createEntityAdapter<Trip>({
 
 /** Extra Reducer Actions belong here */
 export const addTripItemByTripId = createAction<
-  { id: EntityId } & TripItemDraft
+  { tripId: string } & TripItemDraft
 >("trips/addTripItemByTripId");
 
-export const deleteTripItemByTripId = createAction<{
-  tripId: EntityId;
+export const deleteTripItemById = createAction<{
+  tripId: string;
   itemId: string;
 }>("trips/deleteTripItemByTripId");
 
-export const updateTripItemByTripId = createAction<{
-  tripId: EntityId;
-  item: TripItemDraft & { id: string };
+export const updateTripItemById = createAction<{
+  tripId: string;
+  data: TripItem;
 }>("trips/updateTripItemByTripId");
 
 const tripSlice = createSlice({
   name,
   initialState: tripsAdapter.getInitialState({
     entities: { [exampleTrip.id]: exampleTrip } as Dictionary<Trip>,
-    ids: [exampleTrip.id] as EntityId[],
+    ids: [exampleTrip.id] as string[],
   }),
   reducers: {
     addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
@@ -104,7 +103,7 @@ const tripSlice = createSlice({
     });
 
     /** Delete Trip Item */
-    builder.addCase(deleteTripItemByTripId, (state, { payload }) => {
+    builder.addCase(deleteTripItemById, (state, { payload }) => {
       const trip = state.entities[payload.tripId];
 
       if (!trip) return;
@@ -118,17 +117,15 @@ const tripSlice = createSlice({
     });
 
     /** Update Trip Item */
-    builder.addCase(updateTripItemByTripId, (state, { payload }) => {
+    builder.addCase(updateTripItemById, (state, { payload }) => {
       const trip = state.entities[payload.tripId];
 
       if (!trip) return;
 
       const allOtherItems =
-        trip.items?.filter((x) => x.id !== (payload.item.id as string)) || [];
+        trip.items?.filter((x) => x.id !== (payload.data.id as string)) || [];
 
-      const { category, ...updatedItem } = payload.item;
-
-      const items: TripItem[] = [...allOtherItems, updatedItem];
+      const items: TripItem[] = [...allOtherItems, payload.data];
 
       tripsAdapter.updateOne(state, {
         id: payload.tripId,
@@ -165,7 +162,12 @@ const getTripsByDateSplit = createDraftSafeSelector(
   }
 );
 
-export const actions: TripActions = tripSlice.actions;
+export const actions: TripActions = {
+  ...tripSlice.actions,
+  addTripItemByTripId,
+  deleteTripItemById,
+  updateTripItemById,
+};
 
 export const selectors: TripSelectors = {
   getTrips: entitySelectors.selectAll,

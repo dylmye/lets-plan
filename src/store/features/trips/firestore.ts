@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
-import { tripsRef, auth } from "../../../firebase";
+import { tripsRef, auth, getTripItemsCollection } from "../../../firebase";
 import { TripActions, TripSelectors } from "./interface";
 import {
   convertTripDocument,
@@ -50,12 +50,43 @@ const deleteTripById: TripActions["deleteTripById"] = async (id) =>
   await deleteDoc(doc(tripsRef, id as string));
 
 const updateTripById: TripActions["updateTripById"] = async (data) => {
-  await updateDoc<TripSnapshot>(doc(tripsRef), {
+  await updateDoc(doc(tripsRef, data.id), {
     ...data,
     startsAt: convertDateStringToTimestamp(data.startsAt as string),
     endsAt: convertDateStringToTimestamp(data.endsAt as string),
     updated: serverTimestamp(),
   });
+};
+
+const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
+  tripId,
+  ...tripItem
+}) => {
+  const { category, ...filteredTripItem } = tripItem;
+  const ref = getTripItemsCollection(tripId);
+  await addDoc(ref, {
+    ...filteredTripItem,
+    startsAt: convertDateStringToTimestamp(filteredTripItem.startsAt as string),
+    // endsAt: filteredTripItem.endsAt && convertDateStringToTimestamp(filteredTripItem.endsAt as string),
+  });
+};
+
+const updateTripItemById: TripActions["updateTripItemById"] = async ({
+  tripId,
+  data,
+}) => {
+  const ref = getTripItemsCollection(tripId);
+  await updateDoc(doc(ref, data.id), {
+    ...data,
+  });
+};
+
+const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
+  tripId,
+  itemId,
+}) => {
+  const ref = getTripItemsCollection(tripId);
+  await deleteDoc(doc(ref, itemId));
 };
 
 /** selectors */
@@ -109,6 +140,9 @@ export const actions: TripActions = {
   addTrip,
   deleteTripById,
   updateTripById,
+  addTripItemByTripId,
+  updateTripItemById,
+  deleteTripItemById,
 };
 
 export const selectors: TripSelectors = {

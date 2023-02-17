@@ -9,8 +9,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 
-import { useAppDispatch } from "../../app/hooks";
-import { deleteTripItemByTripId } from "../../features/tripList/tripSlice";
+import { useDeleteTripItem } from "../../store/features/trips";
 
 interface DeleteTripItemDialogProps {
   visible: boolean;
@@ -26,11 +25,11 @@ const DeleteTripItemDialog = ({
   id,
   tripId,
 }: DeleteTripItemDialogProps) => {
-  const dispatch = useAppDispatch();
+  const deleteTripItem = useDeleteTripItem();
   const { enqueueSnackbar } = useSnackbar();
 
   const onAccepted = () => {
-    dispatch(deleteTripItemByTripId({ tripId, itemId: id }));
+    deleteTripItem(tripId, id);
     onClose();
     enqueueSnackbar("Successfully deleted trip item!");
   };

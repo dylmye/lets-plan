@@ -5,9 +5,8 @@ import dayjs from "dayjs";
 import { AddTripItemCardProps } from ".";
 import TripItemDraft from "../../types/TripItemDraft";
 import { TravelTypes, TripItemType } from "../../types/TripItemType";
-import { useAppDispatch } from "../../app/hooks";
-import { addTripItemByTripId } from "../../features/tripList/tripSlice";
 import AddEditTripItemForm from "./AddEditTripItemForm";
+import { useAddTripItem } from "../../store/features/trips";
 
 /** A wrapper for [`AddEditTripItemForm`](./AddEditTripItemForm.tsx) with the "Add Trip Item" Formik */
 const AddTripItemCardContents = ({
@@ -16,8 +15,7 @@ const AddTripItemCardContents = ({
   showCancel = false,
   onCancel,
 }: AddTripItemCardProps) => {
-  const dispatch = useAppDispatch();
-
+  const addTripItem = useAddTripItem();
   return (
     <Formik<TripItemDraft>
       initialValues={{
@@ -35,14 +33,12 @@ const AddTripItemCardContents = ({
           return;
         }
 
-        dispatch(
-          addTripItemByTripId({
-            ...values,
-            id: tripDetails.id,
-            startsAt: dayjs(values.startsAt).format(),
-            endsAt: values.endsAt && dayjs(values.endsAt).format(),
-          })
-        );
+        addTripItem({
+          ...values,
+          tripId: tripDetails.id,
+          startsAt: dayjs(values.startsAt).format(),
+          endsAt: values.endsAt && dayjs(values.endsAt).format(),
+        });
 
         onCancel && onCancel();
       }}

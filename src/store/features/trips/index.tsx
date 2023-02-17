@@ -192,6 +192,69 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
   return state;
 };
 
+export const useAddTripItem: TripHooks["useAddTripItem"] = () => {
+  const activeProvider = useGetActiveProvider();
+  const dispatch = useAppDispatch();
+
+  return useCallback(
+    (data) => {
+      if (activeProvider === "redux") {
+        return dispatch(
+          providerRedux.actions.addTripItemByTripId(data) as PayloadAction
+        );
+      }
+      if (activeProvider === "firestore") {
+        return providerFirestore.actions.addTripItemByTripId(data);
+      }
+    },
+    [activeProvider, dispatch]
+  );
+};
+
+export const useDeleteTripItem: TripHooks["useDeleteTripItem"] = () => {
+  const activeProvider = useGetActiveProvider();
+  const dispatch = useAppDispatch();
+
+  return useCallback(
+    (tripId, itemId) => {
+      if (activeProvider === "redux") {
+        return dispatch(
+          providerRedux.actions.deleteTripItemById({
+            tripId,
+            itemId,
+          }) as PayloadAction
+        );
+      }
+      if (activeProvider === "firestore") {
+        return providerFirestore.actions.deleteTripItemById({ tripId, itemId });
+      }
+    },
+    [activeProvider, dispatch]
+  );
+};
+
+export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
+  const activeProvider = useGetActiveProvider();
+  const dispatch = useAppDispatch();
+
+  return useCallback(
+    (tripId, data) => {
+      if (activeProvider === "redux") {
+        return dispatch(
+          providerRedux.actions.updateTripItemById({
+            tripId,
+            data,
+          }) as PayloadAction
+        );
+      }
+      if (activeProvider === "firestore") {
+        return providerFirestore.actions.updateTripItemById({ tripId, data });
+      }
+    },
+    [activeProvider, dispatch]
+  );
+};
+
 /** Store imports */
 export type { TripState } from "./redux";
 export { default as reducer } from "./redux";

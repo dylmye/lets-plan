@@ -10,6 +10,7 @@ import { getStorage } from "firebase/storage";
 
 import TripSnapshot from "./types/firebase/TripSnapshot";
 import UserSnapshot from "./types/firebase/UserSnapshot";
+import TripItemSnapshot from "./types/firebase/TripItemSnapshot";
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -40,3 +41,11 @@ export const usersRef = collection(
   firestore,
   "users"
 ) as CollectionReference<UserSnapshot>;
+
+export const getTripItemsCollection = (
+  tripId: string
+): CollectionReference<TripItemSnapshot> =>
+  collection(
+    firestore,
+    `trips/${tripId}/items`
+  ) as CollectionReference<TripItemSnapshot>;
