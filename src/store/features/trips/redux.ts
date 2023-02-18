@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import {
   Dictionary,
+  EntityId,
   EntityState,
   PayloadAction,
   createAction,
@@ -8,19 +10,18 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
-import { RootState } from "../../../app/store";
-import exampleTrip from "../../../data/exampleTrip";
-import SliceNames from "../../../enums/SliceNames";
-import { dateCompare, tripIsInState } from "../../../helpers/dates";
-import { getTripItemTypeLabel } from "../../../helpers/tripItems";
-import { TripActions, TripSelectors } from "./interface";
-import TripItem from "../../../types/Tripitem";
 import TripItemDraft from "../../../types/TripItemDraft";
+import TripItem from "../../../types/Tripitem";
+import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
-import TripDraft from "../../../types/TripDraft";
+import { getTripItemTypeLabel } from "../../../helpers/tripItems";
+import { dateCompare, tripIsInState } from "../../../helpers/dates";
+import SliceNames from "../../../enums/SliceNames";
+import exampleTrip from "../../../data/exampleTrip";
+import { RootState } from "../../../app/store";
+import { TripActions, TripSelectors } from "./interface";
 
 const name = SliceNames.TRIPS;
 
@@ -50,7 +51,7 @@ const tripSlice = createSlice({
   name,
   initialState: tripsAdapter.getInitialState({
     entities: { [exampleTrip.id]: exampleTrip } as Dictionary<Trip>,
-    ids: [exampleTrip.id] as string[],
+    ids: [exampleTrip.id] as EntityId[],
   }),
   reducers: {
     addTrip: (state, { payload }: PayloadAction<TripDraft>) => {
@@ -84,9 +85,11 @@ const tripSlice = createSlice({
 
     /** Add Trip Item */
     builder.addCase(addTripItemByTripId, (state, { payload }) => {
-      if (!payload?.id) return;
+      if (!payload?.tripId) {
+        throw new Error("No Trip ID provided to add a trip item to");
+      }
 
-      const trip = state.entities[payload.id];
+      const trip = state.entities[payload.tripId];
 
       const { category, ...filteredPayload } = payload;
 
@@ -99,7 +102,7 @@ const tripSlice = createSlice({
 
       const items: TripItem[] = [...(trip?.items || []), newTripItem];
 
-      tripsAdapter.updateOne(state, { id: payload.id, changes: { items } });
+      tripsAdapter.updateOne(state, { id: payload.tripId, changes: { items } });
     });
 
     /** Delete Trip Item */

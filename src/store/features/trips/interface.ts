@@ -1,10 +1,10 @@
-import Trip from "../../../types/Trip";
-import TripDraft from "../../../types/TripDraft";
-import TripDetails from "../../../types/TripDetails";
-import { HookResponse, OptionallyPromised } from "../../../types/store";
-import DataInterface from "../../../types/store/DataInterface";
 import TripItemDraft from "../../../types/TripItemDraft";
 import TripItem from "../../../types/Tripitem";
+import TripDraft from "../../../types/TripDraft";
+import TripDetails from "../../../types/TripDetails";
+import Trip from "../../../types/Trip";
+import DataInterface from "../../../types/store/DataInterface";
+import { HookResponse, OptionallyPromised } from "../../../types/store";
 
 interface GetTripsByDateSplitResponse {
   past: Trip[];

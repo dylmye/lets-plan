@@ -67,7 +67,22 @@
       "react-app/jest"
     ],
     "rules": {
-      "sort-imports": "warn"
+      "import/order": [
+        "warn",
+        {
+          "alphabetize": {
+            "order": "desc",
+            "caseInsensitive": true
+          },
+          "pathGroups": [
+            {
+              "pattern": "react",
+              "group": "builtin",
+              "position": "before"
+            }
+          ]
+        }
+      ]
     }
   },
   "browserslist": {

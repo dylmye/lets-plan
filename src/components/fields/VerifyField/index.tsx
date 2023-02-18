@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { FieldProps } from "formik";
 import { Link, Typography } from "@mui/material";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 /** Invisible HCaptcha element for verifying forms.
  * Trigger verification in the onSubmit using your ref:

@@ -1,4 +1,5 @@
-import { Place } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 import {
   Box,
   Card,
@@ -7,13 +8,12 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
+import { Place } from "@mui/icons-material";
 
-import Trip from "../../types/Trip";
-import styles from "./styles.module.css";
-import { formatDate, formatDaysUntil } from "../../helpers/dates";
 import TripDetailsAction from "../TripDetailsAction";
+import Trip from "../../types/Trip";
+import { formatDate, formatDaysUntil } from "../../helpers/dates";
+import styles from "./styles.module.css";
 
 export interface TripListItemCardProps {
   trip: Trip;

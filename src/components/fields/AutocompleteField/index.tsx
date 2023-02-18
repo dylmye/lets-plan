@@ -1,7 +1,7 @@
 import React from "react";
-import { Autocomplete, Box, TextField } from "@mui/material";
-import { FieldProps } from "formik";
 import { AutocompleteProps } from "formik-mui";
+import { FieldProps } from "formik";
+import { Autocomplete, Box, TextField } from "@mui/material";
 
 interface AutocompleteFieldProps<T = string>
   extends FieldProps,

@@ -1,5 +1,8 @@
 import React from "react";
+import { DateTimePicker } from "formik-mui-x-date-pickers";
+import { TextField, ToggleButtonGroup } from "formik-mui";
 import { Field, Form, useFormikContext } from "formik";
+import dayjs from "dayjs";
 import {
   Box,
   Button,
@@ -9,19 +12,16 @@ import {
   TextFieldProps,
   ToggleButton,
 } from "@mui/material";
-import dayjs from "dayjs";
-import { TextField, ToggleButtonGroup } from "formik-mui";
-import { DateTimePicker } from "formik-mui-x-date-pickers";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
-import TripItemDraft from "../../types/TripItemDraft";
+import AutocompleteField from "../fields/AutocompleteField";
 import {
   ActivityTypes,
   TravelTypes,
   TripItemType,
 } from "../../types/TripItemType";
+import TripItemDraft from "../../types/TripItemDraft";
 import TripDetails from "../../types/TripDetails";
-import AutocompleteField from "../fields/AutocompleteField";
 import {
   customFieldSettings,
   getTripItemIcon,
@@ -29,10 +29,10 @@ import {
   renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";
-import { useAppSelector } from "../../app/hooks";
 import { selectThemeMode } from "../../features/theme/themeSlice";
 import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
 import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
+import { useAppSelector } from "../../app/hooks";
 import styles from "./styles.module.css";
 
 export interface AddEditTripItemFormProps {

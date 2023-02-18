@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import { ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   isUsingSystemThemeMode,
   selectThemeMode,
   setThemeMode,
 } from "../../features/theme/themeSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 export interface CustomThemeContextInterface {
   toggleColourMode: () => void;

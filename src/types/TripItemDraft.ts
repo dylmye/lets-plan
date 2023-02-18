@@ -1,6 +1,6 @@
+import { WithOptional } from "../helpers/types";
 import { TripItemType } from "./TripItemType";
 import TripItem from "./Tripitem";
-import { WithOptional } from "../helpers/types";
 
 export default interface TripItemDraft extends WithOptional<TripItem, "id"> {
   /** General category of itemTypes */

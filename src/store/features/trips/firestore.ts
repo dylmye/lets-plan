@@ -13,14 +13,14 @@ import {
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
-import { auth, getTripItemsCollection, tripsRef } from "../../../firebase";
-import { TripActions, TripSelectors } from "./interface";
+import Trip from "../../../types/Trip";
+import TripSnapshot from "../../../types/firebase/TripSnapshot";
 import {
   convertDateStringToTimestamp,
   convertTripDocument,
 } from "../../../helpers/converters";
-import Trip from "../../../types/Trip";
-import TripSnapshot from "../../../types/firebase/TripSnapshot";
+import { auth, getTripItemsCollection, tripsRef } from "../../../firebase";
+import { TripActions, TripSelectors } from "./interface";
 
 /** actions */
 const addTrip: TripActions["addTrip"] = async (trip) => {

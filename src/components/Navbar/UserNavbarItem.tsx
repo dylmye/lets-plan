@@ -1,5 +1,7 @@
+import { useSignOut } from "react-firebase-hooks/auth";
 import React, { useMemo, useState } from "react";
-import { AccountCircle, Login } from "@mui/icons-material";
+import { User } from "firebase/auth";
+import { Box } from "@mui/system";
 import {
   Divider,
   IconButton,
@@ -8,15 +10,13 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import { User } from "firebase/auth";
-import { useSignOut } from "react-firebase-hooks/auth";
+import { AccountCircle, Login } from "@mui/icons-material";
 
-import { auth } from "../../firebase";
 import { uninstallWorker } from "../../helpers/worker";
+import { auth } from "../../firebase";
+import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 import { reduxStorage } from "../../app/store";
 import ResetAppDialog from "./ResetAppDialog";
-import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 
 interface UserNavbarItemProps {
   user?: User | null;

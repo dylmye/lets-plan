@@ -2,8 +2,8 @@ import React from "react";
 import { Button, SxProps, Theme } from "@mui/material";
 import { Google } from "@mui/icons-material";
 
-import styles from "./styles.module.css";
 import SignInButtonProps from "../../types/SignInButtonProps";
+import styles from "./styles.module.css";
 
 const buttonStyle: SxProps<Theme> = {
   color: "#3c4043",

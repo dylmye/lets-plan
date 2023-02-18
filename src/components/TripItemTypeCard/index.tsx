@@ -2,8 +2,8 @@ import React, { memo } from "react";
 import { Button } from "@mui/material";
 
 import { TripItemType } from "../../types/TripItemType";
-import styles from "./styles.module.css";
 import { getTripItemIcon, getTripItemTypeLabel } from "../../helpers/tripItems";
+import styles from "./styles.module.css";
 
 interface Props {
   item: TripItemType;

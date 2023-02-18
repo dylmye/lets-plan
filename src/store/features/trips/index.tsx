@@ -1,16 +1,16 @@
 import { useCallback } from "react";
-import { PayloadAction } from "@reduxjs/toolkit";
 
-import * as providerFirestore from "./firestore";
-import * as providerRedux from "./redux";
-import { TripHooks } from "./interface";
+import { useState } from "react";
+import { useEffect } from "react";
+import { PayloadAction } from "@reduxjs/toolkit";
 import useGetActiveProvider from "../../helpers/hooks";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import * as providerRedux from "./redux";
+import { TripHooks } from "./interface";
+import * as providerFirestore from "./firestore";
 
 export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const activeProvider = useGetActiveProvider();
@@ -199,6 +199,7 @@ export const useAddTripItem: TripHooks["useAddTripItem"] = () => {
   return useCallback(
     (data) => {
       if (activeProvider === "redux") {
+        console.log(data);
         return dispatch(
           providerRedux.actions.addTripItemByTripId(data) as PayloadAction
         );

@@ -1,3 +1,4 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useState } from "react";
 import {
   IconButton,
@@ -8,11 +9,10 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit, MoreVert } from "@mui/icons-material";
-import { useAuthState } from "react-firebase-hooks/auth";
 
+import Trip from "../../types/Trip";
 import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { auth } from "../../firebase";
-import Trip from "../../types/Trip";
 
 export interface TripItemDetailsActionProps {
   /** Trip Item ID */

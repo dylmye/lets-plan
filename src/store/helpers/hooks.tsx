@@ -1,8 +1,8 @@
-import { useAppSelector } from "../../app/hooks";
-import { isLoggedIn } from "../../features/login/authSlice";
+import { useEffect, useState } from "react";
+
 import { Providers } from "../../types/store";
-import { useState } from "react";
-import { useEffect } from "react";
+import { isLoggedIn } from "../../features/login/authSlice";
+import { useAppSelector } from "../../app/hooks";
 
 /**
  * Determine which provider to get data from

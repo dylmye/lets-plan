@@ -1,5 +1,5 @@
-import TripDraft from "./TripDraft";
 import TripItem from "./Tripitem";
+import TripDraft from "./TripDraft";
 
 export default interface Trip extends TripDraft {
   createdAtUtc: string;

@@ -1,13 +1,13 @@
-import dayjs from "dayjs";
 import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
 } from "firebase/firestore";
-import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
-import TripSnapshot from "../types/firebase/TripSnapshot";
-import Trip from "../types/Trip";
+import dayjs from "dayjs";
 import TripItem from "../types/Tripitem";
+import Trip from "../types/Trip";
+import TripSnapshot from "../types/firebase/TripSnapshot";
+import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
 
 export const convertDateStringToTimestamp = (date: string): Timestamp =>
   new Timestamp(dayjs(date).unix(), 0);

@@ -1,9 +1,4 @@
-import {
-  Action,
-  ThunkAction,
-  combineReducers,
-  configureStore,
-} from "@reduxjs/toolkit";
+import storage from "redux-persist-indexeddb-storage";
 import {
   FLUSH,
   PAUSE,
@@ -15,13 +10,19 @@ import {
   persistReducer,
   persistStore,
 } from "redux-persist";
-import storage from "redux-persist-indexeddb-storage";
-import authReducer, { AuthState } from "../features/login/authSlice";
+import {
+  Action,
+  ThunkAction,
+  combineReducers,
+  configureStore,
+} from "@reduxjs/toolkit";
+import tripsReducer, { TripState } from "../store/features/trips/redux";
+import themeReducer from "../features/theme/themeSlice";
+import type { ThemeState } from "../features/theme/themeSlice";
 import suggestionsReducer, {
   SuggestionsState,
 } from "../features/suggestions/suggestionsSlice";
-import themeReducer, { ThemeState } from "../features/theme/themeSlice";
-import { TripState, reducer as tripsReducer } from "../store/features/trips";
+import authReducer, { AuthState } from "../features/login/authSlice";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {

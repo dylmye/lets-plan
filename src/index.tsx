@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { SnackbarProvider } from "notistack";
 import { PersistGate } from "redux-persist/integration/react";
-import { CssBaseline } from "@mui/material";
+import { Provider } from "react-redux";
+import ReactDOM from "react-dom";
+import React from "react";
+import { SnackbarProvider } from "notistack";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { CssBaseline } from "@mui/material";
 import { onServiceWorkerUpdate } from "@3m1/service-worker-updater";
 
 import "./index.css";
-import App from "./App";
-import { persistor, store } from "./app/store";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { CustomTheme, GlobalModalVisibility } from "./contexts";
 import OnlineStatus from "./contexts/OnlineStatus";
+import { CustomTheme, GlobalModalVisibility } from "./contexts";
+import { persistor, store } from "./app/store";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>

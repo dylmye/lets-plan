@@ -10,15 +10,15 @@ import {
 } from "@mui/material";
 import { ArrowDropDown, ArrowDropUp, AutoAwesome } from "@mui/icons-material";
 
-import trackedLinks from "../../data/trackedLinks";
 import TrackedLinkAlert from "../TrackedLinkAlert";
-import styles from "./styles.module.css";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import StyledLink from "../StyledLink";
 import {
   selectCollapsed,
   setCollapsed,
 } from "../../features/suggestions/suggestionsSlice";
-import StyledLink from "../StyledLink";
+import trackedLinks from "../../data/trackedLinks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import styles from "./styles.module.css";
 
 /** Display unit for tracked links */
 const SuggestionsCard = () => {

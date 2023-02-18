@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import dayjs from "dayjs";
 
-import Trip from "../types/Trip";
-import { TripItemType } from "../types/TripItemType";
-import TripItineraryActivityItem from "../types/TripItineraryActivityItem";
 import { CarItem } from "../types/tripItineraryTypes";
+import TripItineraryActivityItem from "../types/TripItineraryActivityItem";
+import { TripItemType } from "../types/TripItemType";
+import Trip from "../types/Trip";
 
 dayjs.extend(utc);
 

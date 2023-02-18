@@ -1,7 +1,7 @@
 import React from "react";
+import { useSnackbar } from "notistack";
 import { IconButton, Tooltip } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
 
 interface CopyToClipboardButtonProps {
   textToCopy: string;

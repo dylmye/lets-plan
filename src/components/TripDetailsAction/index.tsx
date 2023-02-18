@@ -1,5 +1,5 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useState } from "react";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   IconButton,
   ListItemIcon,
@@ -8,12 +8,12 @@ import {
   MenuList,
   Tooltip,
 } from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
 
+import Trip from "../../types/Trip";
+import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { auth } from "../../firebase";
 import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
-import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
-import Trip from "../../types/Trip";
 
 export interface TripDetailsActionProps {
   trip: Trip;

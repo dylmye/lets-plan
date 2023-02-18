@@ -1,9 +1,9 @@
 import React from "react";
-import { Alert, Typography } from "@mui/material";
 import { Field } from "formik";
+import { Alert, Typography } from "@mui/material";
 
-import styles from "./styles.module.css";
 import UploadImageField from "../fields/UploadImageField";
+import styles from "./styles.module.css";
 
 interface StepThreeProps {
   /** Controls loading status indicator for image upload */

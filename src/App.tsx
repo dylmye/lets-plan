@@ -1,23 +1,23 @@
-import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Loader } from "@googlemaps/js-api-loader";
+import React, { Suspense, lazy, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { Container, Stack } from "@mui/material";
+import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
 import { auth } from "./firebase";
-import { useAppDispatch } from "./app/hooks";
-import Navbar from "./components/Navbar";
-import AuthenticationModal from "./components/AuthenticationModal";
-import EditTripDetailsModal from "./components/EditTripDetailsModal";
-import StyledLink from "./components/StyledLink";
-import UpdateAlert from "./components/UpdateAlert";
-import OfflineAlert from "./components/OfflineAlert";
-import DeleteTripDialog from "./components/DeleteTripDialog";
-import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
-import { useOnlineStatus } from "./contexts/OnlineStatus";
-import { setLoggedIn } from "./features/login/authSlice";
 import SponsoredLinks from "./features/sponsoredLinks";
+import { setLoggedIn } from "./features/login/authSlice";
+import { useOnlineStatus } from "./contexts/OnlineStatus";
+import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
+import UpdateAlert from "./components/UpdateAlert";
+import StyledLink from "./components/StyledLink";
+import OfflineAlert from "./components/OfflineAlert";
+import Navbar from "./components/Navbar";
+import EditTripDetailsModal from "./components/EditTripDetailsModal";
+import DeleteTripDialog from "./components/DeleteTripDialog";
+import AuthenticationModal from "./components/AuthenticationModal";
+import { useAppDispatch } from "./app/hooks";
 
 // lazy imports for code splitting
 // @see https://reactjs.org/docs/code-splitting.html#route-based-code-splitting

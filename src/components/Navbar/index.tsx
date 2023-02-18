@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect, useMemo } from "react";
+import { Box } from "@mui/system";
 import {
   AppBar,
   Checkbox,
@@ -7,18 +10,15 @@ import {
   Switch,
   Toolbar,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Link } from "react-router-dom";
 
 import { auth } from "../../firebase";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   isUsingSystemThemeMode,
   selectThemeMode,
   setSystemModeOverride,
   setThemeMode,
 } from "../../features/theme/themeSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import UserNavbarItem from "./UserNavbarItem";
 
 /** Top level navigation */

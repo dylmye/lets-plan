@@ -1,9 +1,11 @@
 const CracoWorkboxPlugin = require("craco-workbox");
 
-export default {
+const config = {
   plugins: [
     {
       plugin: CracoWorkboxPlugin,
     },
   ],
 };
+
+export default config;

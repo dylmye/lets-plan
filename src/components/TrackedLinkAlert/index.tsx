@@ -1,10 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import React, { memo } from "react";
 import { Alert, Chip, Link } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-import styles from "./styles.module.css";
-import { useAppSelector } from "../../app/hooks";
 import { selectThemeMode } from "../../features/theme/themeSlice";
+import { useAppSelector } from "../../app/hooks";
+import styles from "./styles.module.css";
 
 export interface TrackedLinkAlertProps {
   description: string;

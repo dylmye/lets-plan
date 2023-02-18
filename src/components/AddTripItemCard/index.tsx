@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardContent } from "@mui/material";
 
-import AddTripItemCardContents from "./AddTripItemCardContents";
 import { TripItemType } from "../../types/TripItemType";
 import TripDetails from "../../types/TripDetails";
+import AddTripItemCardContents from "./AddTripItemCardContents";
 
 export interface AddTripItemCardProps {
   initialValues: {

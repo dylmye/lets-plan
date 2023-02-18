@@ -1,7 +1,14 @@
+import {
+  SchemaOf,
+  mixed as yMixed,
+  object as yObject,
+  string as yString,
+} from "yup";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo, useState } from "react";
-import { Alert, Box, Modal, SxProps, Theme, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
 import { Form, Formik } from "formik";
-import dayjs from "dayjs";
 import {
   UploadResult,
   getDownloadURL,
@@ -9,30 +16,23 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
-import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
-import {
-  SchemaOf,
-  mixed as yMixed,
-  object as yObject,
-  string as yString,
-} from "yup";
-import { useSnackbar } from "notistack";
+import dayjs from "dayjs";
+import { Alert, Box, Modal, SxProps, Theme, Typography } from "@mui/material";
 
 import TripDraft from "../../types/TripDraft";
-import FormStepOne from "./FormStepOne";
-import FormStepTwo from "./FormStepTwo";
-import FormStepThree from "./FormStepThree";
-import { storage } from "../../firebase";
+import ModalProps from "../../types/ModalProps";
+import { useAddTrip } from "../../store/features/trips";
 import {
   getExtensionByMimetype,
   getUploadErrorFriendlyText,
 } from "../../helpers/upload";
-
-import FormPagination from "./FormPagination";
-import ModalProps from "../../types/ModalProps";
+import { storage } from "../../firebase";
 import { useOnlineStatus } from "../../contexts/OnlineStatus";
-import { useAddTrip } from "../../store/features/trips";
+
+import FormStepTwo from "./FormStepTwo";
+import FormStepThree from "./FormStepThree";
+import FormStepOne from "./FormStepOne";
+import FormPagination from "./FormPagination";
 
 const dialogStyle: SxProps<Theme> = {
   position: "absolute" as "absolute",

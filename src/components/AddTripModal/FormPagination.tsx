@@ -1,7 +1,7 @@
 import React, { memo } from "react";
+import { useFormikContext } from "formik";
 import { Button, MobileStepper } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { useFormikContext } from "formik";
 
 interface Props {
   activeStep: number;

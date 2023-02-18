@@ -1,18 +1,18 @@
 import React from "react";
-import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
-import { Field, Form, Formik } from "formik";
+import { useSnackbar } from "notistack";
+import { DatePicker } from "formik-mui-x-date-pickers";
 import { TextField } from "formik-mui";
+import { Field, Form, Formik } from "formik";
+import dayjs from "dayjs";
+import CardActions from "@mui/material/CardActions";
+import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Check } from "@mui/icons-material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
-import { DatePicker } from "formik-mui-x-date-pickers";
-import dayjs from "dayjs";
 
-import ModalProps from "../../types/ModalProps";
 import TripDetails from "../../types/TripDetails";
-import styles from "./styles.module.css";
-import CardActions from "@mui/material/CardActions";
-import { useSnackbar } from "notistack";
+import ModalProps from "../../types/ModalProps";
 import { useUpdateTrip } from "../../store/features/trips";
+import styles from "./styles.module.css";
 
 export interface EditTripDetailsModalProps extends ModalProps {
   id: string;

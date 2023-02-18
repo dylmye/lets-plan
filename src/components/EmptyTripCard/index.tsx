@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Card, CardContent, Grid, Stack, Typography } from "@mui/material";
 
+import TripItemTypeCard from "../TripItemTypeCard";
+import AddTripItemCardContents from "../AddTripItemCard/AddTripItemCardContents";
 import {
   ActivityTypes,
   TravelTypes,
   TripItemType,
 } from "../../types/TripItemType";
-import TripItemTypeCard from "../TripItemTypeCard";
-import styles from "./styles.module.css";
-import AddTripItemCardContents from "../AddTripItemCard/AddTripItemCardContents";
 import TripDetails from "../../types/TripDetails";
+import styles from "./styles.module.css";
 
 /** Combined display for trips with no items */
 const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {

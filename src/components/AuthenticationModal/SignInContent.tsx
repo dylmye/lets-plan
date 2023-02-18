@@ -1,21 +1,21 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { Field, Form, Formik } from "formik";
+import { SchemaOf, object as yObject, string as yString } from "yup";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
   useSignInWithTwitter,
 } from "react-firebase-hooks/auth";
-import { SchemaOf, object as yObject, string as yString } from "yup";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useSnackbar } from "notistack";
 import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
-
-import { AuthModalContentProps } from ".";
-import styles from "./styles.module.css";
-import { auth } from "../../firebase";
-import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
+import { Field, Form, Formik } from "formik";
 import { AuthError } from "firebase/auth";
+import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
+
+import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
 import { renderFriendlyAuthMessages } from "../../helpers/auth";
+import { auth } from "../../firebase";
+import styles from "./styles.module.css";
+import { AuthModalContentProps } from ".";
 
 type SignInEmailForm = {
   /** user id */

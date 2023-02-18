@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import React from "react";
+import { useSnackbar } from "notistack";
 import {
   Button,
   Dialog,
@@ -7,8 +9,6 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
 
 import { useDeleteTrip } from "../../store/features/trips";
 

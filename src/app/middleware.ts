@@ -6,11 +6,11 @@ import {
   createListenerMiddleware,
   isAnyOf,
 } from "@reduxjs/toolkit";
-import SliceNames from "../enums/SliceNames";
-import analytics from "../helpers/analytics";
-import { AppDispatch, RootState } from "./store";
-import { actions } from "../store/features/trips/redux";
 import TripDraft from "../types/TripDraft";
+import { actions } from "../store/features/trips/redux";
+import analytics from "../helpers/analytics";
+import SliceNames from "../enums/SliceNames";
+import { AppDispatch, RootState } from "./store";
 
 /**
  * A middleware that automatically links redux events

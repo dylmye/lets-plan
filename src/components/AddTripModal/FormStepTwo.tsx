@@ -1,10 +1,10 @@
 import React from "react";
-import { Field, useFormikContext } from "formik";
 import { DatePicker } from "formik-mui-x-date-pickers";
-
-import styles from "./styles.module.css";
-import TripDraft from "../../types/TripDraft";
+import { Field, useFormikContext } from "formik";
 import dayjs from "dayjs";
+
+import TripDraft from "../../types/TripDraft";
+import styles from "./styles.module.css";
 
 const FormStepTwo = () => {
   const { values } = useFormikContext<TripDraft>();

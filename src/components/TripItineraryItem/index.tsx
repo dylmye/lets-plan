@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik } from "formik";
+import { SxProps, useTheme } from "@mui/system";
 import {
   Box,
   Card,
@@ -9,26 +10,25 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { SxProps, useTheme } from "@mui/system";
+import { CardHeader } from "@mui/material";
 import { Assignment } from "@mui/icons-material";
 import * as MuiIcons from "@mui/icons-material";
-import { CardHeader } from "@mui/material";
 
+import TripItemDetailsAction from "../TripItemDetailsAction";
+import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
+import { TripItemType } from "../../types/TripItemType";
+import TripItemDraft from "../../types/TripItemDraft";
+import TripItem from "../../types/Tripitem";
+import Trip from "../../types/Trip";
+import { useUpdateTripItem } from "../../store/features/trips";
 import {
   getTripItemColour,
   getTripItemIcon,
   getTripItemTypeLabel,
   renderExtraText,
 } from "../../helpers/tripItems";
-import styles from "./styles.module.css";
-import { TripItemType } from "../../types/TripItemType";
 import { formatTime } from "../../helpers/dates";
-import TripItemDetailsAction from "../TripItemDetailsAction";
-import AddEditTripItemForm from "../AddTripItemCard/AddEditTripItemForm";
-import TripItemDraft from "../../types/TripItemDraft";
-import Trip from "../../types/Trip";
-import TripItem from "../../types/Tripitem";
-import { useUpdateTripItem } from "../../store/features/trips";
+import styles from "./styles.module.css";
 
 export interface TripItineraryItemProps {
   /** The item to show */

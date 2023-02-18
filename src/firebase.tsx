@@ -1,15 +1,15 @@
-import { FirebaseOptions, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import {
   CollectionReference,
   collection,
   enableMultiTabIndexedDbPersistence,
   getFirestore,
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+import { FirebaseOptions, initializeApp } from "firebase/app";
 
-import TripSnapshot from "./types/firebase/TripSnapshot";
 import UserSnapshot from "./types/firebase/UserSnapshot";
+import TripSnapshot from "./types/firebase/TripSnapshot";
 import TripItemSnapshot from "./types/firebase/TripItemSnapshot";
 
 const firebaseConfig: FirebaseOptions = {

@@ -3,8 +3,8 @@ import {
   createDraftSafeSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
 import SliceNames from "../../enums/SliceNames";
+import { RootState } from "../../app/store";
 
 const name = SliceNames.SUGGESTIONS;
 

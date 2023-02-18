@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { FieldProps } from "formik";
+import axios, { AxiosResponse, AxiosResponseTransformer } from "axios";
 import {
   Autocomplete,
   AutocompleteProps,
@@ -7,8 +9,6 @@ import {
   TextField,
   debounce,
 } from "@mui/material";
-import { FieldProps } from "formik";
-import axios, { AxiosResponse, AxiosResponseTransformer } from "axios";
 import AirlineSearchResponse from "../../../types/apiResponses/AirlineSearchResponse";
 
 interface AirlineAutocompleteFieldProps

@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -14,29 +16,27 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
 import {
   Add,
   // FilterAlt,
 } from "@mui/icons-material";
-import { useAuthState } from "react-firebase-hooks/auth";
 
-import styles from "./styles.module.css";
-import { COLOURS } from "../../helpers/colours";
-import { dateCompare, formatDate } from "../../helpers/dates";
+import TripItem from "../../types/Tripitem";
+import Trip from "../../types/Trip";
+import { useGetTripById } from "../../store/features/trips";
+import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { groupTripItemsByDay } from "../../helpers/tripItems";
+import { dateCompare, formatDate } from "../../helpers/dates";
+import { COLOURS } from "../../helpers/colours";
+import { auth } from "../../firebase";
 import TripItineraryItem from "../../components/TripItineraryItem";
-import EmptyTripCard from "../../components/EmptyTripCard";
+import TripDetailsAction from "../../components/TripDetailsAction";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
-import AddTripItemCard from "../../components/AddTripItemCard";
-import TripDetailsAction from "../../components/TripDetailsAction";
+import EmptyTripCard from "../../components/EmptyTripCard";
 import DeleteTripItemDialog from "../../components/DeleteTripItemDialog";
-import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
-import { auth } from "../../firebase";
-import Trip from "../../types/Trip";
-import TripItem from "../../types/Tripitem";
-import { useGetTripById } from "../../store/features/trips";
+import AddTripItemCard from "../../components/AddTripItemCard";
+import styles from "./styles.module.css";
 
 const TripDetails = () => {
   const { tripId } = useParams();

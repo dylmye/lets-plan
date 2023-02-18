@@ -1,4 +1,7 @@
+import { TextField } from "formik-mui";
+import { Field } from "formik";
 import dayjs from "dayjs";
+import { Link, SvgIconProps } from "@mui/material";
 import {
   AirportShuttle,
   CarRental,
@@ -23,26 +26,23 @@ import {
   Theaters,
   Tour,
 } from "@mui/icons-material";
-import { Link, SvgIconProps } from "@mui/material";
-import { Field } from "formik";
-import { TextField } from "formik-mui";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
-import { COLOURS } from "./colours";
 import { TravelTypes, TripItemType } from "../types/TripItemType";
+import TripItem from "../types/Tripitem";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
-import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
-import BetterSwitchField from "../components/fields/BetterSwitchField";
-import CustomFieldSettings from "../types/CustomFieldSettings";
 import ExtraText from "../types/ExtraText";
-import { userLanguage } from "./dates";
+import CustomFieldSettings from "../types/CustomFieldSettings";
+import BetterSwitchField from "../components/fields/BetterSwitchField";
+import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
+import CopyToClipboardButton from "../components/CopyToClipboardButton";
 import {
   generateGoogleMapsDirectionsUrl,
   generateGoogleMapsQueryUrl,
   generateUberUniversalLink,
 } from "./url";
-import TripItem from "../types/Tripitem";
-import CopyToClipboardButton from "../components/CopyToClipboardButton";
+import { userLanguage } from "./dates";
+import { COLOURS } from "./colours";
 
 /** Convert from TripItemType to a MUI Icon component */
 export const getTripItemIcon = (

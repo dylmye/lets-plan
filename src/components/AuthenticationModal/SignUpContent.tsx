@@ -1,4 +1,23 @@
+import {
+  SchemaOf,
+  bool as yBool,
+  object as yObject,
+  string as yString,
+} from "yup";
+import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithGoogle,
+  useSignInWithTwitter,
+} from "react-firebase-hooks/auth";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useSnackbar } from "notistack";
+import {
+  CheckboxWithLabel,
+  TextField as FormikTextField,
+  TextFieldProps,
+} from "formik-mui";
+import { Field, FieldProps, Form, Formik } from "formik";
+import { AuthError } from "firebase/auth";
 import {
   Alert,
   Button,
@@ -7,34 +26,15 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { Field, FieldProps, Form, Formik } from "formik";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithGoogle,
-  useSignInWithTwitter,
-} from "react-firebase-hooks/auth";
-import {
-  SchemaOf,
-  bool as yBool,
-  object as yObject,
-  string as yString,
-} from "yup";
-import {
-  CheckboxWithLabel,
-  TextField as FormikTextField,
-  TextFieldProps,
-} from "formik-mui";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
-import { AuthModalContentProps } from ".";
-import styles from "./styles.module.css";
-import { auth } from "../../firebase";
-import FormikVerifyField from "../fields/VerifyField";
 import StyledLink from "../StyledLink";
 import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
-import { AuthError } from "firebase/auth";
+import FormikVerifyField from "../fields/VerifyField";
 import { renderFriendlyAuthMessages } from "../../helpers/auth";
+import { auth } from "../../firebase";
+import styles from "./styles.module.css";
+import { AuthModalContentProps } from ".";
 
 type SignupEmailForm = {
   /** user id */

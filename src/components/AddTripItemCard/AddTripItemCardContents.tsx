@@ -2,11 +2,11 @@ import React from "react";
 import { Formik } from "formik";
 import dayjs from "dayjs";
 
-import { AddTripItemCardProps } from ".";
-import TripItemDraft from "../../types/TripItemDraft";
 import { TravelTypes, TripItemType } from "../../types/TripItemType";
-import AddEditTripItemForm from "./AddEditTripItemForm";
+import TripItemDraft from "../../types/TripItemDraft";
 import { useAddTripItem } from "../../store/features/trips";
+import AddEditTripItemForm from "./AddEditTripItemForm";
+import { AddTripItemCardProps } from ".";
 
 /** A wrapper for [`AddEditTripItemForm`](./AddEditTripItemForm.tsx) with the "Add Trip Item" Formik */
 const AddTripItemCardContents = ({
