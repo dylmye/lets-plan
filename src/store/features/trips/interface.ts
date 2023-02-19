@@ -34,7 +34,7 @@ export interface TripActions {
     data,
   }: {
     tripId: string;
-    data: TripItem;
+    data: { id: string } & TripItemDraft;
   }) => any;
 }
 
@@ -63,7 +63,10 @@ export interface TripHooks {
   /** Remove an itinerary item from a trip */
   useDeleteTripItem: () => (tripId: string, itemId: string) => void;
   /** Update an itinerary item on a trip */
-  useUpdateTripItem: () => (tripId: string, data: TripItem) => void;
+  useUpdateTripItem: () => (
+    tripId: string,
+    data: { id: string } & TripItemDraft
+  ) => void;
   /** Get all trips, in date order */
   useGetTrips: () => HookResponse<{ trips: Trip[] }>;
   /** Get past and current/future trips, in date order */

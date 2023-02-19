@@ -44,7 +44,7 @@ export const deleteTripItemById = createAction<{
 
 export const updateTripItemById = createAction<{
   tripId: string;
-  data: TripItem;
+  data: TripItemDraft;
 }>("trips/updateTripItemByTripId");
 
 const tripSlice = createSlice({
@@ -91,7 +91,7 @@ const tripSlice = createSlice({
 
       const trip = state.entities[payload.tripId];
 
-      const { category, ...filteredPayload } = payload;
+      const { category, tripId, ...filteredPayload } = payload;
 
       let newTripItem: TripItem = {
         ...filteredPayload,
@@ -128,7 +128,9 @@ const tripSlice = createSlice({
       const allOtherItems =
         trip.items?.filter((x) => x.id !== (payload.data.id as string)) || [];
 
-      const items: TripItem[] = [...allOtherItems, payload.data];
+      const { category, ...newData } = payload.data;
+
+      const items: TripItem[] = [...allOtherItems, newData as TripItem];
 
       tripsAdapter.updateOne(state, {
         id: payload.tripId,
