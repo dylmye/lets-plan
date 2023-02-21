@@ -589,3 +589,10 @@ export const renderExtraText = (field: TripItem): ExtraText[] => {
 
   return nodes;
 };
+
+export const getTripItemCategory = ({
+  type,
+}: {
+  type: TripItemType;
+}): "travel" | "activity" =>
+  TravelTypes.includes(type) ? "travel" : "activity";

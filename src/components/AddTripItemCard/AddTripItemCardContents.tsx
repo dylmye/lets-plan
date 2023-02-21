@@ -2,9 +2,10 @@ import React from "react";
 import { Formik } from "formik";
 import dayjs from "dayjs";
 
-import { TravelTypes, TripItemType } from "../../types/TripItemType";
+import { TripItemType } from "../../types/TripItemType";
 import TripItemDraft from "../../types/TripItemDraft";
 import { useAddTripItem } from "../../store/features/trips";
+import { getTripItemCategory } from "../../helpers/tripItems";
 import AddEditTripItemForm from "./AddEditTripItemForm";
 import { AddTripItemCardProps } from ".";
 
@@ -19,9 +20,7 @@ const AddTripItemCardContents = ({
   return (
     <Formik<TripItemDraft>
       initialValues={{
-        category: TravelTypes.includes(initialValues.type as TripItemType)
-          ? "travel"
-          : "activity",
+        category: getTripItemCategory(initialValues as { type: TripItemType }),
         type: (initialValues.type as TripItemType) ?? null,
         title: "",
         startsAt: initialValues.date as string,

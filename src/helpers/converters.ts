@@ -91,3 +91,9 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
     };
   },
 };
+
+/** Take an (assumed) JSON stringify output and make it a data URL */
+export const convertJsonStringToBase64Download = (json: string): string => {
+  const b64Encoded = Buffer.from(json).toString("base64");
+  return `data:application/json;base64,${b64Encoded}`;
+};

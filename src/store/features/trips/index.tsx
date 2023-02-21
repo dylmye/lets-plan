@@ -3,10 +3,12 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { PayloadAction } from "@reduxjs/toolkit";
+
 import useGetActiveProvider from "../../helpers/hooks";
 import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
+import { convertJsonStringToBase64Download } from "../../../helpers/converters";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import * as providerRedux from "./redux";
 import { TripHooks } from "./interface";
@@ -254,6 +256,35 @@ export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
     },
     [activeProvider, dispatch]
   );
+};
+
+export const useExportTrips: TripHooks["useExportTrips"] = () => {
+  const activeProvider = useGetActiveProvider();
+  const tripsExport = useAppSelector(providerRedux.selectors.exportTrips) as {
+    data: string;
+  };
+  const [state, setState] = useState<ReturnType<TripHooks["useExportTrips"]>>({
+    data: "",
+    loading: true,
+  });
+
+  useEffect(() => {
+    if (activeProvider === "redux") {
+      const res = convertJsonStringToBase64Download(tripsExport.data);
+      setState({ data: res, loading: false });
+      return;
+    }
+    if (activeProvider === "firestore") {
+      (
+        providerFirestore.selectors.exportTrips() as Promise<{ data: string }>
+      ).then(({ data }) => {
+        const res = convertJsonStringToBase64Download(data);
+        setState({ data: res, loading: false });
+      });
+    }
+  }, [activeProvider, tripsExport]);
+
+  return state;
 };
 
 /** Store imports */

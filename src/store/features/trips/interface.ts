@@ -15,6 +15,11 @@ interface GetTripByIdResponse {
   trip?: Trip;
 }
 
+interface ExportTripsResponse {
+  /** base64 data object of all trips */
+  data: string;
+}
+
 /** Interface for provider actions */
 export interface TripActions {
   addTrip: (data: TripDraft) => any;
@@ -45,6 +50,7 @@ export interface TripSelectors {
     ...args: any[]
   ) => OptionallyPromised<GetTripsByDateSplitResponse>;
   getTripById: (...args: any[]) => OptionallyPromised<Trip | undefined>;
+  exportTrips: (...args: any[]) => OptionallyPromised<ExportTripsResponse>;
 }
 
 export interface TripImports
@@ -73,4 +79,5 @@ export interface TripHooks {
   useGetTripsByDateSplit: () => HookResponse<GetTripsByDateSplitResponse>;
   /** Get a trip by its ID */
   useGetTripById: (id: string) => HookResponse<GetTripByIdResponse>;
+  useExportTrips: () => HookResponse<ExportTripsResponse>;
 }

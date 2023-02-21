@@ -22,6 +22,7 @@ import TripItem from "../../types/Tripitem";
 import Trip from "../../types/Trip";
 import { useUpdateTripItem } from "../../store/features/trips";
 import {
+  getTripItemCategory,
   getTripItemColour,
   getTripItemIcon,
   getTripItemTypeLabel,
@@ -199,7 +200,7 @@ const TripItineraryItem = ({
                 <Formik<TripItemDraft>
                   initialValues={{
                     ...item,
-                    category: "travel",
+                    category: getTripItemCategory(item),
                   }}
                   onSubmit={onUpdateTripItem}>
                   <AddEditTripItemForm

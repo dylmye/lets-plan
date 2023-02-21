@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import { AccountCircle, Login } from "@mui/icons-material";
 
+import ResetAppDialog from "../dialogs/ResetAppDialog";
+import ManageDataDialog from "../dialogs/ManageDataDialog";
 import { uninstallWorker } from "../../helpers/worker";
 import { auth } from "../../firebase";
 import { useGlobalModalVisibility } from "../../contexts/GlobalModalVisibility";
 import { reduxStorage } from "../../app/store";
-import ResetAppDialog from "./ResetAppDialog";
 
 interface UserNavbarItemProps {
   user?: User | null;
@@ -34,6 +35,7 @@ const UserNavbarItem = ({
 }: UserNavbarItemProps) => {
   const { toggleVisible, setAuthType } = useGlobalModalVisibility();
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [manageDataDialogOpen, setManageDataDialogOpen] = useState(false);
   const [signOut] = useSignOut(auth);
   const authenticated = useMemo<boolean>(() => !!user, [user]);
 
@@ -132,7 +134,9 @@ const UserNavbarItem = ({
         <MenuItem key="menu-reset-app" onClick={() => setResetDialogOpen(true)}>
           Reset App
         </MenuItem>
-        <MenuItem key="menu-export-data" onClick={console.log}>
+        <MenuItem
+          key="menu-export-data"
+          onClick={() => setManageDataDialogOpen(true)}>
           Manage Your Data
         </MenuItem>
         <Divider />
@@ -154,6 +158,12 @@ const UserNavbarItem = ({
         visible={resetDialogOpen}
         onClose={() => setResetDialogOpen(false)}
         onAccepted={onClickResetApp}
+        authenticated={authenticated}
+      />
+      <ManageDataDialog
+        visible={manageDataDialogOpen}
+        onClose={() => setManageDataDialogOpen(false)}
+        authenticated={authenticated}
       />
     </>
   );

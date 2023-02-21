@@ -136,6 +136,13 @@ const getTripById: TripSelectors["getTripById"] = async (id: string) => {
   return res.data();
 };
 
+const exportTrips: TripSelectors["exportTrips"] = async () => {
+  const allTrips = await getTrips();
+  return {
+    data: JSON.stringify(allTrips),
+  };
+};
+
 export const actions: TripActions = {
   addTrip,
   deleteTripById,
@@ -149,4 +156,5 @@ export const selectors: TripSelectors = {
   getTrips,
   getTripsByDateSplit,
   getTripById,
+  exportTrips,
 };

@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "analytics": "^0.8.1",
     "axios": "^1.2.2",
+    "buffer": "^6.0.3",
     "dayjs": "^1.11.7",
     "firebase": "^9.15.0",
     "firebaseui": "^6.0.2",

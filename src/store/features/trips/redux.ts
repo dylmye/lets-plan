@@ -167,6 +167,15 @@ const getTripsByDateSplit = createDraftSafeSelector(
   }
 );
 
+const exportTrips = createDraftSafeSelector(
+  entitySelectors.selectAll,
+  (state) => {
+    return {
+      data: JSON.stringify(state),
+    };
+  }
+);
+
 export const actions: TripActions = {
   ...tripSlice.actions,
   addTripItemByTripId,
@@ -178,6 +187,7 @@ export const selectors: TripSelectors = {
   getTrips: entitySelectors.selectAll,
   getTripById: entitySelectors.selectById,
   getTripsByDateSplit,
+  exportTrips,
 };
 
 export default tripSlice.reducer;
