@@ -39,7 +39,7 @@ const ResetAppDialog = ({
       <Button onClick={onClose} autoFocus disabled={disabled}>
         Cancel
       </Button>
-      <Button onClick={onAccepted} disabled={disabled}>
+      <Button onClick={onAccepted} disabled={disabled} color="error">
         Reset App
       </Button>
     </DialogActions>

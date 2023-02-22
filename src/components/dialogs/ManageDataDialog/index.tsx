@@ -23,7 +23,6 @@ const ManageDataDialog = ({
   authenticated = false,
 }: ManageDataDialogProps) => {
   const exportTrips = useExportTrips();
-  console.log({ exportTrips });
   return (
     <Dialog
       open={visible}
@@ -50,9 +49,15 @@ const ManageDataDialog = ({
           for a better understanding of how your data is used.
           <br />
           <br />
-          Click the button below to download a copy of your data.
+          Click the button below to download a copy of your data. (If clicking
+          it doesn't work, try right-clicking and picking "Save Link As...")
           <br />
-          <Button variant="contained" className={styles.actionButton}>
+          <Button
+            variant="contained"
+            className={styles.actionButton}
+            href={exportTrips?.data}
+            target="_blank"
+            disabled={exportTrips?.loading}>
             Download my data
           </Button>
           <br />

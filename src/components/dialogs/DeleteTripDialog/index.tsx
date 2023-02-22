@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-import { useDeleteTrip } from "../../store/features/trips";
+import { useDeleteTrip } from "../../../store/features/trips";
 
 interface DeleteTripDialogProps {
   visible: boolean;
@@ -55,7 +55,9 @@ const DeleteTripDialog = ({
         <Button onClick={onClose} autoFocus>
           Cancel
         </Button>
-        <Button onClick={onAccepted}>Delete</Button>
+        <Button onClick={onAccepted} color="error">
+          Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

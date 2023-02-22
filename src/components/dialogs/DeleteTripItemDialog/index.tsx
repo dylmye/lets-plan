@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-import { useDeleteTripItem } from "../../store/features/trips";
+import { useDeleteTripItem } from "../../../store/features/trips";
 
 interface DeleteTripItemDialogProps {
   visible: boolean;
@@ -52,7 +52,9 @@ const DeleteTripItemDialog = ({
         <Button onClick={onClose} autoFocus>
           Cancel
         </Button>
-        <Button onClick={onAccepted}>Delete</Button>
+        <Button onClick={onAccepted} color="error">
+          Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

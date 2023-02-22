@@ -34,7 +34,7 @@ import TripDetailsAction from "../../components/TripDetailsAction";
 import SuggestionsCard from "../../components/SuggestionsCard";
 import StyledLink from "../../components/StyledLink";
 import EmptyTripCard from "../../components/EmptyTripCard";
-import DeleteTripItemDialog from "../../components/DeleteTripItemDialog";
+import DeleteTripItemDialog from "../../components/dialogs/DeleteTripItemDialog";
 import AddTripItemCard from "../../components/AddTripItemCard";
 import styles from "./styles.module.css";
 

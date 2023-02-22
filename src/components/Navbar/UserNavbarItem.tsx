@@ -5,12 +5,13 @@ import { Box } from "@mui/system";
 import {
   Divider,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { AccountCircle, Login } from "@mui/icons-material";
+import { AccountCircle, Login, Warning } from "@mui/icons-material";
 
 import ResetAppDialog from "../dialogs/ResetAppDialog";
 import ManageDataDialog from "../dialogs/ManageDataDialog";
@@ -131,13 +132,16 @@ const UserNavbarItem = ({
             </MenuItem>
           );
         })}
-        <MenuItem key="menu-reset-app" onClick={() => setResetDialogOpen(true)}>
-          Reset App
-        </MenuItem>
         <MenuItem
           key="menu-export-data"
           onClick={() => setManageDataDialogOpen(true)}>
           Manage Your Data
+        </MenuItem>
+        <MenuItem key="menu-reset-app" onClick={() => setResetDialogOpen(true)}>
+          <ListItemIcon>
+            <Warning fontSize="inherit" />
+          </ListItemIcon>
+          Reset App
         </MenuItem>
         <Divider />
         <MenuItem key="version-text" dense>
