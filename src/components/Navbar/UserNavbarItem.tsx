@@ -59,7 +59,7 @@ const UserNavbarItem = ({
     setAuthType("sign-up");
   };
 
-  const onClickResetApp = async () => {
+  const onResetApp = async () => {
     if (authenticated) {
       await signOut();
     }
@@ -71,6 +71,16 @@ const UserNavbarItem = ({
     await reduxStorage.db.clear();
     // eslint-disable-next-line no-restricted-globals
     location.reload();
+  };
+
+  const onClickManageData = () => {
+    onToggle();
+    setManageDataDialogOpen(true);
+  };
+
+  const onClickResetApp = () => {
+    onToggle();
+    setResetDialogOpen(true);
   };
 
   return (
@@ -132,12 +142,10 @@ const UserNavbarItem = ({
             </MenuItem>
           );
         })}
-        <MenuItem
-          key="menu-export-data"
-          onClick={() => setManageDataDialogOpen(true)}>
+        <MenuItem key="menu-export-data" onClick={onClickManageData}>
           Manage Your Data
         </MenuItem>
-        <MenuItem key="menu-reset-app" onClick={() => setResetDialogOpen(true)}>
+        <MenuItem key="menu-reset-app" onClick={onClickResetApp}>
           <ListItemIcon>
             <Warning fontSize="inherit" />
           </ListItemIcon>
@@ -161,7 +169,7 @@ const UserNavbarItem = ({
       <ResetAppDialog
         visible={resetDialogOpen}
         onClose={() => setResetDialogOpen(false)}
-        onAccepted={onClickResetApp}
+        onAccepted={onResetApp}
         authenticated={authenticated}
       />
       <ManageDataDialog

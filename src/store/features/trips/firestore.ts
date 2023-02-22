@@ -93,6 +93,8 @@ const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
 const getTrips: TripSelectors["getTrips"] = async () => {
   const userId = auth.currentUser?.uid;
 
+  console.log({ u: auth.currentUser });
+
   const userIdMatches = where(new FieldPath("userId"), "==", userId as string);
 
   const res = await getDocs(

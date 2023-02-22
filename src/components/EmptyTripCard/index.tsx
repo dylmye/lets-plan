@@ -59,6 +59,8 @@ const EmptyTripCard = ({ startsAt, ...props }: TripDetails) => {
           </>
         ) : (
           <AddTripItemCardContents
+            showCancel
+            onCancel={() => setSelected(undefined)}
             initialValues={{ type: selected, date: startsAt }}
             tripDetails={{ startsAt, ...props }}
           />

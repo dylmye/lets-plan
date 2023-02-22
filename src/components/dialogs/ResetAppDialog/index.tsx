@@ -32,7 +32,8 @@ const ResetAppDialog = ({
     <DialogContent>
       <DialogContentText id="reset-dialog-description">
         Resetting the app will {authenticated && "log you out and "}
-        permanently delete any local trips. Do you wish to continue?
+        permanently delete any local trips, as well as resetting any preferences
+        you have set. Do you wish to continue?
       </DialogContentText>
     </DialogContent>
     <DialogActions>

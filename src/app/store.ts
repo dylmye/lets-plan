@@ -16,13 +16,14 @@ import {
   combineReducers,
   configureStore,
 } from "@reduxjs/toolkit";
+
 import tripsReducer, { TripState } from "../store/features/trips/redux";
+import authReducer, { AuthState } from "../store/features/auth/redux";
 import themeReducer from "../features/theme/themeSlice";
 import type { ThemeState } from "../features/theme/themeSlice";
 import suggestionsReducer, {
   SuggestionsState,
 } from "../features/suggestions/suggestionsSlice";
-import authReducer, { AuthState } from "../features/login/authSlice";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {
