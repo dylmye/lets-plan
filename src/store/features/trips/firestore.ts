@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 
 import Trip from "../../../types/Trip";
 import TripSnapshot from "../../../types/firebase/TripSnapshot";
+import TripItemSnapshot from "../../../types/firebase/TripItemSnapshot";
 import {
   convertDateStringToTimestamp,
   convertTripDocument,
@@ -43,16 +44,24 @@ const addTrip: TripActions["addTrip"] = async (trip, userId) => {
     convertibleTrip
   ) as TripSnapshot;
 
-  // @TODO: this doesn't resolve while offline, add validation
-  await addDoc(tripsRef, {
-    ...tripDoc,
-    createdAtUtc: serverTimestamp(),
-    updatedAtUtc: serverTimestamp(),
-  });
+  try {
+    await addDoc(tripsRef, {
+      ...tripDoc,
+      createdAtUtc: serverTimestamp(),
+      updatedAtUtc: serverTimestamp(),
+    });
+  } catch (e) {
+    throw new Error(`[store/firestore] error creating trip: ${e}`);
+  }
 };
 
-const deleteTripById: TripActions["deleteTripById"] = async (id) =>
-  await deleteDoc(doc(tripsRef, id as string));
+const deleteTripById: TripActions["deleteTripById"] = async (id) => {
+  try {
+    await deleteDoc(doc(tripsRef, id as string));
+  } catch (e) {
+    throw new Error(`[store/firestore] error deleting trip: ${e}`);
+  }
+};
 
 const updateTripById: TripActions["updateTripById"] = async (data) => {
   try {
@@ -60,7 +69,7 @@ const updateTripById: TripActions["updateTripById"] = async (data) => {
       ...data,
       startsAt: convertDateStringToTimestamp(data.startsAt as string),
       endsAt: convertDateStringToTimestamp(data.endsAt as string),
-      updated: serverTimestamp(),
+      updatedAtUtc: serverTimestamp(),
     });
   } catch (e) {
     throw new Error(`[store/firestore] error updating trip: ${e}`);
@@ -79,8 +88,10 @@ const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
       startsAt: convertDateStringToTimestamp(
         filteredTripItem.startsAt as string
       ),
-      // endsAt: filteredTripItem.endsAt && convertDateStringToTimestamp(filteredTripItem.endsAt as string),
-    });
+      endsAt:
+        filteredTripItem.endsAt &&
+        convertDateStringToTimestamp(filteredTripItem.endsAt as string),
+    } as TripItemSnapshot);
   } catch (e) {
     throw new Error(`[store/firestore] error adding a trip item: ${e}`);
   }
@@ -91,9 +102,13 @@ const updateTripItemById: TripActions["updateTripItemById"] = async ({
   data,
 }) => {
   const ref = getTripItemsCollection(tripId);
-  await updateDoc(doc(ref, data.id), {
-    ...data,
-  });
+  try {
+    await updateDoc(doc(ref, data.id), {
+      ...data,
+    });
+  } catch (e) {
+    throw new Error(`[store/firestore] error updating a trip item: ${e}`);
+  }
 };
 
 const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
@@ -101,7 +116,11 @@ const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
   itemId,
 }) => {
   const ref = getTripItemsCollection(tripId);
-  await deleteDoc(doc(ref, itemId));
+  try {
+    await deleteDoc(doc(ref, itemId));
+  } catch (e) {
+    throw new Error(`[store/firestore] error deleting a trip item: ${e}`);
+  }
 };
 
 /** selectors */
@@ -113,11 +132,15 @@ const getTrips: TripSelectors["getTrips"] = async (userId: string | null) => {
 
   const userIdMatches = where(new FieldPath("userId"), "==", userId);
 
-  const res = await getDocs(
-    query(tripsRef, userIdMatches).withConverter<Trip>(convertTripDocument)
-  );
+  try {
+    const res = await getDocs(
+      query(tripsRef, userIdMatches).withConverter<Trip>(convertTripDocument)
+    );
 
-  return res.docs.map((x) => x.data());
+    return res.docs.map((x) => x.data());
+  } catch (e) {
+    throw new Error(`[store/firestore] error getting trips: ${e}`);
+  }
 };
 
 const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async (
@@ -149,19 +172,30 @@ const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async (
     tripIsInPast
   ).withConverter<Trip>(convertTripDocument);
 
-  const currentQueryResponse = await getDocs(currentTripsQuery);
-  const pastQueryResponse = await getDocs(pastTripsQuery);
+  try {
+    const currentQueryResponse = await getDocs(currentTripsQuery);
+    const pastQueryResponse = await getDocs(pastTripsQuery);
 
-  return {
-    past: pastQueryResponse.docs.map((x) => x.data()),
-    futureCurrent: currentQueryResponse.docs.map((x) => x.data()),
-  };
+    return {
+      past: pastQueryResponse.docs.map((x) => x.data()),
+      futureCurrent: currentQueryResponse.docs.map((x) => x.data()),
+    };
+  } catch (e) {
+    throw new Error(
+      `[store/firestore] error getting trips by past/current: ${e}`
+    );
+  }
 };
 
 const getTripById: TripSelectors["getTripById"] = async (id: string) => {
   const docRef = doc(tripsRef, id).withConverter<Trip>(convertTripDocument);
-  const res = await getDoc(docRef);
-  return res.data();
+
+  try {
+    const res = await getDoc(docRef);
+    return res.data();
+  } catch (e) {
+    throw new Error(`[store/firestore] error getting trip with id ${id}: ${e}`);
+  }
 };
 
 const exportTrips: TripSelectors["exportTrips"] = async (
@@ -174,10 +208,14 @@ const exportTrips: TripSelectors["exportTrips"] = async (
     return { data: "" };
   }
 
-  const allTrips = await getTrips(userId);
-  return {
-    data: JSON.stringify(allTrips),
-  };
+  try {
+    const allTrips = await getTrips(userId);
+    return {
+      data: JSON.stringify(allTrips),
+    };
+  } catch (e) {
+    throw new Error(`[store/firestore] error exporting trips: ${e}`);
+  }
 };
 
 export const actions: TripActions = {

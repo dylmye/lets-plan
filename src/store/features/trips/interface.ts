@@ -1,5 +1,4 @@
 import TripItemDraft from "../../../types/TripItemDraft";
-import TripItem from "../../../types/Tripitem";
 import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";

@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
-import { PayloadAction } from "@reduxjs/toolkit";
 import { useSnackbar } from "notistack";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 import { useGetUserId } from "../auth";
 import useGetActiveProvider from "../../helpers/hooks";
@@ -17,6 +17,7 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (data) => {
@@ -26,16 +27,23 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.addTrip(data, userId);
+        return providerFirestore.actions
+          .addTrip(data, userId)
+          .catch((e: string) => {
+            enqueueSnackbar("Unable to create this trip", {
+              variant: "error",
+            });
+          });
       }
     },
-    [activeProvider, dispatch, userId]
+    [activeProvider, dispatch, userId, enqueueSnackbar]
   );
 };
 
 export const useDeleteTrip: TripHooks["useDeleteTrip"] = () => {
   const activeProvider = useGetActiveProvider();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (tripId) => {
@@ -45,16 +53,21 @@ export const useDeleteTrip: TripHooks["useDeleteTrip"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.deleteTripById(tripId);
+        providerFirestore.actions.deleteTripById(tripId).catch((e: string) => {
+          enqueueSnackbar("Unable to delete this trip", {
+            variant: "error",
+          });
+        });
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, enqueueSnackbar]
   );
 };
 
 export const useUpdateTrip: TripHooks["useUpdateTrip"] = () => {
   const activeProvider = useGetActiveProvider();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (data) => {
@@ -66,16 +79,21 @@ export const useUpdateTrip: TripHooks["useUpdateTrip"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.updateTripById(data);
+        providerFirestore.actions.updateTripById(data).catch((e: string) => {
+          enqueueSnackbar("Unable to update this trip", {
+            variant: "error",
+          });
+        });
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, enqueueSnackbar]
   );
 };
 
 export const useGetTrips: TripHooks["useGetTrips"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();
+  const { enqueueSnackbar } = useSnackbar();
   const trips = useAppSelector(providerRedux.selectors.getTrips) as Trip[];
   const [state, setState] = useState<ReturnType<TripHooks["useGetTrips"]>>({
     trips: [],
@@ -88,13 +106,17 @@ export const useGetTrips: TripHooks["useGetTrips"] = () => {
       return;
     }
     if (activeProvider === "firestore") {
-      (providerFirestore.selectors.getTrips(userId) as Promise<Trip[]>).then(
-        (trips) => {
+      (providerFirestore.selectors.getTrips(userId) as Promise<Trip[]>)
+        .then((trips) => {
           setState({ trips, loading: false });
-        }
-      );
+        })
+        .catch((e: string) => {
+          enqueueSnackbar("Unable to load your trips", {
+            variant: "error",
+          });
+        });
     }
-  }, [activeProvider, trips, userId]);
+  }, [activeProvider, trips, userId, enqueueSnackbar]);
 
   return state;
 };
@@ -103,6 +125,7 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
   () => {
     const activeProvider = useGetActiveProvider();
     const userId = useGetUserId();
+    const { enqueueSnackbar } = useSnackbar();
     const getTripsByDateSplit = useAppSelector(
       providerRedux.selectors.getTripsByDateSplit
     ) as ReturnType<TripHooks["useGetTripsByDateSplit"]>;
@@ -124,17 +147,24 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
           providerFirestore.selectors.getTripsByDateSplit(userId) as Promise<
             ReturnType<TripHooks["useGetTripsByDateSplit"]>
           >
-        ).then((res) => {
-          setState({ ...res, loading: false });
-        });
+        )
+          .then((res) => {
+            setState({ ...res, loading: false });
+          })
+          .catch((e: string) => {
+            enqueueSnackbar("Unable to load your trips", {
+              variant: "error",
+            });
+          });
       }
-    }, [activeProvider, getTripsByDateSplit, userId]);
+    }, [activeProvider, getTripsByDateSplit, userId, enqueueSnackbar]);
 
     return state;
   };
 
 export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
   const activeProvider = useGetActiveProvider();
+  const { enqueueSnackbar } = useSnackbar();
   const trip = useAppSelector((state) =>
     providerRedux.selectors.getTripById(state, tripId)
   );
@@ -152,8 +182,9 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
         providerFirestore.selectors.getTripById(tripId) as Promise<{
           trip?: Trip;
         }>
-      ).then((res) => {
-        /** @TODO: re-add trip item loading:
+      )
+        .then((res) => {
+          /** @TODO: re-add trip item loading:
            *
            * if (grabbedTripDoc.exists()) {
             const tripData = grabbedTripDoc.data();
@@ -188,10 +219,15 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
               );
           }
            */
-        setState({ trip: res as Trip, loading: false });
-      });
+          setState({ trip: res as Trip, loading: false });
+        })
+        .catch((e: string) => {
+          enqueueSnackbar("Unable to load this trip", {
+            variant: "error",
+          });
+        });
     }
-  }, [activeProvider, tripId, trip]);
+  }, [activeProvider, tripId, trip, enqueueSnackbar]);
 
   return state;
 };
@@ -218,13 +254,14 @@ export const useAddTripItem: TripHooks["useAddTripItem"] = () => {
           });
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, enqueueSnackbar]
   );
 };
 
 export const useDeleteTripItem: TripHooks["useDeleteTripItem"] = () => {
   const activeProvider = useGetActiveProvider();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (tripId, itemId) => {
@@ -237,16 +274,23 @@ export const useDeleteTripItem: TripHooks["useDeleteTripItem"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.deleteTripItemById({ tripId, itemId });
+        providerFirestore.actions
+          .deleteTripItemById({ tripId, itemId })
+          .catch((e: string) => {
+            enqueueSnackbar("Unable to delete this trip itinerary", {
+              variant: "error",
+            });
+          });
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, enqueueSnackbar]
   );
 };
 
 export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
   const activeProvider = useGetActiveProvider();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (tripId, data) => {
@@ -259,16 +303,23 @@ export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.updateTripItemById({ tripId, data });
+        providerFirestore.actions
+          .updateTripItemById({ tripId, data })
+          .catch((e: string) => {
+            enqueueSnackbar("Unable to update this trip itinerary", {
+              variant: "error",
+            });
+          });
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, enqueueSnackbar]
   );
 };
 
 export const useExportTrips: TripHooks["useExportTrips"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();
+  const { enqueueSnackbar } = useSnackbar();
   const tripsExport = useAppSelector(providerRedux.selectors.exportTrips) as {
     data: string;
   };
@@ -288,12 +339,18 @@ export const useExportTrips: TripHooks["useExportTrips"] = () => {
         providerFirestore.selectors.exportTrips(userId) as Promise<{
           data: string;
         }>
-      ).then(({ data }) => {
-        const res = convertJsonStringToBase64Download(data);
-        setState({ data: res, loading: false });
-      });
+      )
+        .then(({ data }) => {
+          const res = convertJsonStringToBase64Download(data);
+          setState({ data: res, loading: false });
+        })
+        .catch((e: string) => {
+          enqueueSnackbar("Unable to export trips", {
+            variant: "error",
+          });
+        });
     }
-  }, [activeProvider, tripsExport, userId]);
+  }, [activeProvider, tripsExport, userId, enqueueSnackbar]);
 
   return state;
 };

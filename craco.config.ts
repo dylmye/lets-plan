@@ -1,5 +1,5 @@
-const CracoWorkboxPlugin = require("craco-workbox");
 const webpack = require("webpack");
+const CracoWorkboxPlugin = require("craco-workbox");
 
 const config = {
   webpack: {
