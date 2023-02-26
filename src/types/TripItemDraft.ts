@@ -11,5 +11,5 @@ export default interface TripItemDraft extends WithOptional<TripItem, "id"> {
   urls?: Record<string, string> | null;
   startsAt: string;
   // @TODO: confirm we don't need to union this with null
-  endsAt?: string;
+  endsAt?: string | null;
 }

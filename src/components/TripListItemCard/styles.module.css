@@ -3,6 +3,7 @@
   flex-direction: column;
   flex: 1 1 75%;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .tripListTextOverImage {
@@ -38,4 +39,5 @@
 
 .cardContentPaddingOverride {
   padding-bottom: 16px !important;
+  max-width: 100%;
 }

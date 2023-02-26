@@ -8,10 +8,6 @@ export default interface TripItineraryTravelItem extends TripItineraryItemBase {
   originLocation: string;
   /** The city/country of destination */
   destinationLocation: string;
-  /** The UTC time the trip ends at */
-  endsAt: string;
-  /** The timezone to display the end time in */
-  endsAtTimezone: string;
   price?: number;
   priceCurrency?: keyof typeof CURRENCIES | null;
 }

@@ -1,9 +1,8 @@
-import { useCallback } from "react";
-
-import { useState } from "react";
-import { useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { useSnackbar } from "notistack";
 
+import { useGetUserId } from "../auth";
 import useGetActiveProvider from "../../helpers/hooks";
 import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
@@ -16,6 +15,7 @@ import * as providerFirestore from "./firestore";
 
 export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const activeProvider = useGetActiveProvider();
+  const userId = useGetUserId();
   const dispatch = useAppDispatch();
 
   return useCallback(
@@ -26,10 +26,10 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.addTrip(data);
+        return providerFirestore.actions.addTrip(data, userId);
       }
     },
-    [activeProvider, dispatch]
+    [activeProvider, dispatch, userId]
   );
 };
 
@@ -75,6 +75,7 @@ export const useUpdateTrip: TripHooks["useUpdateTrip"] = () => {
 
 export const useGetTrips: TripHooks["useGetTrips"] = () => {
   const activeProvider = useGetActiveProvider();
+  const userId = useGetUserId();
   const trips = useAppSelector(providerRedux.selectors.getTrips) as Trip[];
   const [state, setState] = useState<ReturnType<TripHooks["useGetTrips"]>>({
     trips: [],
@@ -87,13 +88,13 @@ export const useGetTrips: TripHooks["useGetTrips"] = () => {
       return;
     }
     if (activeProvider === "firestore") {
-      (providerFirestore.selectors.getTrips() as Promise<Trip[]>).then(
+      (providerFirestore.selectors.getTrips(userId) as Promise<Trip[]>).then(
         (trips) => {
           setState({ trips, loading: false });
         }
       );
     }
-  }, [activeProvider, trips]);
+  }, [activeProvider, trips, userId]);
 
   return state;
 };
@@ -101,6 +102,7 @@ export const useGetTrips: TripHooks["useGetTrips"] = () => {
 export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
   () => {
     const activeProvider = useGetActiveProvider();
+    const userId = useGetUserId();
     const getTripsByDateSplit = useAppSelector(
       providerRedux.selectors.getTripsByDateSplit
     ) as ReturnType<TripHooks["useGetTripsByDateSplit"]>;
@@ -119,14 +121,14 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
       }
       if (activeProvider === "firestore") {
         (
-          providerFirestore.selectors.getTripsByDateSplit() as Promise<
+          providerFirestore.selectors.getTripsByDateSplit(userId) as Promise<
             ReturnType<TripHooks["useGetTripsByDateSplit"]>
           >
         ).then((res) => {
           setState({ ...res, loading: false });
         });
       }
-    }, [activeProvider, getTripsByDateSplit]);
+    }, [activeProvider, getTripsByDateSplit, userId]);
 
     return state;
   };
@@ -197,17 +199,23 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
 export const useAddTripItem: TripHooks["useAddTripItem"] = () => {
   const activeProvider = useGetActiveProvider();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
     (data) => {
       if (activeProvider === "redux") {
-        console.log(data);
         return dispatch(
           providerRedux.actions.addTripItemByTripId(data) as PayloadAction
         );
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions.addTripItemByTripId(data);
+        providerFirestore.actions
+          .addTripItemByTripId(data)
+          .catch((e: string) => {
+            enqueueSnackbar("Unable to add this itinerary to a trip", {
+              variant: "error",
+            });
+          });
       }
     },
     [activeProvider, dispatch]
@@ -260,6 +268,7 @@ export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
 
 export const useExportTrips: TripHooks["useExportTrips"] = () => {
   const activeProvider = useGetActiveProvider();
+  const userId = useGetUserId();
   const tripsExport = useAppSelector(providerRedux.selectors.exportTrips) as {
     data: string;
   };
@@ -276,17 +285,18 @@ export const useExportTrips: TripHooks["useExportTrips"] = () => {
     }
     if (activeProvider === "firestore") {
       (
-        providerFirestore.selectors.exportTrips() as Promise<{ data: string }>
+        providerFirestore.selectors.exportTrips(userId) as Promise<{
+          data: string;
+        }>
       ).then(({ data }) => {
         const res = convertJsonStringToBase64Download(data);
         setState({ data: res, loading: false });
       });
     }
-  }, [activeProvider, tripsExport]);
+  }, [activeProvider, tripsExport, userId]);
 
   return state;
 };
 
 /** Store imports */
-export type { TripState } from "./redux";
 export { default as reducer } from "./redux";

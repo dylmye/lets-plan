@@ -19,15 +19,20 @@ import {
   convertDateStringToTimestamp,
   convertTripDocument,
 } from "../../../helpers/converters";
-import { auth, getTripItemsCollection, tripsRef } from "../../../firebase";
+import { getTripItemsCollection, tripsRef } from "../../../firebase";
 import { TripActions, TripSelectors } from "./interface";
 
 /** actions */
-const addTrip: TripActions["addTrip"] = async (trip) => {
-  const userId = auth.currentUser?.uid;
+const addTrip: TripActions["addTrip"] = async (trip, userId) => {
+  if (!userId) {
+    console.warn("Action ignored: tried to add a trip while unauthenticated");
+    return;
+  }
+
+  const { coverImageBlob, ...filteredTrip } = trip;
 
   const convertibleTrip: Trip = {
-    ...trip,
+    ...filteredTrip,
     public: false,
     userId,
     createdAtUtc: dayjs().format(),
@@ -50,12 +55,16 @@ const deleteTripById: TripActions["deleteTripById"] = async (id) =>
   await deleteDoc(doc(tripsRef, id as string));
 
 const updateTripById: TripActions["updateTripById"] = async (data) => {
-  await updateDoc(doc(tripsRef, data.id), {
-    ...data,
-    startsAt: convertDateStringToTimestamp(data.startsAt as string),
-    endsAt: convertDateStringToTimestamp(data.endsAt as string),
-    updated: serverTimestamp(),
-  });
+  try {
+    await updateDoc(doc(tripsRef, data.id), {
+      ...data,
+      startsAt: convertDateStringToTimestamp(data.startsAt as string),
+      endsAt: convertDateStringToTimestamp(data.endsAt as string),
+      updated: serverTimestamp(),
+    });
+  } catch (e) {
+    throw new Error(`[store/firestore] error updating trip: ${e}`);
+  }
 };
 
 const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
@@ -64,11 +73,17 @@ const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
 }) => {
   const { category, ...filteredTripItem } = tripItem;
   const ref = getTripItemsCollection(tripId);
-  await addDoc(ref, {
-    ...filteredTripItem,
-    startsAt: convertDateStringToTimestamp(filteredTripItem.startsAt as string),
-    // endsAt: filteredTripItem.endsAt && convertDateStringToTimestamp(filteredTripItem.endsAt as string),
-  });
+  try {
+    await addDoc(ref, {
+      ...filteredTripItem,
+      startsAt: convertDateStringToTimestamp(
+        filteredTripItem.startsAt as string
+      ),
+      // endsAt: filteredTripItem.endsAt && convertDateStringToTimestamp(filteredTripItem.endsAt as string),
+    });
+  } catch (e) {
+    throw new Error(`[store/firestore] error adding a trip item: ${e}`);
+  }
 };
 
 const updateTripItemById: TripActions["updateTripItemById"] = async ({
@@ -90,12 +105,13 @@ const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
 };
 
 /** selectors */
-const getTrips: TripSelectors["getTrips"] = async () => {
-  const userId = auth.currentUser?.uid;
+const getTrips: TripSelectors["getTrips"] = async (userId: string | null) => {
+  if (!userId) {
+    console.warn("Selector ignored: tried to get trips while unauthenticated");
+    return [];
+  }
 
-  console.log({ u: auth.currentUser });
-
-  const userIdMatches = where(new FieldPath("userId"), "==", userId as string);
+  const userIdMatches = where(new FieldPath("userId"), "==", userId);
 
   const res = await getDocs(
     query(tripsRef, userIdMatches).withConverter<Trip>(convertTripDocument)
@@ -104,12 +120,22 @@ const getTrips: TripSelectors["getTrips"] = async () => {
   return res.docs.map((x) => x.data());
 };
 
-const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async () => {
-  const userId = auth.currentUser?.uid;
+const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async (
+  userId: string | null
+) => {
+  if (!userId) {
+    console.warn("Selector ignored: tried to get trips while unauthenticated");
+    return {
+      past: [],
+      futureCurrent: [],
+    };
+  }
 
-  const userIdMatches = where(new FieldPath("userId"), "==", userId as string);
-  const tripIsInPast = where(new FieldPath("endsAt"), "<", Timestamp.now());
-  const tripIsCurrent = where(new FieldPath("endsAt"), ">=", Timestamp.now());
+  const now = Timestamp.now();
+
+  const userIdMatches = where(new FieldPath("userId"), "==", userId);
+  const tripIsInPast = where(new FieldPath("endsAt"), "<", now);
+  const tripIsCurrent = where(new FieldPath("endsAt"), ">=", now);
 
   const currentTripsQuery = query(
     tripsRef,
@@ -138,8 +164,17 @@ const getTripById: TripSelectors["getTripById"] = async (id: string) => {
   return res.data();
 };
 
-const exportTrips: TripSelectors["exportTrips"] = async () => {
-  const allTrips = await getTrips();
+const exportTrips: TripSelectors["exportTrips"] = async (
+  userId: string | null
+) => {
+  if (!userId) {
+    console.warn(
+      "Selector ignored: tried to export trips while unauthenticated"
+    );
+    return { data: "" };
+  }
+
+  const allTrips = await getTrips(userId);
   return {
     data: JSON.stringify(allTrips),
   };

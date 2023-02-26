@@ -1,13 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
+import { setLogLevel } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Container, Stack } from "@mui/material";
 import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
+import { useSetLoggedIn, useSetUserId } from "./store/features/auth";
 import { auth } from "./firebase";
 import SponsoredLinks from "./features/sponsoredLinks";
-import { setLoggedIn } from "./features/login/authSlice";
 import { useOnlineStatus } from "./contexts/OnlineStatus";
 import { useGlobalModalVisibility } from "./contexts/GlobalModalVisibility";
 import UpdateAlert from "./components/UpdateAlert";
@@ -17,7 +18,6 @@ import Navbar from "./components/Navbar";
 import EditTripDetailsModal from "./components/EditTripDetailsModal";
 import DeleteTripDialog from "./components/dialogs/DeleteTripDialog";
 import AuthenticationModal from "./components/AuthenticationModal";
-import { useAppDispatch } from "./app/hooks";
 
 // lazy imports for code splitting
 // @see https://reactjs.org/docs/code-splitting.html#route-based-code-splitting
@@ -42,11 +42,13 @@ const App = () => {
     setDeleteTrip,
   } = useGlobalModalVisibility();
   const { online: isOnline } = useOnlineStatus();
-  const dispatch = useAppDispatch();
+  const setLoggedIn = useSetLoggedIn();
+  const setUserId = useSetUserId();
 
   // set logged in state
   onAuthStateChanged(auth, (user) => {
-    dispatch(setLoggedIn(!!user));
+    setLoggedIn(!!user);
+    setUserId(user?.uid ?? null);
   });
 
   useEffect(() => {
@@ -69,6 +71,13 @@ const App = () => {
       console.error("Unable to load Google Maps API:", error);
     }
   });
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("Setting Firestore debug level to verbose...");
+      setLogLevel("verbose");
+    }
+  }, []);
 
   return (
     <div className="App">

@@ -62,7 +62,7 @@ const EditTripDetailsModal = ({
             location,
             startsAt,
             endsAt,
-            details,
+            details: details ?? "",
           }}
           onSubmit={onFormSubmit}>
           {({ values }) => (

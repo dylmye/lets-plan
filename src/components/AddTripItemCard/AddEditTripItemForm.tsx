@@ -49,7 +49,7 @@ const AddEditTripItemForm = ({
   formMode = "add",
   tripDetails,
 }: AddEditTripItemFormProps) => {
-  const { isSubmitting, setFieldValue, values, errors } =
+  const { isSubmitting, setFieldValue, values, errors, submitForm } =
     useFormikContext<TripItemDraft>();
   const currentTheme = useAppSelector(selectThemeMode);
   const currentFieldSettings = customFieldSettings(values.type);
@@ -168,7 +168,10 @@ const AddEditTripItemForm = ({
                   label="Finishes At"
                   name="endsAt"
                   textField={{
-                    helperText: values.category === "activity" && "Optional",
+                    helperText:
+                      errors?.endsAt ??
+                      (values.category === "activity" && "Optional"),
+                    error: !!errors?.endsAt,
                     fullWidth: true,
                   }}
                   defaultCalendarMonth={dayjs(values.startsAt)}
@@ -178,6 +181,10 @@ const AddEditTripItemForm = ({
                     // don't show errors when startsAt will be erroring
                     if (!values.startsAt) {
                       return null;
+                    }
+
+                    if (!values.endsAt) {
+                      return "End date is required";
                     }
 
                     const endsAtAfterStartsAt = dayjs(value).isAfter(
@@ -276,6 +283,13 @@ const AddEditTripItemForm = ({
           type="submit"
           variant="contained"
           disabled={isSubmitting}
+          onClick={async () => {
+            try {
+              await submitForm();
+            } catch (e) {
+              console.error(`unable to add/edit trip item:`, e);
+            }
+          }}
           color="primary">
           {formMode === "add" ? "Add to trip" : "Update"}
         </Button>

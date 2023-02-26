@@ -22,9 +22,9 @@ interface ExportTripsResponse {
 
 /** Interface for provider actions */
 export interface TripActions {
-  addTrip: (data: TripDraft) => any;
+  addTrip: (data: TripDraft, userId?: string | null) => any;
   deleteTripById: (tripId: string) => any;
-  updateTripById: (data: TripDetails) => any;
+  updateTripById: (data: TripDetails, userId?: string | null) => any;
 
   addTripItemByTripId: (data: { tripId: string } & TripItemDraft) => any;
   deleteTripItemById: ({

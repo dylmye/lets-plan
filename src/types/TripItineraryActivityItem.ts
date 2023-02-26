@@ -7,10 +7,6 @@ export default interface TripItineraryActivityItem
   reference?: string;
   /** The city/country of the location */
   location: string;
-  /** The UTC time the trip ends at */
-  endsAt?: string;
-  /** The timezone to display the end time in */
-  endsAtTimezone: string;
   price?: number;
   priceCurrency?: keyof typeof CURRENCIES | null;
 }

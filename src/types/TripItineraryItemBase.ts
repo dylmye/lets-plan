@@ -18,4 +18,8 @@ export default interface TripItineraryItemBase {
   startsAt: string;
   /** The timezone to display the start time in */
   startsAtTimezone: string;
+  /** The UTC time the trip ends at */
+  endsAt?: string | null;
+  /** The timezone to display the end time in */
+  endsAtTimezone?: string;
 }

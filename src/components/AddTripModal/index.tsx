@@ -146,7 +146,7 @@ const AddTripModal = (props: ModalProps) => {
     addTrip({ ...values, image: coverImageUri });
     setActiveStep(0);
     props.onClose();
-    navigate(`/trip/${values.id}/edit`);
+    navigate(`/trip/${values.id}`);
     enqueueSnackbar("Trip created!");
   };
 
