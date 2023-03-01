@@ -30,6 +30,7 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
         return providerFirestore.actions
           .addTrip(data, userId)
           .catch((e: string) => {
+            console.error(e);
             enqueueSnackbar("Unable to create this trip", {
               variant: "error",
             });
@@ -54,6 +55,7 @@ export const useDeleteTrip: TripHooks["useDeleteTrip"] = () => {
       }
       if (activeProvider === "firestore") {
         providerFirestore.actions.deleteTripById(tripId).catch((e: string) => {
+          console.error(e);
           enqueueSnackbar("Unable to delete this trip", {
             variant: "error",
           });
@@ -80,6 +82,7 @@ export const useUpdateTrip: TripHooks["useUpdateTrip"] = () => {
       }
       if (activeProvider === "firestore") {
         providerFirestore.actions.updateTripById(data).catch((e: string) => {
+          console.error(e);
           enqueueSnackbar("Unable to update this trip", {
             variant: "error",
           });
@@ -111,6 +114,7 @@ export const useGetTrips: TripHooks["useGetTrips"] = () => {
           setState({ trips, loading: false });
         })
         .catch((e: string) => {
+          console.error(e);
           enqueueSnackbar("Unable to load your trips", {
             variant: "error",
           });
@@ -152,6 +156,7 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
             setState({ ...res, loading: false });
           })
           .catch((e: string) => {
+            console.error(e);
             enqueueSnackbar("Unable to load your trips", {
               variant: "error",
             });
@@ -184,44 +189,18 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
         }>
       )
         .then((res) => {
-          /** @TODO: re-add trip item loading:
-           *
-           * if (grabbedTripDoc.exists()) {
-            const tripData = grabbedTripDoc.data();
-
-            // fetch the trip items and merge them in with the trip data
-            const tripItemsCollection = collection(
-              tripsRef,
-              tripId,
-              "items"
-            ).withConverter<TripItem>(convertTripItemDocuments);
-
-            getDocs(tripItemsCollection)
-              .then((grabbedTripItemDocs) => {
-                if (!grabbedTripItemDocs.empty) {
-                  const combinedTripData = {
-                    ...tripData,
-                    items: grabbedTripItemDocs.docs.map((x) => x.data()),
-                  } as Trip;
-                  setState({
-                    data: combinedTripData,
-                    loading: false,
-                  });
-                } else {
-                  setState({
-                    data: tripData,
-                    loading: false,
-                  });
-                }
-              })
-              .catch((e) =>
-                console.error("Unable to fetch trip list items:", e)
-              );
-          }
-           */
-          setState({ trip: res as Trip, loading: false });
+          providerFirestore.extras.getTripItems(tripId).then((tripItems) => {
+            setState({
+              trip: {
+                ...(res as Trip),
+                items: tripItems,
+              },
+              loading: false,
+            });
+          });
         })
         .catch((e: string) => {
+          console.error(e);
           enqueueSnackbar("Unable to load this trip", {
             variant: "error",
           });
@@ -248,6 +227,7 @@ export const useAddTripItem: TripHooks["useAddTripItem"] = () => {
         providerFirestore.actions
           .addTripItemByTripId(data)
           .catch((e: string) => {
+            console.error(e);
             enqueueSnackbar("Unable to add this itinerary to a trip", {
               variant: "error",
             });
@@ -277,6 +257,7 @@ export const useDeleteTripItem: TripHooks["useDeleteTripItem"] = () => {
         providerFirestore.actions
           .deleteTripItemById({ tripId, itemId })
           .catch((e: string) => {
+            console.error(e);
             enqueueSnackbar("Unable to delete this trip itinerary", {
               variant: "error",
             });
@@ -306,6 +287,7 @@ export const useUpdateTripItem: TripHooks["useUpdateTripItem"] = () => {
         providerFirestore.actions
           .updateTripItemById({ tripId, data })
           .catch((e: string) => {
+            console.error(e);
             enqueueSnackbar("Unable to update this trip itinerary", {
               variant: "error",
             });
@@ -345,6 +327,7 @@ export const useExportTrips: TripHooks["useExportTrips"] = () => {
           setState({ data: res, loading: false });
         })
         .catch((e: string) => {
+          console.error(e);
           enqueueSnackbar("Unable to export trips", {
             variant: "error",
           });

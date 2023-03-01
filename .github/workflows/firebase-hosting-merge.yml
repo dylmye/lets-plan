@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Calculate Short SHA for REACT_APP_RELEASE_VERSION
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.2
         with:

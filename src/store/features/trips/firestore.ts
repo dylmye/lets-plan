@@ -2,6 +2,7 @@ import {
   FieldPath,
   Timestamp,
   addDoc,
+  collection,
   deleteDoc,
   doc,
   getDoc,
@@ -13,12 +14,14 @@ import {
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
+import TripItem from "../../../types/Tripitem";
 import Trip from "../../../types/Trip";
 import TripSnapshot from "../../../types/firebase/TripSnapshot";
 import TripItemSnapshot from "../../../types/firebase/TripItemSnapshot";
 import {
   convertDateStringToTimestamp,
   convertTripDocument,
+  convertTripItemDocuments,
 } from "../../../helpers/converters";
 import { getTripItemsCollection, tripsRef } from "../../../firebase";
 import { TripActions, TripSelectors } from "./interface";
@@ -103,8 +106,9 @@ const updateTripItemById: TripActions["updateTripItemById"] = async ({
 }) => {
   const ref = getTripItemsCollection(tripId);
   try {
+    const { id, ...filteredData } = data;
     await updateDoc(doc(ref, data.id), {
-      ...data,
+      ...filteredData,
     });
   } catch (e) {
     throw new Error(`[store/firestore] error updating a trip item: ${e}`);
@@ -218,6 +222,30 @@ const exportTrips: TripSelectors["exportTrips"] = async (
   }
 };
 
+/** Additional */
+
+/**
+ * Grab items sub-collection for a trip document
+ * @param tripId The Trip to grab items sub-collection for
+ * @returns The sub-collection items
+ */
+const getTripItems = async (tripId: string): Promise<TripItem[]> => {
+  const tripItemsCollection = collection(
+    tripsRef,
+    tripId,
+    "items"
+  ).withConverter<TripItem>(convertTripItemDocuments);
+
+  try {
+    const itemDocs = await getDocs(tripItemsCollection);
+    return itemDocs.empty ? [] : itemDocs.docs.map((x) => x.data());
+  } catch (e) {
+    throw new Error(
+      `[store/firestore] error getting trip items for trip id ${tripId}: ${e}`
+    );
+  }
+};
+
 export const actions: TripActions = {
   addTrip,
   deleteTripById,
@@ -232,4 +260,8 @@ export const selectors: TripSelectors = {
   getTripsByDateSplit,
   getTripById,
   exportTrips,
+};
+
+export const extras = {
+  getTripItems,
 };

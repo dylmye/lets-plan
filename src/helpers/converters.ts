@@ -78,6 +78,7 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
     options
   ): TripItem {
     const data = tripItemSnapshot.data(options);
+    const id = tripItemSnapshot.id;
     Object.keys(data)
       .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
       .forEach((k) => {
@@ -87,6 +88,7 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
 
     return {
       ...data,
+      id,
       startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
     };
   },
