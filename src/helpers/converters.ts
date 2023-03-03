@@ -8,6 +8,7 @@ import TripItem from "../types/Tripitem";
 import Trip from "../types/Trip";
 import TripSnapshot from "../types/firebase/TripSnapshot";
 import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
+import { formatFirebaseDateTime } from "./dates";
 
 export const convertDateStringToTimestamp = (date: string): Timestamp =>
   new Timestamp(dayjs(date).unix(), 0);
@@ -59,9 +60,11 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
     Object.keys(tripItem)
       .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
       .forEach((k) => {
+        // @ts-ignore
+        console.log(tripItem[k]);
         // @ts-ignore typescript is stupid i promise this works
         tripItem[k] =
-          tripItem[k as keyof TripItem] &&
+          !!tripItem[k as keyof TripItem] &&
           new Timestamp(
             dayjs(tripItem[k as keyof TripItem] as string).unix(),
             0
@@ -82,14 +85,17 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
     Object.keys(data)
       .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
       .forEach((k) => {
-        data[k] =
-          data[k] && dayjs.unix((data[k] as Timestamp).seconds).format();
+        // value is either unset, an ISO date string, or a Firestore Timestamp object
+        if (!data[k]) {
+          return;
+        }
+        data[k] = formatFirebaseDateTime(data[k]);
       });
 
     return {
       ...data,
       id,
-      startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
+      startsAt: formatFirebaseDateTime(data.startsAt),
     };
   },
 };

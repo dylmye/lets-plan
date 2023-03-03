@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -89,6 +90,13 @@ export const formatDateTime = (
   return dayjs(date)
     .locale(userLanguage)
     .format(format === "short" ? "l LT" : "LLL");
+};
+
+export const formatFirebaseDateTime = (date: string | Timestamp): string => {
+  if (typeof date === "string") {
+    return dayjs(date).format();
+  }
+  return dayjs.unix(date.seconds).format();
 };
 
 export const tripIsInState = (

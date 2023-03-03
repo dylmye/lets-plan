@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Formik } from "formik";
+import dayjs from "dayjs";
 import { SxProps, useTheme } from "@mui/system";
 import {
   Box,
@@ -61,6 +62,13 @@ const TripItineraryItem = ({
     TripItemType["Other Activity"],
     TripItemType["Other Mode of Transport"],
   ].includes(item.type as TripItemType);
+  const endsAtSeparateDate = useMemo<string>(
+    () =>
+      item.endsAt && !dayjs(item.startsAt).isSame(dayjs(item.endsAt), "day")
+        ? dayjs(item.endsAt).format("D MMM ")
+        : "",
+    [item.startsAt, item.endsAt]
+  );
 
   const rootContainerStyle: SxProps = {
     flexDirection: { xs: "column", sm: "row" },
@@ -155,7 +163,7 @@ const TripItineraryItem = ({
                         true,
                         false,
                         // item.startsAtTimezone
-                        // fix temp issues where SAT is hard set
+                        // @TODO: fix temp issues where SAT is hard set
                         undefined
                       )}
                     </time>
@@ -163,6 +171,7 @@ const TripItineraryItem = ({
                       <>
                         {` - `}
                         <time dateTime={item.endsAt}>
+                          {endsAtSeparateDate}
                           {formatTime(
                             item.endsAt,
                             true,

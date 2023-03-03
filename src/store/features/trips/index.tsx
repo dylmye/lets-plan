@@ -1,18 +1,28 @@
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { useCallback, useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
+import { collection, doc } from "firebase/firestore";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { useGetUserId } from "../auth";
 import useGetActiveProvider from "../../helpers/hooks";
+import TripItem from "../../../types/Tripitem";
 import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
-import { convertJsonStringToBase64Download } from "../../../helpers/converters";
+import {
+  convertJsonStringToBase64Download,
+  convertTripDocument,
+  convertTripItemDocuments,
+} from "../../../helpers/converters";
+import { tripsRef } from "../../../firebase";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import * as providerRedux from "./redux";
 import { TripHooks } from "./interface";
 import * as providerFirestore from "./firestore";
-
 export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();
@@ -173,6 +183,16 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
   const trip = useAppSelector((state) =>
     providerRedux.selectors.getTripById(state, tripId)
   );
+  const docRef = doc(tripsRef, tripId).withConverter<Trip>(convertTripDocument);
+  const tripItemsRef = collection(
+    tripsRef,
+    tripId,
+    "items"
+  ).withConverter<TripItem>(convertTripItemDocuments);
+  const [firestoreTripValue, firestoreTripLoading, firestoreTripError] =
+    useDocumentData(docRef);
+  const [firestoreItemValues, firestoreItemsLoading, firestoreItemsError] =
+    useCollectionData(tripItemsRef);
   const [state, setState] = useState<ReturnType<TripHooks["useGetTripById"]>>({
     loading: true,
   });
@@ -183,30 +203,38 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
       return;
     }
     if (activeProvider === "firestore") {
-      (
-        providerFirestore.selectors.getTripById(tripId) as Promise<{
-          trip?: Trip;
-        }>
-      )
-        .then((res) => {
-          providerFirestore.extras.getTripItems(tripId).then((tripItems) => {
-            setState({
-              trip: {
-                ...(res as Trip),
-                items: tripItems,
-              },
-              loading: false,
-            });
-          });
-        })
-        .catch((e: string) => {
-          console.error(e);
-          enqueueSnackbar("Unable to load this trip", {
-            variant: "error",
-          });
-        });
+      if (firestoreTripError) {
+        console.error(
+          `[store/firestore] error getting trip with id ${tripId}: ${firestoreTripError}`
+        );
+      }
+      if (firestoreItemsError) {
+        console.error(
+          `[store/firestore] error getting trip items for trip id ${tripId}: ${firestoreItemsError}`
+        );
+      }
+      setState({
+        trip: !!firestoreTripValue
+          ? {
+              ...firestoreTripValue,
+              items: firestoreItemValues ?? [],
+            }
+          : undefined,
+        loading: firestoreTripLoading || firestoreItemsLoading,
+      });
     }
-  }, [activeProvider, tripId, trip, enqueueSnackbar]);
+  }, [
+    activeProvider,
+    tripId,
+    trip,
+    enqueueSnackbar,
+    firestoreTripLoading,
+    firestoreTripValue,
+    firestoreTripError,
+    firestoreItemsLoading,
+    firestoreItemValues,
+    firestoreItemsError,
+  ]);
 
   return state;
 };

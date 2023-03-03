@@ -5,7 +5,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -106,9 +105,13 @@ const updateTripItemById: TripActions["updateTripItemById"] = async ({
 }) => {
   const ref = getTripItemsCollection(tripId);
   try {
-    const { id, ...filteredData } = data;
+    const { id, category, ...filteredTripItem } = data;
     await updateDoc(doc(ref, data.id), {
-      ...filteredData,
+      ...filteredTripItem,
+      startsAt: convertDateStringToTimestamp(filteredTripItem.startsAt),
+      endsAt:
+        filteredTripItem.endsAt &&
+        convertDateStringToTimestamp(filteredTripItem.endsAt),
     });
   } catch (e) {
     throw new Error(`[store/firestore] error updating a trip item: ${e}`);
@@ -192,14 +195,8 @@ const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async (
 };
 
 const getTripById: TripSelectors["getTripById"] = async (id: string) => {
-  const docRef = doc(tripsRef, id).withConverter<Trip>(convertTripDocument);
-
-  try {
-    const res = await getDoc(docRef);
-    return res.data();
-  } catch (e) {
-    throw new Error(`[store/firestore] error getting trip with id ${id}: ${e}`);
-  }
+  // moved to hook in order to listen to snapshot
+  throw new Error("[store/firestore] method not implemented: getTripById");
 };
 
 const exportTrips: TripSelectors["exportTrips"] = async (
