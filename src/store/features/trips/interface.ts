@@ -58,7 +58,7 @@ export interface TripImports
 /** Interface for hook exports */
 export interface TripHooks {
   /** Create a new trip */
-  useAddTrip: () => (data: TripDraft) => void;
+  useAddTrip: () => (data: TripDraft) => Promise<{ id: string }>;
   /** Delete a trip by its ID */
   useDeleteTrip: () => (id: string) => void;
   /** Update trip details by its ID */

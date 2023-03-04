@@ -2,9 +2,16 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
-import { collection, doc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  FieldPath,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { useGetUserId } from "../auth";
@@ -23,6 +30,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import * as providerRedux from "./redux";
 import { TripHooks } from "./interface";
 import * as providerFirestore from "./firestore";
+
 export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();
@@ -30,22 +38,34 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(
-    (data) => {
+    async (data) => {
       if (activeProvider === "redux") {
-        return dispatch(
+        dispatch(
           providerRedux.actions.addTrip(data) as PayloadAction<TripDraft>
         );
+        return {
+          id: data.id,
+        };
       }
       if (activeProvider === "firestore") {
-        return providerFirestore.actions
-          .addTrip(data, userId)
-          .catch((e: string) => {
-            console.error(e);
-            enqueueSnackbar("Unable to create this trip", {
-              variant: "error",
-            });
+        try {
+          const newTripId: string = await providerFirestore.actions.addTrip(
+            data,
+            userId
+          );
+          return {
+            id: newTripId,
+          };
+        } catch (e) {
+          console.error(e);
+          enqueueSnackbar("Unable to create this trip", {
+            variant: "error",
           });
+        }
       }
+      throw new Error(
+        `[store/firestore] provider ${activeProvider} not supported for method useAddTrip`
+      );
     },
     [activeProvider, dispatch, userId, enqueueSnackbar]
   );
@@ -143,6 +163,30 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
     const getTripsByDateSplit = useAppSelector(
       providerRedux.selectors.getTripsByDateSplit
     ) as ReturnType<TripHooks["useGetTripsByDateSplit"]>;
+
+    const now = useMemo(() => Timestamp.now(), []);
+    const userIdMatches = where(new FieldPath("userId"), "==", userId);
+    const tripIsInPast = where(new FieldPath("endsAt"), "<", now);
+    const tripIsCurrent = where(new FieldPath("endsAt"), ">=", now);
+    const currentTripsQuery = query(
+      tripsRef,
+      userIdMatches,
+      tripIsCurrent
+    ).withConverter<Trip>(convertTripDocument);
+    const pastTripsQuery = query(
+      tripsRef,
+      userIdMatches,
+      tripIsInPast
+    ).withConverter<Trip>(convertTripDocument);
+
+    const [
+      firestoreCurrentValues,
+      firestoreCurrentLoading,
+      firestoreCurrentError,
+    ] = useCollectionData(currentTripsQuery);
+    const [firestorePastValues, firestorePastLoading, firestorePastError] =
+      useCollectionData(pastTripsQuery);
+
     const [state, setState] = useState<
       ReturnType<TripHooks["useGetTripsByDateSplit"]>
     >({
@@ -157,22 +201,31 @@ export const useGetTripsByDateSplit: TripHooks["useGetTripsByDateSplit"] =
         return;
       }
       if (activeProvider === "firestore") {
-        (
-          providerFirestore.selectors.getTripsByDateSplit(userId) as Promise<
-            ReturnType<TripHooks["useGetTripsByDateSplit"]>
-          >
-        )
-          .then((res) => {
-            setState({ ...res, loading: false });
-          })
-          .catch((e: string) => {
-            console.error(e);
-            enqueueSnackbar("Unable to load your trips", {
-              variant: "error",
-            });
-          });
+        if (!!firestoreCurrentError || !!firestorePastError) {
+          console.error(
+            `[store/firebase] error getting trips: current: ${
+              firestoreCurrentError ?? " no issues"
+            }. past: ${firestorePastError ?? " no issues."}`
+          );
+        }
+        setState({
+          past: firestorePastValues ?? [],
+          futureCurrent: firestoreCurrentValues ?? [],
+          loading: firestoreCurrentLoading || firestorePastLoading,
+        });
       }
-    }, [activeProvider, getTripsByDateSplit, userId, enqueueSnackbar]);
+    }, [
+      activeProvider,
+      getTripsByDateSplit,
+      userId,
+      enqueueSnackbar,
+      firestoreCurrentError,
+      firestoreCurrentLoading,
+      firestoreCurrentValues,
+      firestorePastError,
+      firestorePastLoading,
+      firestorePastValues,
+    ]);
 
     return state;
   };
@@ -183,7 +236,7 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
   const trip = useAppSelector((state) =>
     providerRedux.selectors.getTripById(state, tripId)
   );
-  const docRef = doc(tripsRef, tripId).withConverter<Trip>(convertTripDocument);
+  const docRef = doc(tripsRef, tripId).withConverter(convertTripDocument);
   const tripItemsRef = collection(
     tripsRef,
     tripId,

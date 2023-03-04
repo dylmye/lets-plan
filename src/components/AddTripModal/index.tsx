@@ -143,10 +143,10 @@ const AddTripModal = (props: ModalProps) => {
 
       coverImageUri = await getDownloadURL(storageRef);
     }
-    addTrip({ ...values, image: coverImageUri });
+    const newTrip = await addTrip({ ...values, image: coverImageUri });
     setActiveStep(0);
     props.onClose();
-    navigate(`/trip/${values.id}`);
+    navigate(`/trip/${newTrip.id}`);
     enqueueSnackbar("Trip created!");
   };
 

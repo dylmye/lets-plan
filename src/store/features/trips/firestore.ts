@@ -1,6 +1,5 @@
 import {
   FieldPath,
-  Timestamp,
   addDoc,
   collection,
   deleteDoc,
@@ -47,11 +46,12 @@ const addTrip: TripActions["addTrip"] = async (trip, userId) => {
   ) as TripSnapshot;
 
   try {
-    await addDoc(tripsRef, {
+    const newTrip = await addDoc(tripsRef, {
       ...tripDoc,
       createdAtUtc: serverTimestamp(),
       updatedAtUtc: serverTimestamp(),
     });
+    return newTrip.id;
   } catch (e) {
     throw new Error(`[store/firestore] error creating trip: ${e}`);
   }
@@ -153,45 +153,10 @@ const getTrips: TripSelectors["getTrips"] = async (userId: string | null) => {
 const getTripsByDateSplit: TripSelectors["getTripsByDateSplit"] = async (
   userId: string | null
 ) => {
-  if (!userId) {
-    console.warn("Selector ignored: tried to get trips while unauthenticated");
-    return {
-      past: [],
-      futureCurrent: [],
-    };
-  }
-
-  const now = Timestamp.now();
-
-  const userIdMatches = where(new FieldPath("userId"), "==", userId);
-  const tripIsInPast = where(new FieldPath("endsAt"), "<", now);
-  const tripIsCurrent = where(new FieldPath("endsAt"), ">=", now);
-
-  const currentTripsQuery = query(
-    tripsRef,
-    userIdMatches,
-    tripIsCurrent
-  ).withConverter<Trip>(convertTripDocument);
-
-  const pastTripsQuery = query(
-    tripsRef,
-    userIdMatches,
-    tripIsInPast
-  ).withConverter<Trip>(convertTripDocument);
-
-  try {
-    const currentQueryResponse = await getDocs(currentTripsQuery);
-    const pastQueryResponse = await getDocs(pastTripsQuery);
-
-    return {
-      past: pastQueryResponse.docs.map((x) => x.data()),
-      futureCurrent: currentQueryResponse.docs.map((x) => x.data()),
-    };
-  } catch (e) {
-    throw new Error(
-      `[store/firestore] error getting trips by past/current: ${e}`
-    );
-  }
+  // moved to hook in order to listen to snapshot
+  throw new Error(
+    "[store/firestore] method not implemented: getTripsByDateSplit"
+  );
 };
 
 const getTripById: TripSelectors["getTripById"] = async (id: string) => {
