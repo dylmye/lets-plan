@@ -27,17 +27,17 @@ export const userLanguage: string =
 export const formatDate = (
   date: string | dayjs.Dayjs,
   format: "short" | "long" = "short",
-  isUtc = true
+  isUtc = true,
+  withDayName = false
 ) => {
+  const formatCode =
+    format === "short"
+      ? `${withDayName ? "ddd " : ""}l`
+      : `${withDayName ? "dddd " : ""}LL`;
   if (isUtc) {
-    return dayjs
-      .utc(date)
-      .locale(userLanguage)
-      .format(format === "short" ? "l" : "LL");
+    return dayjs.utc(date).locale(userLanguage).format(formatCode);
   }
-  return dayjs(date)
-    .locale(userLanguage)
-    .format(format === "short" ? "l" : "LL");
+  return dayjs(date).locale(userLanguage).format(formatCode);
 };
 
 export const formatTime = (

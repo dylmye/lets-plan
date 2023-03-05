@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Formik } from "formik";
 import dayjs from "dayjs";
 
@@ -17,6 +17,26 @@ const AddTripItemCardContents = ({
   onCancel,
 }: AddTripItemCardProps) => {
   const addTripItem = useAddTripItem();
+
+  const onSubmit = useCallback(
+    (formData) => {
+      if (!tripDetails?.id) {
+        console.error("Couldn't add trip item, no trip id specified");
+        return;
+      }
+
+      addTripItem({
+        ...formData,
+        tripId: tripDetails.id,
+        startsAt: dayjs(formData.startsAt).format(),
+        endsAt: formData.endsAt && dayjs(formData.endsAt).format(),
+      });
+
+      onCancel && onCancel();
+    },
+    [tripDetails?.id, addTripItem, onCancel]
+  );
+
   return (
     <Formik<TripItemDraft>
       initialValues={{
@@ -27,21 +47,7 @@ const AddTripItemCardContents = ({
         startsAtTimezone: "Europe/London",
         endsAt: null,
       }}
-      onSubmit={(values) => {
-        if (!tripDetails?.id) {
-          console.error("Couldn't add trip item, no trip id specified");
-          return;
-        }
-
-        addTripItem({
-          ...values,
-          tripId: tripDetails.id,
-          startsAt: dayjs(values.startsAt).format(),
-          endsAt: values.endsAt && dayjs(values.endsAt).format(),
-        });
-
-        onCancel && onCancel();
-      }}
+      onSubmit={onSubmit}
       // validationSchema={validationSchema} We can't use validation here because the type is a dictionary (to allow extra fields)
     >
       <AddEditTripItemForm

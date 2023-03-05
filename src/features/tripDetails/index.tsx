@@ -70,7 +70,7 @@ const TripDetails = () => {
   const renderTripItem = (item: TripItem): JSX.Element => (
     <TripItineraryItem
       item={item}
-      key={`trip-item-${item.startsAt}-${item.type}`}
+      key={`trip-item-${item.id}`}
       trip={trip as Trip}
       onDeleteTripItem={(itemId: string) => setDeleteItemId(itemId)}
       showEditMode={itemEditModeState[item.id] ?? false}
@@ -97,7 +97,7 @@ const TripDetails = () => {
             fontWeight: "bold",
             textAlign: "left",
           }}>
-          <time dateTime={day}>{formatDate(day, "long")}</time>
+          <time dateTime={day}>{formatDate(day, "long", false, true)}</time>
         </Typography>
         <Stack direction="row" spacing={1}>
           {isEditable && (
@@ -133,6 +133,7 @@ const TripDetails = () => {
               location: trip?.location,
               startsAt: trip?.startsAt as string,
               endsAt: trip?.endsAt as string,
+              public: trip?.public ?? false,
             }}
             showCancel
             onCancel={() => setActiveTripItemCardDay(null)}
@@ -265,6 +266,7 @@ const TripDetails = () => {
               title={trip.title}
               location={trip.location}
               endsAt={trip.endsAt}
+              public={trip.public}
             />
           </Box>
         ) : (

@@ -9,9 +9,11 @@ import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Check } from "@mui/icons-material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
-import TripDetails from "../../types/TripDetails";
-import ModalProps from "../../types/ModalProps";
-import { useUpdateTrip } from "../../store/features/trips";
+import BetterSwitchField from "../../fields/BetterSwitchField";
+import TripDetails from "../../../types/TripDetails";
+import ModalProps from "../../../types/ModalProps";
+import { useUpdateTrip } from "../../../store/features/trips";
+import { useIsLoggedIn } from "../../../store/features/auth";
 import styles from "./styles.module.css";
 
 export interface EditTripDetailsModalProps extends ModalProps {
@@ -39,7 +41,15 @@ const EditTripDetailsModal = ({
 }: EditTripDetailsModalProps) => {
   const updateTrip = useUpdateTrip();
   const { enqueueSnackbar } = useSnackbar();
-  const { title, location, startsAt, details, endsAt } = tripDetails;
+  const isLoggedIn = useIsLoggedIn();
+  const {
+    title,
+    location,
+    startsAt,
+    details,
+    endsAt,
+    public: isPublic,
+  } = tripDetails;
 
   const onFormSubmit = async (values: TripDetails) => {
     updateTrip({
@@ -63,6 +73,7 @@ const EditTripDetailsModal = ({
             startsAt,
             endsAt,
             details: details ?? "",
+            public: isPublic,
           }}
           onSubmit={onFormSubmit}>
           {({ values }) => (
@@ -104,6 +115,14 @@ const EditTripDetailsModal = ({
                 label="Details"
                 fullWidth
                 multiline
+              />
+              <Field
+                component={BetterSwitchField}
+                name="public"
+                label={`Share this trip with others${
+                  !isLoggedIn ? " (requires an account)" : ""
+                }`}
+                disabled={!isLoggedIn}
               />
               <CardActions sx={{ justifyContent: "right" }}>
                 <Button

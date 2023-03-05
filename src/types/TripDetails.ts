@@ -1,6 +1,9 @@
 import Trip from "./Trip";
 
 export default interface TripDetails
-  extends Pick<Trip, "title" | "location" | "startsAt" | "endsAt" | "details"> {
+  extends Pick<
+    Trip,
+    "title" | "location" | "startsAt" | "endsAt" | "details" | "public"
+  > {
   id?: string;
 }

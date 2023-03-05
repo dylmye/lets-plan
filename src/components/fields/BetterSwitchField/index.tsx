@@ -13,6 +13,7 @@ const BetterSwitchField = ({
   field,
   form: { setFieldValue, isSubmitting },
   label,
+  disabled = false,
   ...props
 }: BetterSwitchFieldProps) => {
   if (label) {
@@ -26,14 +27,14 @@ const BetterSwitchField = ({
           />
         }
         label={label}
-        disabled={isSubmitting}
+        disabled={disabled || isSubmitting}
       />
     );
   }
 
   return (
     <Switch
-      disabled={isSubmitting}
+      disabled={disabled || isSubmitting}
       {...props}
       checked={!!field.value}
       onChange={(_, checked) => setFieldValue(field.name, checked)}

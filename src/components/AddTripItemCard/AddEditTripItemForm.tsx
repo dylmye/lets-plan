@@ -49,7 +49,7 @@ const AddEditTripItemForm = ({
   formMode = "add",
   tripDetails,
 }: AddEditTripItemFormProps) => {
-  const { isSubmitting, setFieldValue, values, errors, submitForm } =
+  const { isSubmitting, setFieldValue, values, errors } =
     useFormikContext<TripItemDraft>();
   const currentTheme = useAppSelector(selectThemeMode);
   const currentFieldSettings = customFieldSettings(values.type);
@@ -260,6 +260,17 @@ const AddEditTripItemForm = ({
                 maxRows={7}
               />
             </Grid>
+            {currentFieldSettings.hasReference && (
+              <Grid item xs={12} md={6}>
+                <Field
+                  component={TextField}
+                  name="reference"
+                  label="Booking / Confirmation Reference"
+                  fullWidth
+                  helperText="Optional"
+                />
+              </Grid>
+            )}
           </>
         )}
         {values.type &&
@@ -283,13 +294,6 @@ const AddEditTripItemForm = ({
           type="submit"
           variant="contained"
           disabled={isSubmitting}
-          onClick={async () => {
-            try {
-              await submitForm();
-            } catch (e) {
-              console.error(`unable to add/edit trip item:`, e);
-            }
-          }}
           color="primary">
           {formMode === "add" ? "Add to trip" : "Update"}
         </Button>

@@ -66,6 +66,7 @@ const tripSlice = createSlice({
         updatedAtUtc: dayjs().format(),
         image: payload.image,
         items: [],
+        userId: undefined,
         public: false,
       };
 
@@ -75,7 +76,15 @@ const tripSlice = createSlice({
     updateTripById: (state, { payload }: PayloadAction<TripDetails>) => {
       if (!payload?.id) return;
 
-      tripsAdapter.updateOne(state, { id: payload.id, changes: payload });
+      const changes: Partial<Trip> = {
+        ...payload,
+        // enforce local properties: these can only
+        // be set otherwise on cloud storage trips
+        userId: undefined,
+        public: false,
+      };
+
+      tripsAdapter.updateOne(state, { id: payload.id, changes });
     },
   },
   extraReducers: (builder) => {
@@ -96,8 +105,9 @@ const tripSlice = createSlice({
       let newTripItem: TripItem = {
         ...filteredPayload,
         id: uuidv4(),
-        title:
-          filteredPayload?.title || getTripItemTypeLabel(filteredPayload.type),
+        title: filteredPayload?.title?.length
+          ? filteredPayload.title
+          : getTripItemTypeLabel(filteredPayload.type),
       };
 
       const items: TripItem[] = [...(trip?.items || []), newTripItem];

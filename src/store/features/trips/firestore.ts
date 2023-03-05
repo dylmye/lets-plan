@@ -16,6 +16,7 @@ import TripItem from "../../../types/Tripitem";
 import Trip from "../../../types/Trip";
 import TripSnapshot from "../../../types/firebase/TripSnapshot";
 import TripItemSnapshot from "../../../types/firebase/TripItemSnapshot";
+import { getTripItemTypeLabel } from "../../../helpers/tripItems";
 import {
   convertDateStringToTimestamp,
   convertTripDocument,
@@ -93,6 +94,9 @@ const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
       endsAt:
         filteredTripItem.endsAt &&
         convertDateStringToTimestamp(filteredTripItem.endsAt as string),
+      title: filteredTripItem.title?.length
+        ? filteredTripItem.title
+        : getTripItemTypeLabel(filteredTripItem.type),
     } as TripItemSnapshot);
   } catch (e) {
     throw new Error(`[store/firestore] error adding a trip item: ${e}`);

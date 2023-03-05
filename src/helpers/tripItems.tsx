@@ -28,7 +28,11 @@ import {
 } from "@mui/icons-material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
-import { TravelTypes, TripItemType } from "../types/TripItemType";
+import {
+  ActivityTypes,
+  TravelTypes,
+  TripItemType,
+} from "../types/TripItemType";
 import TripItem from "../types/Tripitem";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import ExtraText from "../types/ExtraText";
@@ -233,9 +237,7 @@ export const tripItemExtraFields: Record<
   [TripItemType.Shopping]: {},
   [TripItemType.Sports]: {},
   [TripItemType.Reservation]: {},
-  [TripItemType.Note]: {
-    details: "textarea",
-  },
+  [TripItemType.Note]: {},
   [TripItemType["Other Activity"]]: {},
 };
 
@@ -244,12 +246,13 @@ export const customFieldSettings = (
   type: TripItemType
 ): CustomFieldSettings => {
   // for some activities: no ends at
-  const hasDestination = ![TripItemType["Meet-up"], TripItemType.Note].includes(
+  const hasDestination = ![TripItemType["Meet-up"], ...ActivityTypes].includes(
     type
   );
   let originLocationLabel: string;
   let destinationLocationLabel: string;
   let autoCompleteTypes: string[] = [];
+  let hasReference = true;
 
   switch (type) {
     case TripItemType.Plane: {
@@ -269,6 +272,27 @@ export const customFieldSettings = (
       autoCompleteTypes = ["train_station"];
       break;
     }
+    case TripItemType.Subway: {
+      originLocationLabel = "Origin Station";
+      destinationLocationLabel = "Destination Station";
+      hasReference = false;
+      autoCompleteTypes = ["subway_station"];
+      break;
+    }
+    case TripItemType["By Foot"]:
+    case TripItemType.Cycle:
+      originLocationLabel = "Starting Location";
+      destinationLocationLabel = "Ending Location";
+      hasReference = false;
+      break;
+    case TripItemType.Shopping:
+    case TripItemType.Note:
+    case TripItemType["Meet-up"]:
+      originLocationLabel = "Location";
+      // not visible for activities
+      destinationLocationLabel = "";
+      hasReference = false;
+      break;
     default:
       originLocationLabel = TravelTypes.includes(type)
         ? "Starting Location"
@@ -279,6 +303,7 @@ export const customFieldSettings = (
   return {
     hasOrigin: type !== TripItemType.Note,
     hasDestination,
+    hasReference,
     originLocationLabel,
     destinationLocationLabel,
     autoCompleteTypes,

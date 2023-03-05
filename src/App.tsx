@@ -15,7 +15,7 @@ import UpdateAlert from "./components/UpdateAlert";
 import StyledLink from "./components/StyledLink";
 import OfflineAlert from "./components/OfflineAlert";
 import Navbar from "./components/Navbar";
-import EditTripDetailsModal from "./components/EditTripDetailsModal";
+import EditTripDetailsModal from "./components/dialogs/EditTripDetailsModal";
 import DeleteTripDialog from "./components/dialogs/DeleteTripDialog";
 import AuthenticationModal from "./components/AuthenticationModal";
 

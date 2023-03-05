@@ -60,8 +60,6 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
     Object.keys(tripItem)
       .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
       .forEach((k) => {
-        // @ts-ignore
-        console.log(tripItem[k]);
         // @ts-ignore typescript is stupid i promise this works
         tripItem[k] =
           !!tripItem[k as keyof TripItem] &&
