@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Modal, SxProps, Theme } from "@mui/material";
+
 import SignUpContent from "./SignUpContent";
 import SignInContent from "./SignInContent";
 

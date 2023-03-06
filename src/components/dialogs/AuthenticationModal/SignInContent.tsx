@@ -2,7 +2,6 @@ import { SchemaOf, object as yObject, string as yString } from "yup";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
-  useSignInWithTwitter,
 } from "react-firebase-hooks/auth";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useSnackbar } from "notistack";
@@ -11,9 +10,9 @@ import { Field, Form, Formik } from "formik";
 import { AuthError } from "firebase/auth";
 import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 
-import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
-import { renderFriendlyAuthMessages } from "../../helpers/auth";
-import { auth } from "../../firebase";
+import { GoogleSignInButton } from "../../SignInButtons";
+import { renderFriendlyAuthMessages } from "../../../helpers/auth";
+import { auth } from "../../../firebase";
 import styles from "./styles.module.css";
 import { AuthModalContentProps } from ".";
 
@@ -30,25 +29,20 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
   const [signInWithEmailAndPassword, user, emailSignInLoading, emailErrors] =
     useSignInWithEmailAndPassword(auth);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [signInWithTwitter, tUser, tLoading, tError] =
-    useSignInWithTwitter(auth);
+
+  const formLoading = gLoading || emailSignInLoading;
 
   const combinedError = useMemo<AuthError[]>(() => {
     let errs: AuthError[] = [];
     if (gError) {
       errs.push(gError);
     }
-    if (tError) {
-      errs.push(tError);
-    }
     if (!!errs.length) {
       console.error(errs);
     }
     return errs;
-  }, [gError, tError]);
+  }, [gError]);
 
   const validationSchema: SchemaOf<SignInEmailForm> = yObject().shape({
     email: yString().email().required("Email required to sign up"),
@@ -61,11 +55,11 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
   );
 
   useEffect(() => {
-    if (user || gUser || tUser) {
+    if (user || gUser) {
       onClose(true);
       enqueueSnackbar("You're in!");
     }
-  }, [user, gUser, tUser, onClose, enqueueSnackbar]);
+  }, [user, gUser, onClose, enqueueSnackbar]);
 
   return (
     <>
@@ -78,8 +72,10 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
             {combinedError.map(renderFriendlyAuthMessages)}
           </Alert>
         )}
-        <GoogleSignInButton onClick={() => signInWithGoogle([])} />
-        <TwitterSignInButton onClick={() => signInWithTwitter([])} />
+        <GoogleSignInButton
+          onClick={() => signInWithGoogle([])}
+          disabled={formLoading}
+        />
       </Stack>
       <Divider>
         <Typography variant="body2">Or</Typography>
@@ -99,22 +95,21 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
               {renderFriendlyAuthMessages(emailErrors)}
             </Alert>
           )}
-          <Field
-            component={TextField}
-            name="email"
-            type="email"
-            label="Your email address"
-          />
-          <Field
-            component={TextField}
-            name="password"
-            type="password"
-            label="Your password"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={emailSignInLoading}>
+          <fieldset disabled={formLoading}>
+            <Field
+              component={TextField}
+              name="email"
+              type="email"
+              label="Your email address"
+            />
+            <Field
+              component={TextField}
+              name="password"
+              type="password"
+              label="Your password"
+            />
+          </fieldset>
+          <Button type="submit" variant="contained" disabled={formLoading}>
             Login
           </Button>
         </Form>

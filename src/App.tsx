@@ -17,7 +17,7 @@ import OfflineAlert from "./components/OfflineAlert";
 import Navbar from "./components/Navbar";
 import EditTripDetailsModal from "./components/dialogs/EditTripDetailsModal";
 import DeleteTripDialog from "./components/dialogs/DeleteTripDialog";
-import AuthenticationModal from "./components/AuthenticationModal";
+import AuthenticationModal from "./components/dialogs/AuthenticationModal";
 
 // lazy imports for code splitting
 // @see https://reactjs.org/docs/code-splitting.html#route-based-code-splitting

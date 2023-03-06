@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 
 import Trip from "../../types/Trip";
-import { AuthenticationModalProps } from "../../components/AuthenticationModal";
+import { AuthenticationModalProps } from "../../components/dialogs/AuthenticationModal";
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 

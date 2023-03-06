@@ -1,21 +1,18 @@
+import YupPassword from "yup-password";
 import {
   SchemaOf,
   bool as yBool,
   object as yObject,
   string as yString,
+  addMethod,
 } from "yup";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithGoogle,
-  useSignInWithTwitter,
 } from "react-firebase-hooks/auth";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSnackbar } from "notistack";
-import {
-  CheckboxWithLabel,
-  TextField as FormikTextField,
-  TextFieldProps,
-} from "formik-mui";
+import { CheckboxWithLabel, TextField } from "formik-mui";
 import { Field, FieldProps, Form, Formik } from "formik";
 import { AuthError } from "firebase/auth";
 import {
@@ -28,13 +25,16 @@ import {
 } from "@mui/material";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
-import StyledLink from "../StyledLink";
-import { GoogleSignInButton, TwitterSignInButton } from "../SignInButtons";
-import FormikVerifyField from "../fields/VerifyField";
-import { renderFriendlyAuthMessages } from "../../helpers/auth";
-import { auth } from "../../firebase";
+import StyledLink from "../../StyledLink";
+import { GoogleSignInButton } from "../../SignInButtons";
+import FormikVerifyField from "../../fields/VerifyField";
+import { renderFriendlyAuthMessages } from "../../../helpers/auth";
+import { auth } from "../../../firebase";
 import styles from "./styles.module.css";
 import { AuthModalContentProps } from ".";
+
+// @ts-ignore it only applies to string
+YupPassword({ string: yString, addMethod });
 
 type SignupEmailForm = {
   /** user id */
@@ -56,11 +56,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
     emailSignupLoading,
     emailErrors,
   ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [signInWithTwitter, tUser, tLoading, tError] =
-    useSignInWithTwitter(auth);
   const captchaRef = useRef<HCaptcha>(null);
 
   const combinedError = useMemo<AuthError[]>(() => {
@@ -68,25 +64,19 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
     if (gError) {
       errs.push(gError);
     }
-    if (tError) {
-      errs.push(tError);
-    }
     return errs;
-  }, [gError, tError]);
+  }, [gError]);
+
+  const formLoading = emailSignupLoading && gLoading;
 
   const validationSchema: SchemaOf<SignupEmailForm> = yObject().shape({
     email: yString().email().required("Email required to sign up"),
-    password: yString().required("Password required to sign up"),
+    password: yString().password().required("Password required to sign up"),
     checkedPrivacy: yBool()
       .oneOf([true], "You must accept the privacy policy to make an account")
       .required(),
     verify: yString(),
   });
-
-  const TextField = useCallback(
-    (props: TextFieldProps) => <FormikTextField {...props} fullWidth />,
-    []
-  );
 
   const VerifyField = useCallback(
     (props: FieldProps) => <FormikVerifyField {...props} ref={captchaRef} />,
@@ -95,12 +85,12 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
 
   useEffect(() => {
     captchaRef.current?.execute({ async: false });
-    if (user || gUser || tUser) {
+    if (user || gUser) {
       onClose(true);
       // Only show the email verify message when using email/password login
       enqueueSnackbar(`You're in!${user ? " Check your email inbox." : ""}`);
     }
-  }, [user, gUser, tUser, onClose, enqueueSnackbar]);
+  }, [user, gUser, onClose, enqueueSnackbar]);
 
   return (
     <>
@@ -122,7 +112,6 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
           </Alert>
         )}
         <GoogleSignInButton onClick={() => signInWithGoogle([])} />
-        <TwitterSignInButton onClick={() => signInWithTwitter([])} />
       </Stack>
       <Divider>
         <Typography variant="body2">Or</Typography>
@@ -155,12 +144,14 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
             name="email"
             type="email"
             label="Your email address"
+            fullWidth
           />
           <Field
             component={TextField}
             name="password"
             type="password"
             label="Your password"
+            fullWidth
           />
           <FormControlLabel
             label={
@@ -181,10 +172,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
               />
             }
           />
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={emailSignupLoading}>
+          <Button type="submit" variant="contained" disabled={formLoading}>
             Register
           </Button>
           <Field component={VerifyField} name="verify" />
