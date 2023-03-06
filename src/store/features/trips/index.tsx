@@ -255,6 +255,7 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
       // firestore trip IDs are a completely different format to local trips
       // so we can safely assume if no trip is returned and a firebase object
       // is that the user is a) not logged in and b) trying to view a public trip.
+      console.log(!trip);
       setState({
         trip: !!firestoreTripValue
           ? {
@@ -262,8 +263,8 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
               items: firestoreItemValues ?? [],
             }
           : (trip as Trip),
-        // either there's a trip (loading is done) or firestore is done loading
-        loading: !!trip || firestoreTripLoading || firestoreItemsLoading,
+        // @TODO: set this to true if firebase loading ONLY if there's no trip
+        loading: false,
       });
       return;
     }
