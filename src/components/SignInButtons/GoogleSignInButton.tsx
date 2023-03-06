@@ -17,10 +17,14 @@ const buttonStyle: SxProps<Theme> = {
 };
 
 /** Styled button: Google */
-const GoogleSignInButton = ({ onClick, ...props }: SignInButtonProps) => (
+const GoogleSignInButton = ({
+  alreadyHasAccount,
+  onClick,
+  ...props
+}: SignInButtonProps) => (
   <Button variant="contained" sx={buttonStyle} onClick={onClick} {...props}>
     <Google fontSize="inherit" className={styles.signInButtonIcon} />
-    <strong>Sign in with Google</strong>
+    <strong>Sign {alreadyHasAccount ? "in" : "up"} with Google</strong>
   </Button>
 );
 

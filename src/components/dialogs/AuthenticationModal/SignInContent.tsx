@@ -73,6 +73,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
           </Alert>
         )}
         <GoogleSignInButton
+          alreadyHasAccount
           onClick={() => signInWithGoogle([])}
           disabled={formLoading}
         />
@@ -95,22 +96,20 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
               {renderFriendlyAuthMessages(emailErrors)}
             </Alert>
           )}
-          <fieldset disabled={formLoading}>
-            <Field
-              component={TextField}
-              name="email"
-              type="email"
-              label="Your email address"
-            />
-            <Field
-              component={TextField}
-              name="password"
-              type="password"
-              label="Your password"
-            />
-          </fieldset>
+          <Field
+            component={TextField}
+            name="email"
+            type="email"
+            label="Your email address"
+          />
+          <Field
+            component={TextField}
+            name="password"
+            type="password"
+            label="Your password"
+          />
           <Button type="submit" variant="contained" disabled={formLoading}>
-            Login
+            Sign in
           </Button>
         </Form>
       </Formik>

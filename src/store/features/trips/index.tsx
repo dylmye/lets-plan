@@ -252,7 +252,19 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
 
   useEffect(() => {
     if (activeProvider === "redux") {
-      setState({ trip: trip as Trip, loading: false });
+      // firestore trip IDs are a completely different format to local trips
+      // so we can safely assume if no trip is returned and a firebase object
+      // is that the user is a) not logged in and b) trying to view a public trip.
+      setState({
+        trip: !!firestoreTripValue
+          ? {
+              ...firestoreTripValue,
+              items: firestoreItemValues ?? [],
+            }
+          : (trip as Trip),
+        // either there's a trip (loading is done) or firestore is done loading
+        loading: !!trip || firestoreTripLoading || firestoreItemsLoading,
+      });
       return;
     }
     if (activeProvider === "firestore") {

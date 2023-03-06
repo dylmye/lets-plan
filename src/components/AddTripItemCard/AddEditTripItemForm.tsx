@@ -191,7 +191,8 @@ const AddEditTripItemForm = ({
                       values.startsAt
                     );
                     const endsAtBeforeTripEnd = dayjs(value).isSameOrBefore(
-                      tripDetails?.endsAt as string
+                      tripDetails?.endsAt as string,
+                      "day"
                     );
 
                     return !endsAtAfterStartsAt

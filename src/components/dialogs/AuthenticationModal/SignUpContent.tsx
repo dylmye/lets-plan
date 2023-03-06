@@ -111,7 +111,10 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
             {combinedError.map(renderFriendlyAuthMessages)}
           </Alert>
         )}
-        <GoogleSignInButton onClick={() => signInWithGoogle([])} />
+        <GoogleSignInButton
+          alreadyHasAccount={false}
+          onClick={() => signInWithGoogle([])}
+        />
       </Stack>
       <Divider>
         <Typography variant="body2">Or</Typography>

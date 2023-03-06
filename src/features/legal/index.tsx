@@ -43,7 +43,7 @@ const Legal = () => {
         By default, trip names, plans, dates and all other information not
         otherwise covered in the section below are stored locally on your
         device, and The Service does not store or monitor this information. This
-        data is stored to provide functionality. If you log in to The Service,
+        data is stored to provide functionality. If you sign in to The Service,
         the section{" "}
         <MuiLink href="#privacy--if-you-have-an-account">
           <strong>"If You Create An Account"</strong>
@@ -467,7 +467,7 @@ const Legal = () => {
       <p>
         You can download all of the data associated with your account by
         clicking the account button on the top bar, and select "Manage Data". If
-        you can't log in, please reach out using the{" "}
+        you can't sign in, please reach out using the{" "}
         <MuiLink href="#contact">contact details below</MuiLink>.
       </p>
       <ul className={styles.legalList}>

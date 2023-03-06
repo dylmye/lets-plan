@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { AccountCircle, Login, Warning } from "@mui/icons-material";
+import { AccountCircle, Logout, Warning } from "@mui/icons-material";
 
 import ResetAppDialog from "../dialogs/ResetAppDialog";
 import ManageDataDialog from "../dialogs/ManageDataDialog";
@@ -85,19 +85,19 @@ const UserNavbarItem = ({
 
   return (
     <>
-      <Tooltip title={authenticated ? "Your Settings" : "Login or Sign Up"}>
+      <Tooltip title={authenticated ? "Sign out" : "Sign in or Sign Up"}>
         <IconButton
           size="large"
           onClick={onToggle}
           aria-label={
             authenticated
-              ? "Access your settings"
-              : "Access settings and login/signup options"
+              ? "Access your settings and sign out"
+              : "Access settings and sign-in/sign-up options"
           }>
           {authenticated ? (
-            <AccountCircle fontSize="inherit" htmlColor="#fff" />
+            <Logout fontSize="inherit" htmlColor="#fff" />
           ) : (
-            <Login fontSize="inherit" htmlColor="#fff" />
+            <AccountCircle fontSize="inherit" htmlColor="#fff" />
           )}
         </IconButton>
       </Tooltip>
@@ -125,7 +125,7 @@ const UserNavbarItem = ({
           </MenuItem>
         ) : (
           <MenuItem key="menu-user-item_login" onClick={onClickLogin}>
-            Login
+            Sign in
           </MenuItem>
         )}
         {/* This is only separate from Login because of MUI limitations - MenuList doesn't support fragments lol */}
