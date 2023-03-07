@@ -255,7 +255,6 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
       // firestore trip IDs are a completely different format to local trips
       // so we can safely assume if no trip is returned and a firebase object
       // is that the user is a) not logged in and b) trying to view a public trip.
-      console.log(!trip);
       setState({
         trip: !!firestoreTripValue
           ? {

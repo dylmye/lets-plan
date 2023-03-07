@@ -31,7 +31,8 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
         background:
           trip.image &&
           `linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.5)), url(${trip.image})`,
-        backgroundPosition: "50%",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
       }}
       component={Link}
       to={`/trip/${trip.id}`}>
