@@ -10,7 +10,13 @@ import {
   useCreateUserWithEmailAndPassword,
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useSnackbar } from "notistack";
 import { CheckboxWithLabel, TextField } from "formik-mui";
 import { Field, FieldProps, Form, Formik } from "formik";
@@ -27,6 +33,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import StyledLink from "../../StyledLink";
 import { GoogleSignInButton } from "../../SignInButtons";
+import PasswordVisibilityAdornment from "../../PasswordVisibilityAdornment";
 import FormikVerifyField from "../../fields/VerifyField";
 import { renderFriendlyAuthMessages } from "../../../helpers/auth";
 import { auth } from "../../../firebase";
@@ -57,6 +64,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
     emailErrors,
   ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+  const [passwordVisible, setPasswordVisibility] = useState(false);
   const captchaRef = useRef<HCaptcha>(null);
 
   const combinedError = useMemo<AuthError[]>(() => {
@@ -152,8 +160,16 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
           <Field
             component={TextField}
             name="password"
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             label="Your password"
+            InputProps={{
+              endAdornment: (
+                <PasswordVisibilityAdornment
+                  visible={passwordVisible}
+                  onToggleVisibility={setPasswordVisibility}
+                />
+              ),
+            }}
             fullWidth
           />
           <FormControlLabel

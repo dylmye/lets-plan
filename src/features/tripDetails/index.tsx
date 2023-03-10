@@ -87,7 +87,7 @@ const TripDetails = () => {
   };
 
   const renderItemDay = (day: string, items: TripItem[]): JSX.Element => (
-    <Container key={day} disableGutters>
+    <Container key={day} id={`day-${day}`} disableGutters>
       <Box
         className={styles.itemDayHeaderContainer}
         sx={!deviceIsBiggerThanXs ? xsItemHeaderStyles : {}}>

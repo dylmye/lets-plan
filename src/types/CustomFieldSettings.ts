@@ -5,6 +5,8 @@ export default interface CustomFieldSettings {
   hasDestination: boolean;
   /** if the form should have a booking/confirmation optional reference. default: true */
   hasReference?: boolean;
+  /** if the form should have a price field (+ currency field) default: true */
+  hasPrice?: boolean;
   /** Custom label to use for "location"/"originLocation" field  */
   originLocationLabel?: string;
   /** Custom label to use for "destinationLocation" field */

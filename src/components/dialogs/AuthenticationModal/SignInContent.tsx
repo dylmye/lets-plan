@@ -3,7 +3,7 @@ import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
 import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
 import { Field, Form, Formik } from "formik";
@@ -11,6 +11,7 @@ import { AuthError } from "firebase/auth";
 import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 
 import { GoogleSignInButton } from "../../SignInButtons";
+import PasswordVisibilityAdornment from "../../PasswordVisibilityAdornment";
 import { renderFriendlyAuthMessages } from "../../../helpers/auth";
 import { auth } from "../../../firebase";
 import styles from "./styles.module.css";
@@ -30,6 +31,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
     useSignInWithEmailAndPassword(auth);
 
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+  const [passwordVisible, setPasswordVisibility] = useState(false);
 
   const formLoading = gLoading || emailSignInLoading;
 
@@ -105,8 +107,16 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
           <Field
             component={TextField}
             name="password"
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             label="Your password"
+            InputProps={{
+              endAdornment: (
+                <PasswordVisibilityAdornment
+                  visible={passwordVisible}
+                  onToggleVisibility={setPasswordVisibility}
+                />
+              ),
+            }}
           />
           <Button type="submit" variant="contained" disabled={formLoading}>
             Sign in

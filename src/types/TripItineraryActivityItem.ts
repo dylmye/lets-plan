@@ -1,4 +1,3 @@
-import CURRENCIES from "../helpers/currency";
 import TripItineraryItemBase from "./TripItineraryItemBase";
 
 export default interface TripItineraryActivityItem
@@ -7,6 +6,4 @@ export default interface TripItineraryActivityItem
   reference?: string;
   /** The city/country of the location */
   location: string;
-  price?: number;
-  priceCurrency?: keyof typeof CURRENCIES | null;
 }

@@ -46,6 +46,7 @@ import {
   generateUberUniversalLink,
 } from "./url";
 import { userLanguage } from "./dates";
+import CURRENCIES from "./currency";
 import { COLOURS } from "./colours";
 
 /** Convert from TripItemType to a MUI Icon component */
@@ -253,6 +254,7 @@ export const customFieldSettings = (
   let destinationLocationLabel: string;
   let autoCompleteTypes: string[] = [];
   let hasReference = true;
+  let hasPrice = true;
 
   switch (type) {
     case TripItemType.Plane: {
@@ -284,6 +286,7 @@ export const customFieldSettings = (
       originLocationLabel = "Starting Location";
       destinationLocationLabel = "Ending Location";
       hasReference = false;
+      hasPrice = false;
       break;
     case TripItemType.Shopping:
     case TripItemType.Note:
@@ -292,6 +295,7 @@ export const customFieldSettings = (
       // not visible for activities
       destinationLocationLabel = "";
       hasReference = false;
+      hasPrice = false;
       break;
     default:
       originLocationLabel = TravelTypes.includes(type)
@@ -304,6 +308,7 @@ export const customFieldSettings = (
     hasOrigin: type !== TripItemType.Note,
     hasDestination,
     hasReference,
+    hasPrice,
     originLocationLabel,
     destinationLocationLabel,
     autoCompleteTypes,
@@ -341,7 +346,7 @@ const fieldNameIcon = (
     }
     case "fare": {
       return {
-        iconName: "Toll",
+        iconName: "Wallet",
         iconHint: "Ticket Fare Type",
       };
     }
@@ -497,120 +502,130 @@ export const renderExtraText = (field: TripItem): ExtraText[] => {
 
   const nodes: ExtraText[] = [];
 
-  keysToRender.forEach((k) => {
-    switch (k) {
-      // use field[k] here so when
-      // doing multiple cases
-      // it doesn't break :)
-      // also end each case with a break
-      case "urls": {
-        nodes.push({
-          iconName: "Link",
-          iconHint: "Links",
-          body: (
-            <>
-              Related Links:
-              {renderTripItemUrls(field[k] as Record<string, string>)}
-            </>
-          ),
-          parentComponentIsDiv: true,
-        });
-        break;
-      }
-      case "price": {
-        const formatter = new Intl.NumberFormat([userLanguage, "en-GB"], {
-          style: "currency",
-          // @ts-ignore This field will exist if Price does
-          currency: field.priceCurrency,
-        });
-        nodes.push({
-          iconName: "MonetizationOn",
-          iconHint: "Price",
-          body: formatter.format(field[k] as number),
-        });
-        break;
-      }
-      case "originLocation": {
-        if (!field.originLocation) {
+  keysToRender
+    .sort((a, b) => a.localeCompare(b))
+    .forEach((k) => {
+      switch (k) {
+        // use field[k] here so when
+        // doing multiple cases
+        // it doesn't break :)
+        // also end each case with a break
+        case "urls": {
+          nodes.push({
+            iconName: "Link",
+            iconHint: "Links",
+            body: (
+              <>
+                Related Links:
+                {renderTripItemUrls(field[k] as Record<string, string>)}
+              </>
+            ),
+            parentComponentIsDiv: true,
+          });
           break;
         }
+        case "price": {
+          const formatter = new Intl.NumberFormat([userLanguage, "en-GB"], {
+            style: "currency",
+            // @ts-ignore This field will exist if Price does
+            currency: field.priceCurrency,
+          });
+          nodes.push({
+            iconName: "MonetizationOn",
+            iconHint: "Price",
+            body: (
+              <abbr
+                title={`${field[k]} ${
+                  CURRENCIES[field.priceCurrency as keyof typeof CURRENCIES]
+                    ?.friendly ?? "Unknown currency"
+                }`}>
+                {formatter.format(field[k] as number)}
+              </abbr>
+            ),
+          });
+          break;
+        }
+        case "originLocation": {
+          if (!field.originLocation) {
+            break;
+          }
 
-        const journeyLink =
-          field.type === TripItemType.Taxi
-            ? generateUberUniversalLink(
-                field.originLocation,
-                field.destinationLocation as string
-              )
-            : generateGoogleMapsDirectionsUrl(
-                field.originLocation,
-                field.destinationLocation as string,
-                convertTripItemTypeToGoogleMapsTravelMode(field.type)
-              );
-        nodes.push({
-          iconName: "Directions",
-          iconHint: "Directions",
-          body: (
-            <Link
-              href={journeyLink}
-              target="_blank"
-              rel="noreferrer"
-              title={
-                field.type === TripItemType.Taxi
-                  ? "Ride there with Uber"
-                  : "View on Google Maps"
-              }>
-              <strong>From</strong> {field.originLocation} <strong>to</strong>
-              {" " + field.destinationLocation}
-            </Link>
-          ),
-        });
-        break;
+          const journeyLink =
+            field.type === TripItemType.Taxi
+              ? generateUberUniversalLink(
+                  field.originLocation,
+                  field.destinationLocation as string
+                )
+              : generateGoogleMapsDirectionsUrl(
+                  field.originLocation,
+                  field.destinationLocation as string,
+                  convertTripItemTypeToGoogleMapsTravelMode(field.type)
+                );
+          nodes.push({
+            iconName: "Directions",
+            iconHint: "Directions",
+            body: (
+              <Link
+                href={journeyLink}
+                target="_blank"
+                rel="noreferrer"
+                title={
+                  field.type === TripItemType.Taxi
+                    ? "Ride there with Uber"
+                    : "View on Google Maps"
+                }>
+                <strong>From</strong> {field.originLocation} <strong>to</strong>
+                {" " + field.destinationLocation}
+              </Link>
+            ),
+          });
+          break;
+        }
+        case "location": {
+          nodes.push({
+            iconName: "Directions",
+            iconHint: "Location",
+            body: (
+              <Link
+                href={generateGoogleMapsQueryUrl(field[k] as string)}
+                target="blank"
+                rel="noreferrer">
+                {/* This text is the backup to the title so avoid duplication */}
+                {!!field.title ? field[k] : "View on Google Maps"}
+              </Link>
+            ),
+          });
+          break;
+        }
+        case "reference": {
+          nodes.push({
+            iconName: "Tag",
+            iconHint: "Reference",
+            body: (
+              <>
+                {field[k] as string}
+                <CopyToClipboardButton textToCopy={field[k] as string} />
+              </>
+            ),
+          });
+          break;
+        }
+        case "prebooked": {
+          nodes.push({
+            iconName: "Receipt",
+            body: field[k] ? "Booked in advance" : "Not booked in advance",
+          });
+          break;
+        }
+        default:
+          const { iconName, iconHint } = fieldNameIcon(k);
+          nodes.push({
+            iconName,
+            iconHint,
+            body: field[k] as string,
+          });
       }
-      case "location": {
-        nodes.push({
-          iconName: "Directions",
-          iconHint: "Location",
-          body: (
-            <Link
-              href={generateGoogleMapsQueryUrl(field[k] as string)}
-              target="blank"
-              rel="noreferrer">
-              {/* This text is the backup to the title so avoid duplication */}
-              {!!field.title ? field[k] : "View on Google Maps"}
-            </Link>
-          ),
-        });
-        break;
-      }
-      case "reference": {
-        nodes.push({
-          iconName: "Tag",
-          iconHint: "Reference",
-          body: (
-            <>
-              {field[k] as string}
-              <CopyToClipboardButton textToCopy={field[k] as string} />
-            </>
-          ),
-        });
-        break;
-      }
-      case "prebooked": {
-        nodes.push({
-          iconName: "Receipt",
-          body: field[k] ? "Booked in advance" : "Not booked in advance",
-        });
-        break;
-      }
-      default:
-        const { iconName, iconHint } = fieldNameIcon(k);
-        nodes.push({
-          iconName,
-          iconHint,
-          body: field[k] as string,
-        });
-    }
-  });
+    });
 
   return nodes;
 };

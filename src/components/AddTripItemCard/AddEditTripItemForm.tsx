@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
+import IntlPriceField from "../fields/IntlPriceField";
 import AutocompleteField from "../fields/AutocompleteField";
 import {
   ActivityTypes,
@@ -270,6 +271,18 @@ const AddEditTripItemForm = ({
                   label="Booking / Confirmation Reference"
                   fullWidth
                   helperText="Optional"
+                />
+              </Grid>
+            )}
+            {currentFieldSettings.hasPrice && (
+              <Grid item xs={12} md={6}>
+                <Field
+                  component={IntlPriceField}
+                  name="price"
+                  label="Price / Budget"
+                  fullWidth
+                  helperText="Optional"
+                  currencySelectorFieldName="priceCurrency"
                 />
               </Grid>
             )}

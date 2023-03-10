@@ -1,0 +1,7 @@
+.currencyAutocomplete fieldset.MuiOutlinedInput-notchedOutline {
+  border-color: transparent !important;
+}
+
+.currencyAutocompleteInput {
+  text-overflow: initial !important;
+}

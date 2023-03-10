@@ -81,6 +81,49 @@ const TripItineraryItem = ({
     },
   };
 
+  const renderItemHeader = (item: TripItem): JSX.Element => (
+    <CardHeader
+      title={
+        <Typography variant="body2" className={styles.tripItemText}>
+          <time dateTime={item.startsAt}>
+            {formatTime(
+              item.startsAt,
+              true,
+              false,
+              // item.startsAtTimezone
+              // @TODO: fix temp issues where SAT is hard set
+              undefined
+            )}
+          </time>
+          {item?.endsAt && (
+            <>
+              {` - `}
+              <time dateTime={item.endsAt}>
+                {endsAtSeparateDate}
+                {formatTime(item.endsAt, true, false, item?.endsAtTimezone)}
+              </time>
+            </>
+          )}
+          {` \u30fb ${
+            item.type && !isOtherType
+              ? getTripItemTypeLabel(item.type)
+              : "Other"
+          }`}
+        </Typography>
+      }
+      className={styles.tripItemHeader}
+      action={
+        <TripItemDetailsAction
+          id={item.id}
+          trip={trip}
+          onDelete={onDeleteTripItem}
+          toggleEdit={onToggleEditTripItem}
+        />
+      }
+      sx={{ paddingBottom: 0 }}
+    />
+  );
+
   const renderItemText = (item: TripItem): JSX.Element => {
     return (
       <>
@@ -134,7 +177,7 @@ const TripItineraryItem = ({
   };
 
   return (
-    <Grid container sx={rootContainerStyle}>
+    <Grid container sx={rootContainerStyle} id={`item-${item.id}`}>
       <Grid item xs className={styles.tripItemIconContainer}>
         <Box className={styles.tripItemIconBox}>
           <Paper
@@ -154,51 +197,7 @@ const TripItineraryItem = ({
         <Card sx={mainContainerStyle}>
           {!showEditMode ? (
             <Box>
-              <CardHeader
-                title={
-                  <Typography variant="body2" className={styles.tripItemText}>
-                    <time dateTime={item.startsAt}>
-                      {formatTime(
-                        item.startsAt,
-                        true,
-                        false,
-                        // item.startsAtTimezone
-                        // @TODO: fix temp issues where SAT is hard set
-                        undefined
-                      )}
-                    </time>
-                    {item?.endsAt && (
-                      <>
-                        {` - `}
-                        <time dateTime={item.endsAt}>
-                          {endsAtSeparateDate}
-                          {formatTime(
-                            item.endsAt,
-                            true,
-                            false,
-                            item?.endsAtTimezone
-                          )}
-                        </time>
-                      </>
-                    )}
-                    {` \u30fb ${
-                      item.type && !isOtherType
-                        ? getTripItemTypeLabel(item.type)
-                        : "Other"
-                    }`}
-                  </Typography>
-                }
-                className={styles.tripItemHeader}
-                action={
-                  <TripItemDetailsAction
-                    id={item.id}
-                    trip={trip}
-                    onDelete={onDeleteTripItem}
-                    toggleEdit={onToggleEditTripItem}
-                  />
-                }
-                sx={{ paddingBottom: 0 }}
-              />
+              {renderItemHeader(item)}
               <CardContent sx={{ paddingTop: 0 }}>
                 {renderItemText(item)}
               </CardContent>

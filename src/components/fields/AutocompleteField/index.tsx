@@ -3,7 +3,7 @@ import { AutocompleteProps } from "formik-mui";
 import { FieldProps } from "formik";
 import { Autocomplete, Box, TextField } from "@mui/material";
 
-interface AutocompleteFieldProps<T = string>
+export interface AutocompleteFieldProps<T = string>
   extends FieldProps,
     AutocompleteProps<T, false, true, false> {
   label: string;
