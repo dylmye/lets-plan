@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
+import TripItemTypeAdornment from "../TripItemTypeAdornment";
 import IntlPriceField from "../fields/IntlPriceField";
 import AutocompleteField from "../fields/AutocompleteField";
 import {
@@ -111,6 +112,11 @@ const AddEditTripItemForm = ({
                 {getTripItemTypeLabel(option)}
               </Box>
             )}
+            textFieldProps={{
+              InputProps: {
+                startAdornment: <TripItemTypeAdornment type={values.type} />,
+              },
+            }}
             getOptionLabel={getTripItemTypeLabel}
             name="type"
             label={`Type of ${values.category}`}

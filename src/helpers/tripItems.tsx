@@ -16,6 +16,7 @@ import {
   FlightTakeoff,
   Groups,
   Hail,
+  Hotel,
   Museum,
   MusicNote,
   Notes,
@@ -77,6 +78,10 @@ export const getTripItemIcon = (
       return <DirectionsWalk titleAccess="By Foot item" {...otherProps} />;
     case TripItemType.Cycle:
       return <DirectionsBike titleAccess="Bicycling item" {...otherProps} />;
+    case TripItemType["Check-in"]:
+      return <Hotel titleAccess="Check-in" {...otherProps} />;
+    case TripItemType["Check-out"]:
+      return <Hotel titleAccess="Check-out" {...otherProps} />;
     case TripItemType.Museum:
       return <Museum titleAccess="Museum item" {...otherProps} />;
     case TripItemType["Eating Out"]:
@@ -228,6 +233,8 @@ export const tripItemExtraFields: Record<
     operatorName: "text",
     details: "text",
   },
+  [TripItemType["Check-in"]]: {},
+  [TripItemType["Check-out"]]: {},
   [TripItemType.Museum]: {},
   [TripItemType["Eating Out"]]: {},
   [TripItemType["Meet-up"]]: {},
@@ -247,9 +254,7 @@ export const customFieldSettings = (
   type: TripItemType
 ): CustomFieldSettings => {
   // for some activities: no ends at
-  const hasDestination = ![TripItemType["Meet-up"], ...ActivityTypes].includes(
-    type
-  );
+  const hasDestination = !ActivityTypes.includes(type);
   let originLocationLabel: string;
   let destinationLocationLabel: string;
   let autoCompleteTypes: string[] = [];

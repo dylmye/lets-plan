@@ -69,6 +69,7 @@ const IntlPriceField = ({
       meta={meta}
       label={label}
       disabled={disabled || form.isSubmitting}
+      fullWidth
       InputProps={{
         startAdornment: CurrencyDropdownAdornment,
       }}

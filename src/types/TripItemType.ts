@@ -13,6 +13,8 @@ export enum TripItemType {
   "Cycle" = "travel_bike",
   "Other Mode of Transport" = "travel_misc",
   // Activity
+  "Check-in" = "activity_lodging_in",
+  "Check-out" = "activity_lodging_out",
   "Museum" = "activity_museum",
   "Eating Out" = "activity_eatingout",
   "Meet-up" = "activity_meetup",
@@ -43,6 +45,8 @@ export const TravelTypes: TripItemType[] = [
 ];
 
 export const ActivityTypes: TripItemType[] = [
+  TripItemType["Check-in"],
+  TripItemType["Check-out"],
   TripItemType.Museum,
   TripItemType["Eating Out"],
   TripItemType["Meet-up"],
