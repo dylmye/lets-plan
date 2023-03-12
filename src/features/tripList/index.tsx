@@ -8,9 +8,12 @@ import TripListAction, {
 } from "../../components/TripListAction";
 import AddTripModal from "../../components/AddTripModal";
 import styles from "./styles.module.css";
+import WelcomeCard from "../../components/WelcomeCard";
+import { useWelcomeCardDismissed } from "../../store/features/preferences";
 
 const TripList = () => {
   const { past, futureCurrent, loading } = useGetTripsByDateSplit();
+  const welcomeCardHidden = useWelcomeCardDismissed();
 
   const [addModalVisible, toggleModalVisibility] = useState(false);
 
@@ -36,6 +39,7 @@ const TripList = () => {
           </>
         ) : (
           <>
+            {!welcomeCardHidden && <WelcomeCard />}
             {futureCurrent?.length ? (
               futureCurrent.map((trip) => (
                 <TripListItemCard trip={trip} key={`trip-${trip.id}`} />
