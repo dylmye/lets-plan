@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { memo } from "react";
 import { Alert, Chip, Link } from "@mui/material";
 
-import { selectThemeMode } from "../../features/theme/themeSlice";
-import { useAppSelector } from "../../app/hooks";
+import { useCustomTheme } from "../../contexts/CustomTheme";
 import styles from "./styles.module.css";
 
 export interface TrackedLinkAlertProps {
@@ -18,7 +17,7 @@ const TrackedLinkAlert = ({
   link,
   linkText,
 }: TrackedLinkAlertProps) => {
-  const themeMode = useAppSelector(selectThemeMode);
+  const { theme } = useCustomTheme();
   const navigate = useNavigate();
   return (
     <Alert severity="info" className={styles.trackedLinkAlert} icon={false}>
@@ -33,7 +32,7 @@ const TrackedLinkAlert = ({
         href={link}
         target="_blank"
         rel="noreferrer"
-        sx={{ color: themeMode === "dark" ? "#fff" : "#000" }}>
+        sx={{ color: theme === "dark" ? "#fff" : "#000" }}>
         {linkText}
       </Link>
     </Alert>

@@ -3,6 +3,7 @@ enum SliceNames {
   SUGGESTIONS = "suggestions",
   THEME = "theme",
   AUTH = "auth",
+  PREFERENCES = "preferences",
 }
 
 export default SliceNames;

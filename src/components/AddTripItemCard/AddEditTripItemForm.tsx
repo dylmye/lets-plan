@@ -31,10 +31,9 @@ import {
   renderExtraField,
   tripItemExtraFields,
 } from "../../helpers/tripItems";
-import { selectThemeMode } from "../../features/theme/themeSlice";
+import { useCustomTheme } from "../../contexts/CustomTheme";
 import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
 import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
-import { useAppSelector } from "../../app/hooks";
 import styles from "./styles.module.css";
 
 export interface AddEditTripItemFormProps {
@@ -53,16 +52,14 @@ const AddEditTripItemForm = ({
 }: AddEditTripItemFormProps) => {
   const { isSubmitting, setFieldValue, values, errors } =
     useFormikContext<TripItemDraft>();
-  const currentTheme = useAppSelector(selectThemeMode);
+  const { theme } = useCustomTheme();
   const currentFieldSettings = customFieldSettings(values.type);
 
   const googleAttributionHelperText: TextFieldProps = {
     helperText: (
       <img
         src={
-          currentTheme === "light"
-            ? poweredByGoogleLightMode
-            : poweredByGoogleDarkMode
+          theme === "light" ? poweredByGoogleLightMode : poweredByGoogleDarkMode
         }
         alt="This location search field uses Google APIs."
         className={styles.googleAttribution}

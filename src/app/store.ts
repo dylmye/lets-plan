@@ -18,19 +18,16 @@ import {
 } from "@reduxjs/toolkit";
 
 import tripsReducer, { TripState } from "../store/features/trips/redux";
+import prefsReducer, {
+  PreferencesState,
+} from "../store/features/preferences/redux";
 import authReducer, { AuthState } from "../store/features/auth/redux";
-import themeReducer from "../features/theme/themeSlice";
-import type { ThemeState } from "../features/theme/themeSlice";
-import suggestionsReducer, {
-  SuggestionsState,
-} from "../features/suggestions/suggestionsSlice";
 import { eventAnalyticsLogMiddleware } from "./middleware";
 
 interface State {
   trips: TripState;
-  suggestions: SuggestionsState;
-  theme: ThemeState;
   auth: AuthState;
+  preferences: PreferencesState;
 }
 
 export const reduxStorage = storage("letsPlan");
@@ -45,9 +42,8 @@ const rootReducer = persistReducer<State>(
   persistConfig,
   combineReducers({
     trips: tripsReducer,
-    suggestions: suggestionsReducer,
-    theme: themeReducer,
     auth: authReducer,
+    preferences: prefsReducer,
   })
 );
 

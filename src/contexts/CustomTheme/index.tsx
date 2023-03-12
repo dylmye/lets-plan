@@ -1,35 +1,48 @@
-import React, { useEffect, useMemo } from "react";
-import { ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
+import React, { useContext, useMemo } from "react";
+import { PaletteMode, ThemeProvider, createTheme } from "@mui/material";
 
+import ThemeMode from "../../types/ThemeMode";
 import {
-  isUsingSystemThemeMode,
-  selectThemeMode,
-  setThemeMode,
-} from "../../features/theme/themeSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+  useSetThemeMode,
+  useIsSystemThemeMode,
+  useThemeMode,
+} from "../../store/features/preferences";
 
 export interface CustomThemeContextInterface {
-  toggleColourMode: () => void;
+  setTheme: (mode: ThemeMode) => void;
+  theme: PaletteMode;
+  isSystemTheme: boolean;
 }
 
-const CustomThemeContext = React.createContext<CustomThemeContextInterface>({
-  toggleColourMode: () => {},
-});
+export const CustomThemeContext =
+  React.createContext<CustomThemeContextInterface>({
+    setTheme: (mode: ThemeMode) => {},
+    theme: "dark",
+    isSystemTheme: true,
+  });
+
+export const useCustomTheme = () => {
+  const ctx = useContext(CustomThemeContext);
+  if (!ctx) {
+    throw new Error("Called useCustomTheme outside of a CustomThemeProvider");
+  }
+
+  return ctx;
+};
 
 /** Use the mode from the redux store to be manipulated within the MUI theme object */
 const CustomTheme: React.FC = ({ children }) => {
-  const dispatch = useAppDispatch();
-  const mode = useAppSelector(selectThemeMode);
-  const useSystemThemeMode = useAppSelector(isUsingSystemThemeMode);
-
-  const systemModeIsDark = useMediaQuery("(prefers-color-scheme: dark)");
+  const mode = useThemeMode();
+  const setTheme = useSetThemeMode();
+  const isSystemTheme = useIsSystemThemeMode();
 
   const colourMode = useMemo<CustomThemeContextInterface>(
     () => ({
-      toggleColourMode: () =>
-        dispatch(setThemeMode(mode === "dark" ? "light" : "dark")),
+      setTheme,
+      theme: mode,
+      isSystemTheme,
     }),
-    [dispatch, mode]
+    [setTheme, mode, isSystemTheme]
   );
 
   const theme = useMemo(
@@ -66,12 +79,6 @@ const CustomTheme: React.FC = ({ children }) => {
       }),
     [mode]
   );
-
-  useEffect(() => {
-    if (useSystemThemeMode) {
-      dispatch(setThemeMode(systemModeIsDark ? "dark" : "light"));
-    }
-  }, [dispatch, systemModeIsDark, useSystemThemeMode]);
 
   return (
     <CustomThemeContext.Provider value={colourMode}>

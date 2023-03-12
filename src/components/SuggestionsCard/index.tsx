@@ -13,21 +13,19 @@ import { ArrowDropDown, ArrowDropUp, AutoAwesome } from "@mui/icons-material";
 import TrackedLinkAlert from "../TrackedLinkAlert";
 import StyledLink from "../StyledLink";
 import {
-  selectCollapsed,
-  setCollapsed,
-} from "../../features/suggestions/suggestionsSlice";
+  useSetTripSuggestionsHidden,
+  useTripSuggestionsHidden,
+} from "../../store/features/preferences";
 import trackedLinks from "../../data/trackedLinks";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import styles from "./styles.module.css";
 
 /** Display unit for tracked links */
 const SuggestionsCard = () => {
-  const dispatch = useAppDispatch();
-  const isCollapsed = useAppSelector(selectCollapsed);
-
+  const setTripSuggestionsHidden = useSetTripSuggestionsHidden();
+  const isCollapsed = useTripSuggestionsHidden();
   const onToggleCollapse = useCallback(() => {
-    dispatch(setCollapsed(!isCollapsed));
-  }, [dispatch, isCollapsed]);
+    setTripSuggestionsHidden(!isCollapsed);
+  }, [setTripSuggestionsHidden, isCollapsed]);
 
   if (!trackedLinks?.length) {
     return null;

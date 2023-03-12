@@ -12,25 +12,17 @@ import {
 } from "@mui/material";
 
 import { auth } from "../../firebase";
-import {
-  isUsingSystemThemeMode,
-  selectThemeMode,
-  setSystemModeOverride,
-  setThemeMode,
-} from "../../features/theme/themeSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useCustomTheme } from "../../contexts/CustomTheme";
 import UserNavbarItem from "./UserNavbarItem";
 
 /** Top level navigation */
 const Navbar = () => {
-  const dispatch = useAppDispatch();
+  const { setTheme, theme, isSystemTheme } = useCustomTheme();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, _, error] = useAuthState(auth);
   const [anchorElUser, setAnchorElUser] = React.useState<HTMLElement | null>(
     null
   );
-  const useSystemThemeMode = useAppSelector(isUsingSystemThemeMode);
-  const currentMode = useAppSelector(selectThemeMode);
 
   const onUserItemPress = (
     event?: React.MouseEvent<HTMLElement> | null
@@ -47,8 +39,10 @@ const Navbar = () => {
         label="Use system theme"
         control={
           <Checkbox
-            checked={useSystemThemeMode}
-            onChange={(_, checked) => dispatch(setSystemModeOverride(checked))}
+            checked={isSystemTheme}
+            onChange={(_, checked) =>
+              setTheme(isSystemTheme ? theme : "system")
+            }
             inputProps={{ "aria-label": "controlled" }}
           />
         }
@@ -58,12 +52,12 @@ const Navbar = () => {
     const themeModeToggle = (
       <FormControlLabel
         label="Dark Mode"
-        disabled={useSystemThemeMode}
+        disabled={isSystemTheme}
         control={
           <Switch
-            checked={currentMode === "dark"}
+            checked={theme === "dark"}
             onChange={(_, checked) =>
-              dispatch(setThemeMode(checked ? "dark" : "light"))
+              setTheme(theme === "dark" ? "light" : "dark")
             }
             inputProps={{ "aria-label": "controlled" }}
           />
@@ -75,7 +69,7 @@ const Navbar = () => {
       "menu-user-item_usesystem": useSystemThemeToggle,
       "menu-user-item_theme": themeModeToggle,
     };
-  }, [currentMode, dispatch, useSystemThemeMode]);
+  }, [theme, isSystemTheme, setTheme]);
 
   useEffect(() => {
     if (error) {
