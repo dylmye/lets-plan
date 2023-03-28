@@ -31,7 +31,7 @@ export const useCustomTheme = () => {
 };
 
 /** Use the mode from the redux store to be manipulated within the MUI theme object */
-const CustomTheme: React.FC = ({ children }) => {
+const CustomTheme = ({ children }: { children: React.ReactNode }) => {
   const mode = useThemeMode();
   const setTheme = useSetThemeMode();
   const isSystemTheme = useIsSystemThemeMode();

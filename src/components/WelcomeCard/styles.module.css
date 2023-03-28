@@ -1,0 +1,27 @@
+.welcomeCard {
+  text-align: left;
+  padding: 0.75rem;
+  border-width: 6px;
+  border-radius: 4px;
+  border-style: solid;
+  border-image: repeating-linear-gradient(
+      -45deg,
+      antiquewhite 0px,
+      antiquewhite 15px,
+      #3498db 15px,
+      #3498db 30px,
+      antiquewhite 30px,
+      antiquewhite 45px,
+      #e74c3c 45px,
+      #e74c3c 60px
+    )
+    1;
+}
+
+.welcomeCardHeader {
+  font-weight: bold;
+}
+
+.welcomeCardBody {
+  font-size: 1.25rem;
+}

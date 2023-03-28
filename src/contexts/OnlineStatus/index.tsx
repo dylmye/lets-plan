@@ -16,7 +16,7 @@ export const useOnlineStatus = () => {
   return ctx;
 };
 
-const OnlineStatus: React.FC = ({ children }) => {
+const OnlineStatus = ({ children }: { children: React.ReactNode }) => {
   const [isOnline, setOnlineStatus] = useState(navigator.onLine);
 
   useEffect(() => {

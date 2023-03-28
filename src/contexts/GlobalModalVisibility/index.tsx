@@ -53,7 +53,7 @@ export const useGlobalModalVisibility = () => {
  * A good example of this is deleteTrip, used to show a delete confirmation dialog for a given trip. The trigger code is in the `TripDetailsAction` component.
  * If you are sure your modal will only show on one page, there's no need to put it here :)
  */
-const GlobalModalVisibility: React.FC = ({ children }) => {
+const GlobalModalVisibility = ({ children }: { children: React.ReactNode }) => {
   const [visible, toggleVisible] = useState<boolean>(false);
   const [authType, setAuthType] = useState<
     AuthenticationModalProps["type"] | null

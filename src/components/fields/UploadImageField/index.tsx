@@ -19,7 +19,12 @@ const UploadImageField = ({ field, form: { setFieldValue } }: Props) => {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: "image/jpeg, image/png, image/webp",
+    accept: {
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+      "image/webp": [".webp"],
+      "image/heic": [".heif", ".heic"], // this format sucks bc patents but iphones be iphoning
+    },
     maxFiles: 1,
   });
 
