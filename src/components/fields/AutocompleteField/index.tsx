@@ -11,7 +11,7 @@ export interface AutocompleteFieldProps<T = string>
 }
 
 /** A MUI Autocomplete Form Field, which takes any number of `options` to set a given field. For Formik. */
-const AutocompleteField = <T = string,>({
+const AutocompleteField = <T extends React.ReactNode = string>({
   field,
   form: { setFieldValue, touched, errors, isSubmitting },
   options,
@@ -40,7 +40,7 @@ const AutocompleteField = <T = string,>({
         {...textFieldProps}
         label={label}
         error={touched[field.name] && !!errors[field.name]}
-        helperText={errors[field.name]}
+        helperText={errors[field.name] as string}
         inputProps={{
           ...params.inputProps,
           autoComplete: "false", // this doesn't work on chrome, that's google's fault tho idc https://bugs.chromium.org/p/chromium/issues/detail?id=587466

@@ -1,8 +1,8 @@
 import {
-  SchemaOf,
   mixed as yMixed,
   object as yObject,
   string as yString,
+  ObjectSchema,
 } from "yup";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { FirebaseError } from "firebase/app";
 import dayjs from "dayjs";
 import { Alert, Box, Modal, SxProps, Theme, Typography } from "@mui/material";
 
+import TripSchemaRevisions from "../../types/TripSchemaRevisions";
 import TripDraft from "../../types/TripDraft";
 import ModalProps from "../../types/ModalProps";
 import { useAddTrip } from "../../store/features/trips";
@@ -89,8 +90,8 @@ const AddTripModal = (props: ModalProps) => {
     }
   };
 
-  const validationSchema: SchemaOf<TripDraft> = yObject().shape({
-    tripSchemaRevision: yMixed().oneOf([1]).required(),
+  const validationSchema: ObjectSchema<TripDraft> = yObject().shape({
+    tripSchemaRevision: yMixed<TripSchemaRevisions>().oneOf([1]).required(),
     id: yString().required(),
     title: yString().required("You need to give your trip a title"),
     location: yString().required("Trips need to be somewhere"),
@@ -98,23 +99,23 @@ const AddTripModal = (props: ModalProps) => {
     endsAt: yString().nullable().required("Trips need an end date"),
     image: yString().optional(),
     // keep these rules in sync with your storage rules in Firebase
-    coverImageBlob: yMixed()
-      .test(
-        "fileSize",
-        "The cover image needs to be under 1MB",
-        (value: File[]) => {
-          if (!value?.length) return true; // no file required
-          return value[0].size < 1000000;
-        }
-      )
+    coverImageBlob: yMixed<File>()
+      .test("fileSize", "The cover image needs to be under 1MB", (value) => {
+        // we have to do these dumb conversions
+        // because the type for the field is File
+        // but dropzone always gives us File[]
+        // even though in the browser we actually
+        // get a File. lol.
+        if (!(value as unknown as File[])?.length) return true; // no file required
+        return (value as unknown as File[])[0].size < 1000000;
+      })
       .test(
         "fileMimeType",
         "The cover image needs to be in png, jpg or webp format",
-        (value: File[]) => {
-          if (!value?.length) return true; // no file required
-          console.debug("typetest", value[0].type);
+        (value) => {
+          if (!(value as unknown as File[])?.length) return true; // no file required
           return ["image/png", "image/jpg", "image/webp"].includes(
-            value[0].type
+            (value as unknown as File[])[0].type
           );
         }
       ),

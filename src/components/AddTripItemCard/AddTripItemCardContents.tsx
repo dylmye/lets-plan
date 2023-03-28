@@ -19,7 +19,7 @@ const AddTripItemCardContents = ({
   const addTripItem = useAddTripItem();
 
   const onSubmit = useCallback(
-    (formData) => {
+    (formData: TripItemDraft) => {
       if (!tripDetails?.id) {
         console.error("Couldn't add trip item, no trip id specified");
         return;

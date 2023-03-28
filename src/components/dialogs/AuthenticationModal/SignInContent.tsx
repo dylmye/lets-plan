@@ -1,4 +1,4 @@
-import { SchemaOf, object as yObject, string as yString } from "yup";
+import { object as yObject, ObjectSchema, string as yString } from "yup";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
@@ -46,7 +46,7 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
     return errs;
   }, [gError]);
 
-  const validationSchema: SchemaOf<SignInEmailForm> = yObject().shape({
+  const validationSchema: ObjectSchema<SignInEmailForm> = yObject().shape({
     email: yString().email().required("Email required to sign up"),
     password: yString().required("Password required to sign up"),
   });

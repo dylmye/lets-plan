@@ -1,6 +1,6 @@
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import React from "react";
 import { SnackbarProvider } from "notistack";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -15,7 +15,10 @@ import { CustomTheme, GlobalModalVisibility } from "./contexts";
 import { persistor, store } from "./app/store";
 import App from "./App";
 
-ReactDOM.render(
+const container = document.getElementById("root")!;
+const root = createRoot(container);
+
+root.render(
   <React.StrictMode>
     <GlobalModalVisibility>
       <OnlineStatus>
@@ -33,8 +36,7 @@ ReactDOM.render(
         </Provider>
       </OnlineStatus>
     </GlobalModalVisibility>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
 serviceWorkerRegistration.register({

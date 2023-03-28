@@ -25,3 +25,7 @@
 .welcomeCardBody {
   font-size: 1.25rem;
 }
+
+.welcomeCardContentContainer {
+  padding: 0 !important;
+}

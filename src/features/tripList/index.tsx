@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Container, Skeleton, Stack, Typography } from "@mui/material";
 
 import { useGetTripsByDateSplit } from "../../store/features/trips";
+import { useWelcomeCardDismissed } from "../../store/features/preferences";
+import WelcomeCard from "../../components/WelcomeCard";
 import TripListItemCard from "../../components/TripListItemCard";
 import TripListAction, {
   TripListActions,
 } from "../../components/TripListAction";
 import AddTripModal from "../../components/AddTripModal";
 import styles from "./styles.module.css";
-import WelcomeCard from "../../components/WelcomeCard";
-import { useWelcomeCardDismissed } from "../../store/features/preferences";
 
 const TripList = () => {
   const { past, futureCurrent, loading } = useGetTripsByDateSplit();

@@ -1,10 +1,10 @@
 import YupPassword from "yup-password";
 import {
-  SchemaOf,
   bool as yBool,
   object as yObject,
   string as yString,
   addMethod,
+  ObjectSchema,
 } from "yup";
 import {
   useCreateUserWithEmailAndPassword,
@@ -77,7 +77,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
 
   const formLoading = emailSignupLoading && gLoading;
 
-  const validationSchema: SchemaOf<SignupEmailForm> = yObject().shape({
+  const validationSchema: ObjectSchema<SignupEmailForm> = yObject().shape({
     email: yString().email().required("Email required to sign up"),
     password: yString().password().required("Password required to sign up"),
     checkedPrivacy: yBool()

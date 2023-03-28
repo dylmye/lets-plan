@@ -1,5 +1,7 @@
+import TripSchemaRevisions from "./TripSchemaRevisions";
+
 export default interface TripDraft {
-  tripSchemaRevision: 1;
+  tripSchemaRevision: TripSchemaRevisions;
   /** assigned on creation. GUID format for local trips, alphanumeric 20-char format for sync'd trips. */
   id: string;
   title: string;
