@@ -94,12 +94,15 @@ const AddTripModal = (props: ModalProps) => {
     tripSchemaRevision: yMixed<TripSchemaRevisions>().oneOf([1]).required(),
     id: yString().required(),
     title: yString().required("You need to give your trip a title"),
-    location: yString().required("Trips need to be somewhere"),
+    location: yString().required(
+      "Please provide a location for the trip. If it's in multiple locations, enter the first"
+    ),
     startsAt: yString().nullable().required("Trips need a start date"),
     endsAt: yString().nullable().required("Trips need an end date"),
     image: yString().optional(),
     // keep these rules in sync with your storage rules in Firebase
     coverImageBlob: yMixed<File>()
+      .nullable()
       .test("fileSize", "The cover image needs to be under 1MB", (value) => {
         // we have to do these dumb conversions
         // because the type for the field is File
@@ -176,18 +179,30 @@ const AddTripModal = (props: ModalProps) => {
             coverImageBlob: null,
           }}
           onSubmit={onFormSubmit}
-          validationSchema={validationSchema}>
-          <Form>
-            {formError && <Alert severity="error">{formError}</Alert>}
-            {renderFormStep()}
-            <FormPagination
-              activeStep={activeStep}
-              totalSteps={TOTAL_STEPS}
-              onPressBack={goBack}
-              onPressNext={goForward}
-              onClose={props.onClose}
-            />
-          </Form>
+          validationSchema={validationSchema}
+          validateOnChange={false}
+          validateOnBlur={false}>
+          {({ errors }) => (
+            <Form>
+              {formError || Object.keys(errors)?.length ? (
+                <Alert severity="error">
+                  {formError}
+                  {formError ? <br /> : undefined}
+                  {Object.keys(errors)?.length
+                    ? Object.values(errors)?.map((k) => <p key={k}>{k}</p>)
+                    : undefined}
+                </Alert>
+              ) : undefined}
+              {renderFormStep()}
+              <FormPagination
+                activeStep={activeStep}
+                totalSteps={TOTAL_STEPS}
+                onPressBack={goBack}
+                onPressNext={goForward}
+                onClose={props.onClose}
+              />
+            </Form>
+          )}
         </Formik>
       </Box>
     </Modal>

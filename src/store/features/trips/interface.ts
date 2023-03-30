@@ -24,6 +24,10 @@ export interface TripActions {
   addTrip: (data: TripDraft, userId?: string | null) => any;
   deleteTripById: (tripId: string) => any;
   updateTripById: (data: TripDetails, userId?: string | null) => any;
+  /** Firestore only */
+  batchAddTrips?: (trips: Trip[], userId: string) => Promise<void>;
+  /** Redux only */
+  batchDeleteTripsByIds?: (tripIds: string[]) => any;
 
   addTripItemByTripId: (data: { tripId: string } & TripItemDraft) => any;
   deleteTripItemById: ({
@@ -72,11 +76,14 @@ export interface TripHooks {
     tripId: string,
     data: { id: string } & TripItemDraft
   ) => void;
+  /** Move all local trips to the users account */
+  useMigrateLocalTrips: () => () => void;
   /** Get all trips, in date order */
   useGetTrips: () => HookResponse<{ trips: Trip[] }>;
   /** Get past and current/future trips, in date order */
   useGetTripsByDateSplit: () => HookResponse<GetTripsByDateSplitResponse>;
   /** Get a trip by its ID */
   useGetTripById: (id: string) => HookResponse<GetTripByIdResponse>;
+  /** Export trips to a JSON document */
   useExportTrips: () => HookResponse<ExportTripsResponse>;
 }

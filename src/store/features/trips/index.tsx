@@ -123,6 +123,33 @@ export const useUpdateTrip: TripHooks["useUpdateTrip"] = () => {
   );
 };
 
+export const useMigrateLocalTrips: TripHooks["useMigrateLocalTrips"] = () => {
+  // This can only be used by Firebase - no need for provider
+  const dispatch = useAppDispatch();
+  const userId = useGetUserId();
+  const trips = useAppSelector(providerRedux.selectors.getTrips) as Trip[];
+  const tripsToMigrate = trips.filter((t) => t.id !== "example");
+  const { enqueueSnackbar } = useSnackbar();
+
+  return useCallback(() => {
+    if (!tripsToMigrate?.length || !userId) return;
+    providerFirestore.actions.batchAddTrips!(tripsToMigrate, userId!).then(
+      () => {
+        dispatch(
+          providerRedux.actions.batchDeleteTripsByIds!(
+            tripsToMigrate.map((t) => t.id)
+          )
+        );
+        enqueueSnackbar(
+          `Migrated ${tripsToMigrate.length} trip${
+            tripsToMigrate.length === 1 ? "" : "s"
+          } to your account`
+        );
+      }
+    );
+  }, [tripsToMigrate, dispatch, userId, enqueueSnackbar]);
+};
+
 export const useGetTrips: TripHooks["useGetTrips"] = () => {
   const activeProvider = useGetActiveProvider();
   const userId = useGetUserId();

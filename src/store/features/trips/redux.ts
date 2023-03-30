@@ -86,6 +86,7 @@ const tripSlice = createSlice({
 
       tripsAdapter.updateOne(state, { id: payload.id, changes });
     },
+    batchDeleteTripsByIds: tripsAdapter.removeMany,
   },
   extraReducers: (builder) => {
     /**

@@ -9,6 +9,7 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -22,7 +23,7 @@ import {
   convertTripDocument,
   convertTripItemDocuments,
 } from "../../../helpers/converters";
-import { getTripItemsCollection, tripsRef } from "../../../firebase";
+import { getTripItemsCollection, tripsRef, firestore } from "../../../firebase";
 import { TripActions, TripSelectors } from "./interface";
 
 /** actions */
@@ -134,6 +135,31 @@ const deleteTripItemById: TripActions["deleteTripItemById"] = async ({
   }
 };
 
+const batchAddTrips: TripActions["batchAddTrips"] = async (trips, userId) => {
+  try {
+    const batch = writeBatch(firestore);
+    trips.forEach((t) => {
+      const newDoc = doc(tripsRef);
+      const convertibleTrip = {
+        ...t,
+        public: false,
+        userId,
+      };
+      const tripDoc = convertTripDocument.toFirestore(
+        convertibleTrip
+      ) as TripSnapshot;
+      batch.set(newDoc, {
+        ...tripDoc,
+        createdAtUtc: serverTimestamp(),
+        updatedAtUtc: serverTimestamp(),
+      });
+    });
+    return batch.commit();
+  } catch (e) {
+    throw new Error(`[store/firestore] error migrating trips: ${e}`);
+  }
+};
+
 /** selectors */
 const getTrips: TripSelectors["getTrips"] = async (userId: string | null) => {
   if (!userId) {
@@ -219,6 +245,7 @@ export const actions: TripActions = {
   addTripItemByTripId,
   updateTripItemById,
   deleteTripItemById,
+  batchAddTrips,
 };
 
 export const selectors: TripSelectors = {

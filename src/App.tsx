@@ -6,7 +6,12 @@ import { Container, Stack } from "@mui/material";
 import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
-import { useSetLoggedIn, useSetUserId } from "./store/features/auth";
+import { useMigrateLocalTrips } from "./store/features/trips";
+import {
+  useIsLoggedIn,
+  useSetLoggedIn,
+  useSetUserId,
+} from "./store/features/auth";
 import { auth } from "./firebase";
 import SponsoredLinks from "./features/sponsoredLinks";
 import { useOnlineStatus } from "./contexts/OnlineStatus";
@@ -43,7 +48,9 @@ const App = () => {
   } = useGlobalModalVisibility();
   const { online: isOnline } = useOnlineStatus();
   const setLoggedIn = useSetLoggedIn();
+  const isLoggedIn = useIsLoggedIn();
   const setUserId = useSetUserId();
+  const migrateTrips = useMigrateLocalTrips();
 
   // set logged in state
   onAuthStateChanged(auth, (user) => {
@@ -78,6 +85,13 @@ const App = () => {
       setLogLevel("verbose");
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("is logged in - migrating");
+      migrateTrips();
+    }
+  }, [isLoggedIn, migrateTrips]);
 
   return (
     <div className="App">
