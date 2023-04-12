@@ -135,7 +135,7 @@ const AddEditTripItemForm = ({
               <Divider flexItem />
             </Grid>
             <Grid item xs={12} md={6}>
-              <FastField
+              <Field
                 component={DateTimePicker}
                 label="Starts At"
                 name="startsAt"
@@ -143,8 +143,8 @@ const AddEditTripItemForm = ({
                   helperText: "'All day' option coming soon",
                   fullWidth: true,
                 }}
-                minDate={dayjs.utc(tripDetails?.startsAt)}
-                maxDate={dayjs.utc(tripDetails?.endsAt)}
+                minDate={dayjs(tripDetails?.startsAt)}
+                maxDate={dayjs(tripDetails?.endsAt)}
                 validate={(value: string) => {
                   const requireCheck = fieldIsRequired(value);
                   const startsAtAfterTripStart = dayjs
@@ -167,7 +167,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasDestination && (
               <Grid item xs={12} md={6}>
-                <FastField
+                <Field
                   component={DateTimePicker}
                   label="Finishes At"
                   name="endsAt"
@@ -178,9 +178,9 @@ const AddEditTripItemForm = ({
                     error: !!errors?.endsAt,
                     fullWidth: true,
                   }}
-                  defaultCalendarMonth={dayjs.utc(values.startsAt)}
-                  minDate={values.startsAt && dayjs.utc(values.startsAt)}
-                  maxDate={dayjs.utc(tripDetails?.endsAt)}
+                  defaultCalendarMonth={dayjs(values.startsAt)}
+                  minDate={values.startsAt && dayjs(values.startsAt)}
+                  maxDate={dayjs(tripDetails?.endsAt)}
                   validate={(value: string) => {
                     // don't show errors when startsAt will be erroring
                     if (!values.startsAt) {

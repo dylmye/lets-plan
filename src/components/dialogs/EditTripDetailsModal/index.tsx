@@ -66,6 +66,7 @@ const EditTripDetailsModal = ({
         <Typography variant="h5">
           <strong id="modal-edittrip-title">Edit Trip Details</strong>
         </Typography>
+        {/* @TODO: add validation */}
         <Formik<TripDetails>
           initialValues={{
             title,
@@ -89,13 +90,14 @@ const EditTripDetailsModal = ({
                 name="location"
                 label="Location"
               />
-              <FastField
+              <Field
                 component={DatePicker}
                 label="Start date"
                 name="startsAt"
                 textField={{
                   fullWidth: true,
                 }}
+                maxDate={values?.endsAt && dayjs(values.endsAt)}
               />
               <Field
                 component={DatePicker}
@@ -105,9 +107,9 @@ const EditTripDetailsModal = ({
                   fullWidth: true,
                 }}
                 defaultCalendarMonth={
-                  values?.startsAt && dayjs.utc(values.startsAt)
+                  values?.startsAt && dayjs(values.startsAt)
                 }
-                minDate={values?.startsAt && dayjs.utc(values.startsAt)}
+                minDate={values?.startsAt && dayjs(values.startsAt)}
               />
               <FastField
                 component={TextField}
