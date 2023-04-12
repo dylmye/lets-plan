@@ -76,15 +76,15 @@ const TripListItemCard = ({ trip }: TripListItemCardProps) => (
                   variant="body2"
                   textAlign="left"
                   sx={{ display: { xs: "none", sm: "block" } }}>
-                  {formatDate(trip.startsAt, "long", false)} -{" "}
-                  {trip.endsAt ? formatDate(trip.endsAt, "long", false) : ""}
+                  {formatDate(trip.startsAt, "long")} -{" "}
+                  {trip.endsAt ? formatDate(trip.endsAt, "long") : ""}
                 </Typography>
                 <Typography
                   variant="body2"
                   textAlign="left"
                   sx={{ display: { xs: "block", sm: "none" } }}>
-                  {formatDate(trip.startsAt, "short", false)} -{" "}
-                  {trip.endsAt ? formatDate(trip.endsAt, "short", false) : ""}
+                  {formatDate(trip.startsAt, "short")} -{" "}
+                  {trip.endsAt ? formatDate(trip.endsAt, "short") : ""}
                 </Typography>
                 <Typography
                   variant="body2"

@@ -19,7 +19,7 @@ import React, {
 } from "react";
 import { useSnackbar } from "notistack";
 import { CheckboxWithLabel, TextField } from "formik-mui";
-import { Field, FieldProps, Form, Formik } from "formik";
+import { FastField, FieldProps, Form, Formik } from "formik";
 import { AuthError } from "firebase/auth";
 import {
   Alert,
@@ -135,7 +135,7 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
           verify: "",
         }}
         onSubmit={async ({ email, password }) => {
-          if (captchaRef?.current) {
+          if (process.env.NODE_ENV !== "development" && captchaRef?.current) {
             await captchaRef.current.execute({ async: true });
           }
           createUserWithEmailAndPassword(email, password);
@@ -150,14 +150,14 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
               {renderFriendlyAuthMessages(emailErrors)}
             </Alert>
           )}
-          <Field
+          <FastField
             component={TextField}
             name="email"
             type="email"
             label="Your email address"
             fullWidth
           />
-          <Field
+          <FastField
             component={TextField}
             name="password"
             type={passwordVisible ? "text" : "password"}
@@ -184,17 +184,20 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
             }
             sx={{ m: 0 }}
             control={
-              <Field
+              <FastField
                 component={CheckboxWithLabel}
                 type="checkbox"
                 name="checkedPrivacy"
               />
             }
           />
-          <Button type="submit" variant="contained" disabled={formLoading}>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={formLoading || emailSignupLoading}>
             Register
           </Button>
-          <Field component={VerifyField} name="verify" />
+          <FastField component={VerifyField} name="verify" />
         </Form>
       </Formik>
     </>

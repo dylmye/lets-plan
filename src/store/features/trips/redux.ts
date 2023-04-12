@@ -17,7 +17,11 @@ import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
 import { getTripItemTypeLabel } from "../../../helpers/tripItems";
-import { dateCompare, tripIsInState } from "../../../helpers/dates";
+import {
+  butcherDatetimeTimezone,
+  dateCompare,
+  tripIsInState,
+} from "../../../helpers/dates";
 import SliceNames from "../../../enums/SliceNames";
 import exampleTrip from "../../../data/exampleTrip";
 import { RootState } from "../../../app/store";
@@ -62,8 +66,8 @@ const tripSlice = createSlice({
         location: payload.location,
         startsAt: payload.startsAt,
         endsAt: payload.endsAt,
-        createdAtUtc: dayjs().format(),
-        updatedAtUtc: dayjs().format(),
+        createdAtUtc: dayjs.utc().format(),
+        updatedAtUtc: dayjs.utc().format(),
         image: payload.image,
         items: [],
         userId: undefined,
@@ -82,6 +86,9 @@ const tripSlice = createSlice({
         // be set otherwise on cloud storage trips
         userId: undefined,
         public: false,
+        startsAt: dayjs(payload.startsAt).format("YYYY-MM-DD"),
+        endsAt: payload.endsAt && dayjs(payload.endsAt).format("YYYY-MM-DD"),
+        updatedAtUtc: dayjs.utc().format(),
       };
 
       tripsAdapter.updateOne(state, { id: payload.id, changes });
@@ -105,11 +112,15 @@ const tripSlice = createSlice({
 
       let newTripItem: TripItem = {
         ...filteredPayload,
-        id: uuidv4(),
+        id: `trip-item-${uuidv4()}`,
         title: filteredPayload?.title?.length
           ? filteredPayload.title
           : getTripItemTypeLabel(filteredPayload.type),
+        startsAt: butcherDatetimeTimezone(filteredPayload.startsAt)!,
+        endsAt: butcherDatetimeTimezone(filteredPayload.endsAt!),
       };
+
+      console.log(newTripItem);
 
       const items: TripItem[] = [...(trip?.items || []), newTripItem];
 
@@ -141,7 +152,16 @@ const tripSlice = createSlice({
 
       const { category, ...newData } = payload.data;
 
-      const items: TripItem[] = [...allOtherItems, newData as TripItem];
+      const newDataFormatted: TripItem = {
+        ...newData,
+        id: newData.id!,
+        startsAt: butcherDatetimeTimezone(newData.startsAt)!,
+        endsAt: butcherDatetimeTimezone(newData.endsAt!),
+      };
+
+      console.log(newDataFormatted);
+
+      const items: TripItem[] = [...allOtherItems, newDataFormatted];
 
       tripsAdapter.updateOne(state, {
         id: payload.tripId,

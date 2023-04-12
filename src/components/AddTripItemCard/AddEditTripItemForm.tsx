@@ -1,7 +1,7 @@
 import React from "react";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 import { TextField, ToggleButtonGroup } from "formik-mui";
-import { Field, Form, useFormikContext } from "formik";
+import { FastField, Field, Form, useFormikContext } from "formik";
 import dayjs from "dayjs";
 import {
   Box,
@@ -94,7 +94,7 @@ const AddEditTripItemForm = ({
           </Field>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Field
+          <FastField
             component={AutocompleteField}
             options={values.category === "travel" ? TravelTypes : ActivityTypes}
             renderOption={(
@@ -121,7 +121,7 @@ const AddEditTripItemForm = ({
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Field
+          <FastField
             component={TextField}
             name="title"
             label="Title"
@@ -135,7 +135,7 @@ const AddEditTripItemForm = ({
               <Divider flexItem />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Field
+              <FastField
                 component={DateTimePicker}
                 label="Starts At"
                 name="startsAt"
@@ -143,17 +143,16 @@ const AddEditTripItemForm = ({
                   helperText: "'All day' option coming soon",
                   fullWidth: true,
                 }}
-                minDate={dayjs(tripDetails?.startsAt)}
-                maxDate={dayjs(tripDetails?.endsAt)}
+                minDate={dayjs.utc(tripDetails?.startsAt)}
+                maxDate={dayjs.utc(tripDetails?.endsAt)}
                 validate={(value: string) => {
                   const requireCheck = fieldIsRequired(value);
-                  const startsAtAfterTripStart = dayjs(value).isSameOrAfter(
-                    tripDetails?.startsAt
-                  );
-                  const startsAtBeforeTripEnd = dayjs(value).isSameOrBefore(
-                    tripDetails?.endsAt,
-                    "day"
-                  );
+                  const startsAtAfterTripStart = dayjs
+                    .utc(value)
+                    .isSameOrAfter(tripDetails?.startsAt);
+                  const startsAtBeforeTripEnd = dayjs
+                    .utc(value)
+                    .isSameOrBefore(tripDetails?.endsAt, "day");
 
                   return (
                     requireCheck ??
@@ -168,7 +167,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasDestination && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={DateTimePicker}
                   label="Finishes At"
                   name="endsAt"
@@ -179,9 +178,9 @@ const AddEditTripItemForm = ({
                     error: !!errors?.endsAt,
                     fullWidth: true,
                   }}
-                  defaultCalendarMonth={dayjs(values.startsAt)}
-                  minDate={values.startsAt && dayjs(values.startsAt)}
-                  maxDate={dayjs(tripDetails?.endsAt)}
+                  defaultCalendarMonth={dayjs.utc(values.startsAt)}
+                  minDate={values.startsAt && dayjs.utc(values.startsAt)}
+                  maxDate={dayjs.utc(tripDetails?.endsAt)}
                   validate={(value: string) => {
                     // don't show errors when startsAt will be erroring
                     if (!values.startsAt) {
@@ -192,13 +191,12 @@ const AddEditTripItemForm = ({
                       return "End date is required";
                     }
 
-                    const endsAtAfterStartsAt = dayjs(value).isAfter(
-                      values.startsAt
-                    );
-                    const endsAtBeforeTripEnd = dayjs(value).isSameOrBefore(
-                      tripDetails?.endsAt as string,
-                      "day"
-                    );
+                    const endsAtAfterStartsAt = dayjs
+                      .utc(value)
+                      .isAfter(values.startsAt);
+                    const endsAtBeforeTripEnd = dayjs
+                      .utc(value)
+                      .isSameOrBefore(tripDetails?.endsAt as string, "day");
 
                     return !endsAtAfterStartsAt
                       ? "Can't finish before starting"
@@ -214,7 +212,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasOrigin && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={GooglePlacesAutocompleteField}
                   name={
                     values.category === "travel" ? "originLocation" : "location"
@@ -231,7 +229,7 @@ const AddEditTripItemForm = ({
             )}
             {values.category === "travel" && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={GooglePlacesAutocompleteField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
@@ -255,7 +253,7 @@ const AddEditTripItemForm = ({
               </Grid>
             )}
             <Grid item xs={12} md={6}>
-              <Field
+              <FastField
                 component={TextField}
                 name="details"
                 label="Notes"
@@ -268,7 +266,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasReference && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={TextField}
                   name="reference"
                   label="Booking / Confirmation Reference"
@@ -279,7 +277,7 @@ const AddEditTripItemForm = ({
             )}
             {currentFieldSettings.hasPrice && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={IntlPriceField}
                   name="price"
                   label="Price / Budget"

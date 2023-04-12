@@ -17,12 +17,8 @@ export default interface TripItineraryItemBase {
   urls?: Record<string, string> | null;
   /** The UTC time the item starts at */
   startsAt: string;
-  /** The timezone to display the start time in */
-  startsAtTimezone: string;
   /** The UTC time the trip ends at */
   endsAt?: string | null;
-  /** The timezone to display the end time in */
-  endsAtTimezone?: string;
   /** The cost (estimated or actual) for the item (tickets etc) */
   price?: number;
   /** The currency this price is in */

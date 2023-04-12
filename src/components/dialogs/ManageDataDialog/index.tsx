@@ -14,6 +14,7 @@ interface ManageDataDialogProps {
   visible: boolean;
   onClose: () => void;
   authenticated?: boolean;
+  onDeleteData: () => void;
 }
 
 /** Options for downloading/deleting trip data */
@@ -21,6 +22,7 @@ const ManageDataDialog = ({
   visible,
   onClose,
   authenticated = false,
+  onDeleteData,
 }: ManageDataDialogProps) => {
   const exportTrips = useExportTrips();
   return (
@@ -69,7 +71,8 @@ const ManageDataDialog = ({
           <Button
             variant="contained"
             color="error"
-            className={styles.actionButton}>
+            className={styles.actionButton}
+            onClick={onDeleteData}>
             Delete my data
           </Button>
         </DialogContentText>

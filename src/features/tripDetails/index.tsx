@@ -97,7 +97,7 @@ const TripDetails = () => {
             fontWeight: "bold",
             textAlign: "left",
           }}>
-          <time dateTime={day}>{formatDate(day, "long", false, true)}</time>
+          <time dateTime={day}>{formatDate(day, "long", true)}</time>
         </Typography>
         <Stack direction="row" spacing={1}>
           {isEditable && (
@@ -232,7 +232,7 @@ const TripDetails = () => {
             }}>
             {trip?.startsAt ? (
               <time dateTime={trip.startsAt}>
-                {formatDate(trip.startsAt, "long", false)}
+                {formatDate(trip.startsAt, "long")}
               </time>
             ) : (
               ""
@@ -240,7 +240,7 @@ const TripDetails = () => {
             -{" "}
             {trip?.endsAt ? (
               <time dateTime={trip.endsAt}>
-                {formatDate(trip.endsAt, "long", false)}
+                {formatDate(trip.endsAt, "long")}
               </time>
             ) : (
               ""

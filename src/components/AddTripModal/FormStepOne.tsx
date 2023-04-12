@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField } from "formik-mui";
-import { Field } from "formik";
+import { FastField } from "formik";
 import { TextFieldProps } from "@mui/material";
 import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
@@ -26,13 +26,13 @@ const FormStepOne = () => {
 
   return (
     <div className={styles.formFieldsContainer}>
-      <Field
+      <FastField
         component={TextField}
         fullWidth
         name="title"
         label="Name of your trip"
       />
-      <Field
+      <FastField
         component={GooglePlacesAutocompleteField}
         name="location"
         label="Where are you going?"

@@ -1,6 +1,6 @@
 import React from "react";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { Field, useFormikContext } from "formik";
+import { FastField, useFormikContext } from "formik";
 import dayjs from "dayjs";
 
 import TripDraft from "../../types/TripDraft";
@@ -11,7 +11,7 @@ const FormStepTwo = () => {
 
   return (
     <div className={styles.formFieldsContainer}>
-      <Field
+      <FastField
         component={DatePicker}
         label="When does your trip start?"
         name="startsAt"
@@ -19,7 +19,7 @@ const FormStepTwo = () => {
           fullWidth: true,
         }}
       />
-      <Field
+      <FastField
         component={DatePicker}
         label="And when does it end?"
         name="endsAt"

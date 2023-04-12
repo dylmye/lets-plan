@@ -11,7 +11,7 @@ import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
 import { formatFirebaseDateTime } from "./dates";
 
 export const convertDateStringToTimestamp = (date: string): Timestamp =>
-  new Timestamp(dayjs(date).unix(), 0);
+  new Timestamp(dayjs(date).utc(true).unix(), 0);
 
 /**
  * Translate timestamps on trips.

@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField } from "formik-mui";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import { Box, InputAdornment } from "@mui/material";
 
 import AutocompleteField, {
@@ -30,7 +30,7 @@ const IntlPriceField = ({
 }: IntlPriceFieldProps) => {
   const CurrencyDropdownAdornment = (
     <InputAdornment position="start">
-      <Field
+      <FastField
         component={AutocompleteField}
         options={Object.keys(CURRENCIES)}
         name={currencySelectorFieldName}

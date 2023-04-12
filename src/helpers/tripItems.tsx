@@ -1,5 +1,5 @@
 import { TextField } from "formik-mui";
-import { Field } from "formik";
+import { FastField } from "formik";
 import dayjs from "dayjs";
 import { Link, SvgIconProps } from "@mui/material";
 import {
@@ -421,7 +421,7 @@ export const renderExtraField = (
   switch (fieldType) {
     case "toggle": {
       return (
-        <Field
+        <FastField
           name={field}
           component={BetterSwitchField}
           label={fieldNameToLabel(field)}
@@ -430,7 +430,7 @@ export const renderExtraField = (
     }
     case "textarea": {
       return (
-        <Field
+        <FastField
           name={field}
           label={fieldNameToLabel(field)}
           component={TextField}
@@ -441,7 +441,7 @@ export const renderExtraField = (
     }
     case "connected-dropdown:places": {
       return (
-        <Field
+        <FastField
           component={GooglePlacesAutocompleteField}
           name={field}
           label={fieldNameToLabel(field)}
@@ -450,7 +450,7 @@ export const renderExtraField = (
     }
     case "connected-dropdown:airline": {
       return (
-        <Field
+        <FastField
           component={AirlineAutocompleteField}
           name={field}
           label={fieldNameToLabel(field)}
@@ -464,7 +464,7 @@ export const renderExtraField = (
 
       // fieldType === 'text' + backup
       return (
-        <Field
+        <FastField
           name={field}
           label={fieldNameToLabel(field)}
           component={TextField}
@@ -488,9 +488,7 @@ export const renderExtraText = (field: TripItem): ExtraText[] => {
     "miscText",
     "image",
     "startsAt",
-    "startsAtTimezone",
     "endsAt",
-    "endsAtTimezone",
     "priceCurrency", // price incl. currency
     "destinationLocation", // render with origin
     "details", // this should always be last so we render it manually

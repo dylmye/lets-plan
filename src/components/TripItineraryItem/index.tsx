@@ -29,7 +29,7 @@ import {
   getTripItemTypeLabel,
   renderExtraText,
 } from "../../helpers/tripItems";
-import { formatTime } from "../../helpers/dates";
+import { forceDateInUserTimezone, formatTime } from "../../helpers/dates";
 import styles from "./styles.module.css";
 
 export interface TripItineraryItemProps {
@@ -86,21 +86,14 @@ const TripItineraryItem = ({
       title={
         <Typography variant="body2" className={styles.tripItemText}>
           <time dateTime={item.startsAt}>
-            {formatTime(
-              item.startsAt,
-              true,
-              false,
-              // item.startsAtTimezone
-              // @TODO: fix temp issues where SAT is hard set
-              undefined
-            )}
+            {formatTime(item.startsAt, true)}
           </time>
           {item?.endsAt && (
             <>
               {` - `}
               <time dateTime={item.endsAt}>
                 {endsAtSeparateDate}
-                {formatTime(item.endsAt, true, false, item?.endsAtTimezone)}
+                {formatTime(item.endsAt, true)}
               </time>
             </>
           )}
@@ -172,6 +165,8 @@ const TripItineraryItem = ({
     updateTripItem(trip.id, {
       ...values,
       id: item.id,
+      startsAt: dayjs(values.startsAt).utc(true).toISOString(),
+      endsAt: values?.endsAt && dayjs(values.endsAt).utc(true).toISOString(),
     });
     onToggleEditTripItem(item.id, false);
   };
@@ -209,6 +204,10 @@ const TripItineraryItem = ({
                   initialValues={{
                     ...item,
                     category: getTripItemCategory(item),
+                    startsAt: forceDateInUserTimezone(item.startsAt).format(),
+                    endsAt:
+                      item.endsAt &&
+                      forceDateInUserTimezone(item.endsAt)?.format(),
                   }}
                   onSubmit={onUpdateTripItem}>
                   <AddEditTripItemForm

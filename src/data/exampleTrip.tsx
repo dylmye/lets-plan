@@ -18,8 +18,8 @@ const exampleTrip: Trip = {
   location: "Whitby, Yorkshire, UK",
   startsAt: exampleStartDate.format(),
   endsAt: exampleStartDate.endOf("day").add(1, "day").format(),
-  createdAtUtc: dayjs.utc().format(),
-  updatedAtUtc: dayjs.utc().format(),
+  createdAtUtc: dayjs().format(),
+  updatedAtUtc: dayjs().format(),
   image:
     "https://firebasestorage.googleapis.com/v0/b/lets-plan-firebase.appspot.com/o/default-trip-thumbs%2Fdefault-yorkshire-1555795622.webp?alt=media",
   items: [
@@ -31,9 +31,7 @@ const exampleTrip: Trip = {
       originLocation: "Walthamstow, London, UK",
       destinationLocation: "Whitby, Yorkshire, UK",
       startsAt: exampleStartDate.add(7, "hour").format(),
-      startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(11, "hour").add(49, "minute").format(),
-      endsAtTimezone: "Europe/London",
     } as CarItem,
     {
       id: "example_item_1",
@@ -42,9 +40,7 @@ const exampleTrip: Trip = {
         "Hadleys Fish Restaurant & Accommodation, 11 Bridge St, Whitby YO22 4BG, England",
       details: "Fish and chips by the bridge!",
       startsAt: exampleStartDate.add(12, "hour").format(),
-      startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(13, "hour").format(),
-      endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
       id: "example_item_2",
@@ -52,9 +48,7 @@ const exampleTrip: Trip = {
       location:
         "Captain Cook Memorial Museum, Grape Ln, Whitby YO22 4BA, England",
       startsAt: exampleStartDate.add(15, "hour").format(),
-      startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(16, "hour").format(),
-      endsAtTimezone: "Europe/London",
       urls: {
         Website: "https://www.cookmuseumwhitby.co.uk/",
       },
@@ -69,9 +63,7 @@ const exampleTrip: Trip = {
       location: "Upgang Beach, Whitby, England",
       details: "Let's meet Janelle and Hanna by the rocks.",
       startsAt: exampleStartDate.add(16, "hour").add(30, "minute").format(),
-      startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate.add(19, "hour").format(),
-      endsAtTimezone: "Europe/London",
     } as TripItineraryActivityItem,
     {
       id: "example_item_4",
@@ -80,13 +72,11 @@ const exampleTrip: Trip = {
       originLocation: "Whitby, Yorkshire, UK",
       destinationLocation: "Walthamstow, London, UK",
       startsAt: exampleStartDate.add(1, "day").add(12, "hour").format(),
-      startsAtTimezone: "Europe/London",
       endsAt: exampleStartDate
         .add(1, "day")
         .add(16, "hour")
         .add(49, "minute")
         .format(),
-      endsAtTimezone: "Europe/London",
     } as CarItem,
   ],
   public: false,

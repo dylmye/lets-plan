@@ -6,7 +6,7 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
 import { TextField as FormikTextField, TextFieldProps } from "formik-mui";
-import { Field, Form, Formik } from "formik";
+import { FastField, Form, Formik } from "formik";
 import { AuthError } from "firebase/auth";
 import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 
@@ -98,13 +98,13 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
               {renderFriendlyAuthMessages(emailErrors)}
             </Alert>
           )}
-          <Field
+          <FastField
             component={TextField}
             name="email"
             type="email"
             label="Your email address"
           />
-          <Field
+          <FastField
             component={TextField}
             name="password"
             type={passwordVisible ? "text" : "password"}

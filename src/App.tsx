@@ -88,7 +88,6 @@ const App = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("is logged in - migrating");
       migrateTrips();
     }
   }, [isLoggedIn, migrateTrips]);

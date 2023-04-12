@@ -73,6 +73,18 @@ const UserNavbarItem = ({
     location.reload();
   };
 
+  const onDeleteData = async () => {
+    if (authenticated) {
+      try {
+        await auth.currentUser?.delete();
+      } catch (e) {
+        console.error(`unable to delete firebase user: ${e}`);
+      }
+    }
+
+    await onResetApp();
+  };
+
   const onClickManageData = () => {
     onToggle();
     setManageDataDialogOpen(true);
@@ -176,6 +188,7 @@ const UserNavbarItem = ({
         visible={manageDataDialogOpen}
         onClose={() => setManageDataDialogOpen(false)}
         authenticated={authenticated}
+        onDeleteData={onDeleteData}
       />
     </>
   );

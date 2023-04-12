@@ -2,7 +2,7 @@ import React from "react";
 import { useSnackbar } from "notistack";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { TextField } from "formik-mui";
-import { Field, Form, Formik } from "formik";
+import { FastField, Field, Form, Formik } from "formik";
 import dayjs from "dayjs";
 import CardActions from "@mui/material/CardActions";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
@@ -78,18 +78,18 @@ const EditTripDetailsModal = ({
           onSubmit={onFormSubmit}>
           {({ values }) => (
             <Form className={styles.formFieldsContainer}>
-              <Field
+              <FastField
                 component={TextField}
                 name="title"
                 label="Name"
                 fullWidth
               />
-              <Field
+              <FastField
                 component={GooglePlacesAutocompleteField}
                 name="location"
                 label="Location"
               />
-              <Field
+              <FastField
                 component={DatePicker}
                 label="Start date"
                 name="startsAt"
@@ -105,18 +105,18 @@ const EditTripDetailsModal = ({
                   fullWidth: true,
                 }}
                 defaultCalendarMonth={
-                  values?.startsAt && dayjs(values.startsAt)
+                  values?.startsAt && dayjs.utc(values.startsAt)
                 }
-                minDate={values?.startsAt && dayjs(values.startsAt)}
+                minDate={values?.startsAt && dayjs.utc(values.startsAt)}
               />
-              <Field
+              <FastField
                 component={TextField}
                 name="details"
                 label="Details"
                 fullWidth
                 multiline
               />
-              <Field
+              <FastField
                 component={BetterSwitchField}
                 name="public"
                 label={`Share this trip with others${

@@ -10,7 +10,4 @@ import { AllItineraryTypes } from "./tripItineraryTypes";
  * - The individual trip travel types in [tripitineraryTypes](./tripItineraryTypes/index.ts) folder
  */
 export default interface TripItem
-  extends PartialWithReq<
-    AllItineraryTypes,
-    "id" | "type" | "startsAt" | "startsAtTimezone"
-  > {}
+  extends PartialWithReq<AllItineraryTypes, "id" | "type" | "startsAt"> {}

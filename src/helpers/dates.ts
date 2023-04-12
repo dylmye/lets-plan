@@ -12,9 +12,9 @@ import "dayjs/locale/en";
 import Trip from "../types/Trip";
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(localeData);
 dayjs.extend(localizedFormat);
-dayjs.extend(timezone);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
@@ -27,49 +27,18 @@ export const userLanguage: string =
 export const formatDate = (
   date: string | dayjs.Dayjs,
   format: "short" | "long" = "short",
-  isUtc = true,
   withDayName = false
 ) => {
   const formatCode =
     format === "short"
       ? `${withDayName ? "ddd " : ""}l`
       : `${withDayName ? "dddd " : ""}LL`;
-  if (isUtc) {
-    return dayjs.utc(date).locale(userLanguage).format(formatCode);
-  }
-  return dayjs(date).locale(userLanguage).format(formatCode);
+  return dayjs.utc(date).format(formatCode);
 };
 
-export const formatTime = (
-  date: string | dayjs.Dayjs,
-  compact = true,
-  isUtc = true,
-  displayTimezone: string | null = null
-) => {
-  if (isUtc) {
-    let value: dayjs.Dayjs | string = dayjs.utc(date).locale(userLanguage);
-    if (displayTimezone) {
-      value.tz(displayTimezone);
-    }
-    value = value.format("LT");
-    if (compact) {
-      return value.toLocaleLowerCase().replace(" ", "");
-    }
-    return value;
-  }
-  if (displayTimezone) {
-    const value = dayjs(date)
-      .tz(displayTimezone)
-      .locale(userLanguage)
-      .format("LT");
-
-    if (compact) {
-      return value.toLocaleLowerCase().replace(" ", "");
-    }
-    return value;
-  }
-  const value = dayjs(date).locale(userLanguage).format("LT");
-
+export const formatTime = (date: string | dayjs.Dayjs, compact = true) => {
+  let value: dayjs.Dayjs | string = dayjs.utc(date);
+  value = value.format("LT");
   if (compact) {
     return value.toLocaleLowerCase().replace(" ", "");
   }
@@ -82,14 +51,9 @@ export const formatDateTime = (
   isUtc = true
 ) => {
   if (isUtc) {
-    return dayjs
-      .utc(date)
-      .locale(userLanguage)
-      .format(format === "short" ? "l LT" : "LLL");
+    return dayjs.utc(date).format(format === "short" ? "l LT" : "LLL");
   }
-  return dayjs(date)
-    .locale(userLanguage)
-    .format(format === "short" ? "l LT" : "LLL");
+  return dayjs(date).format(format === "short" ? "l LT" : "LLL");
 };
 
 export const formatFirebaseDateTime = (date: string | Timestamp): string => {
@@ -153,4 +117,35 @@ export const formatDaysUntil = (
   }
   const numDaysDiff = dayjs(target).diff(now, "day");
   return `In ${numDaysDiff} day${numDaysDiff === 1 ? "!" : "s"}`;
+};
+
+/**
+ * Remove the timezone from a date + time to ensure
+ * what users enter is what users see
+ * @param datetime The date to convert
+ */
+export const butcherDatetimeTimezone = (
+  datetime: string | dayjs.Dayjs | null
+): string | null => {
+  if (!datetime) {
+    return null;
+  }
+  if (
+    (typeof datetime === "string" && datetime.endsWith("Z")) ||
+    dayjs(datetime).isUTC()
+  ) {
+    return dayjs.utc(datetime).format("YYYY-MM-DD[T]HH:mm:ss");
+  }
+  return dayjs(datetime).format("YYYY-MM-DD[T]HH:mm:ss");
+};
+
+/**
+ * Add the user's timezone offset to a given datetime
+ * @param datetime The datetime to convert
+ * @returns The forced datetime object
+ */
+export const forceDateInUserTimezone = (
+  datetime: string | dayjs.Dayjs
+): dayjs.Dayjs => {
+  return dayjs.tz(datetime, dayjs.tz.guess());
 };

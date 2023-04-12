@@ -6,7 +6,7 @@
     "@3m1/service-worker-updater": "^2.0.3",
     "@analytics/simple-analytics": "^0.3.4",
     "@dylmye/flight-designator": "^4.1.3",
-    "@dylmye/mui-google-places-autocomplete": "0.2.9",
+    "@dylmye/mui-google-places-autocomplete": "0.2.10",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@googlemaps/js-api-loader": "^1.15.1",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "formik";
+import { FastField } from "formik";
 import { Alert, Typography } from "@mui/material";
 
 import UploadImageField from "../fields/UploadImageField";
@@ -13,7 +13,7 @@ interface StepThreeProps {
 const FormStepThree = ({ isImageUploading }: StepThreeProps) => (
   <div className={styles.formFieldsContainer}>
     {isImageUploading && <Alert severity="info">Uploading...</Alert>}
-    <Field
+    <FastField
       component={UploadImageField}
       name="coverImageBlob"
       label="Upload a cover picture (optional)"
