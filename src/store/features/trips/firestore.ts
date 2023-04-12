@@ -87,18 +87,14 @@ const addTripItemByTripId: TripActions["addTripItemByTripId"] = async ({
   const { category, ...filteredTripItem } = tripItem;
   const ref = getTripItemsCollection(tripId);
   try {
-    await addDoc(ref, {
+    // @ts-ignore id should be missing as it's not made yet lol
+    const newTripItem = convertTripItemDocuments.toFirestore({
       ...filteredTripItem,
-      startsAt: convertDateStringToTimestamp(
-        filteredTripItem.startsAt as string
-      ),
-      endsAt:
-        filteredTripItem.endsAt &&
-        convertDateStringToTimestamp(filteredTripItem.endsAt as string),
       title: filteredTripItem.title?.length
         ? filteredTripItem.title
         : getTripItemTypeLabel(filteredTripItem.type),
-    } as TripItemSnapshot);
+    }) as TripItemSnapshot;
+    await addDoc(ref, newTripItem);
   } catch (e) {
     throw new Error(`[store/firestore] error adding a trip item: ${e}`);
   }
@@ -111,13 +107,11 @@ const updateTripItemById: TripActions["updateTripItemById"] = async ({
   const ref = getTripItemsCollection(tripId);
   try {
     const { id, category, ...filteredTripItem } = data;
-    await updateDoc(doc(ref, data.id), {
+    const converted = convertTripItemDocuments.toFirestore({
       ...filteredTripItem,
-      startsAt: convertDateStringToTimestamp(filteredTripItem.startsAt),
-      endsAt:
-        filteredTripItem.endsAt &&
-        convertDateStringToTimestamp(filteredTripItem.endsAt),
-    });
+      id,
+    }) as TripItemSnapshot;
+    await updateDoc(doc(ref, data.id), converted);
   } catch (e) {
     throw new Error(`[store/firestore] error updating a trip item: ${e}`);
   }

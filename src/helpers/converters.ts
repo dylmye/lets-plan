@@ -8,20 +8,37 @@ import TripItem from "../types/Tripitem";
 import Trip from "../types/Trip";
 import TripSnapshot from "../types/firebase/TripSnapshot";
 import TripItemSnapshot from "../types/firebase/TripItemSnapshot";
-import { formatFirebaseDateTime } from "./dates";
+import { forceDateInUserTimezone, formatFirebaseDateTime } from "./dates";
 
+/**
+ * Storing dates in Firebase:
+ * - all date-times should be stored in UTC without conversion:
+ * for ex., user in UTC-4 entering 18:30 should store as 18:30 UTC
+ * - all dates without times should be stored at 00:00 UTC
+ */
+
+/**
+ * Convert a dayjs-compat date string to Firebase's Timestamp object.
+ * Accurate to seconds.
+ * @param date The date to convert
+ * @returns The Firebase Timestamp representation of the date provided
+ */
 export const convertDateStringToTimestamp = (date: string): Timestamp =>
-  new Timestamp(dayjs(date).utc(true).unix(), 0);
+  new Timestamp(dayjs(date).unix(), 0);
 
 /**
  * Translate timestamps on trips.
  */
 export const convertTripDocument: FirestoreDataConverter<Trip> = {
   toFirestore(trip: Trip): TripSnapshot {
+    const startsAt =
+      trip.startsAt && dayjs.utc(trip.startsAt).startOf("day").format();
+    const endsAt = trip.endsAt && dayjs.utc(trip.endsAt).endOf("day").format();
+
     return {
       ...trip,
-      startsAt: convertDateStringToTimestamp(trip.startsAt as string),
-      endsAt: convertDateStringToTimestamp(trip.endsAt as string),
+      startsAt: convertDateStringToTimestamp(startsAt!),
+      endsAt: convertDateStringToTimestamp(endsAt!),
       createdAtUtc: convertDateStringToTimestamp(trip.createdAtUtc),
       updatedAtUtc: convertDateStringToTimestamp(trip.updatedAtUtc),
     };
@@ -35,12 +52,12 @@ export const convertTripDocument: FirestoreDataConverter<Trip> = {
     return {
       ...data,
       id,
-      startsAt: data.startsAt && dayjs.unix(data.startsAt.seconds).format(),
-      endsAt: data.endsAt && dayjs.unix(data.endsAt.seconds).format(),
+      startsAt: data.startsAt && formatFirebaseDateTime(data.startsAt),
+      endsAt: data.endsAt && formatFirebaseDateTime(data.endsAt),
       createdAtUtc:
-        data.createdAtUtc && dayjs.unix(data.createdAtUtc.seconds).format(),
+        data.createdAtUtc && formatFirebaseDateTime(data.createdAtUtc),
       updatedAtUtc:
-        data.updatedAtUtc && dayjs.unix(data.updatedAtUtc.seconds).format(),
+        data.updatedAtUtc && formatFirebaseDateTime(data.updatedAtUtc),
     };
   },
 };
@@ -56,22 +73,23 @@ const tripItemTimestampKeys: (keyof TripItem)[] = [
  */
 export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
   toFirestore(tripItem: TripItem): TripItemSnapshot {
-    // convert any
+    // convert any timestamps
     Object.keys(tripItem)
       .filter((k) => tripItemTimestampKeys.includes(k as keyof TripItem))
       .forEach((k) => {
         // @ts-ignore typescript is stupid i promise this works
         tripItem[k] =
           !!tripItem[k as keyof TripItem] &&
-          new Timestamp(
-            dayjs(tripItem[k as keyof TripItem] as string).unix(),
-            0
+          convertDateStringToTimestamp(
+            dayjs.utc(tripItem[k as keyof TripItem] as string).format()
           );
       });
 
+    const startsAt = dayjs.utc(tripItem.startsAt).format();
+
     return {
       ...tripItem,
-      startsAt: new Timestamp(dayjs(tripItem.startsAt).unix(), 0),
+      startsAt: convertDateStringToTimestamp(startsAt),
     };
   },
   fromFirestore(
@@ -87,13 +105,17 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
         if (!data[k]) {
           return;
         }
-        data[k] = formatFirebaseDateTime(data[k]);
+        data[k] = forceDateInUserTimezone(
+          formatFirebaseDateTime(data[k])
+        ).format();
       });
 
     return {
       ...data,
       id,
-      startsAt: formatFirebaseDateTime(data.startsAt),
+      startsAt: forceDateInUserTimezone(
+        formatFirebaseDateTime(data.startsAt)
+      ).format(),
     };
   },
 };

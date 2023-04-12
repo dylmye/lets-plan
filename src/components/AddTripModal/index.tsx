@@ -62,7 +62,7 @@ const AddTripModal = (props: ModalProps) => {
 
   const TOTAL_STEPS = online ? 3 : 2;
 
-  const today = useMemo(() => dayjs(), []);
+  const today = useMemo(() => dayjs.utc(), []);
 
   const goBack = useCallback(() => setActiveStep(activeStep - 1), [activeStep]);
   const goForward = useCallback(
@@ -124,28 +124,43 @@ const AddTripModal = (props: ModalProps) => {
       ),
   });
 
+  /**
+   * Upload a blob to Firebase Storage and get its URI
+   * @param blob The file to upload
+   * @param tripId The trip ID to upload the file under
+   * @returns The newly created file's URI
+   */
+  const getCoverImageUri = async (
+    blob: File,
+    tripId: string
+  ): Promise<string> => {
+    let coverImageUri: string | null = null;
+    const extension = getExtensionByMimetype(blob.type);
+    const storageRef = ref(storage, `trip-thumbs/${tripId}.${extension}`);
+
+    setFormImageUploading(true);
+    let res: UploadResult | null = null;
+    try {
+      res = await uploadBytes(storageRef, blob);
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        setFormError(getUploadErrorFriendlyText(e));
+        console.error("trip thumb upload failed:", e.code, res?.metadata);
+      }
+    }
+    setFormImageUploading(false);
+
+    coverImageUri = await getDownloadURL(storageRef);
+    return coverImageUri;
+  };
+
   const onFormSubmit = async (values: TripDraft) => {
     let coverImageUri: string | null = null;
 
     setFormError(null);
     if (values.coverImageBlob) {
-      const extension = getExtensionByMimetype(values.coverImageBlob.type);
-      const storageRef = ref(storage, `trip-thumbs/${values.id}.${extension}`);
-
-      setFormImageUploading(true);
-      let res: UploadResult | null = null;
-      try {
-        res = await uploadBytes(storageRef, values.coverImageBlob);
-        delete values.coverImageBlob;
-      } catch (e) {
-        if (e instanceof FirebaseError) {
-          setFormError(getUploadErrorFriendlyText(e));
-          console.error("trip thumb upload failed:", e.code, res?.metadata);
-        }
-      }
-      setFormImageUploading(false);
-
-      coverImageUri = await getDownloadURL(storageRef);
+      coverImageUri = await getCoverImageUri(values.coverImageBlob, values.id);
+      delete values.coverImageBlob;
     }
     const newTrip = await addTrip({ ...values, image: coverImageUri });
     setActiveStep(0);

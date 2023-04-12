@@ -26,7 +26,11 @@ import Trip from "../../types/Trip";
 import { useGetTripById } from "../../store/features/trips";
 import { tripIsExample, tripIsOwnedByUser } from "../../helpers/trips";
 import { groupTripItemsByDay } from "../../helpers/tripItems";
-import { dateCompare, formatDate } from "../../helpers/dates";
+import {
+  butcherDatetimeTimezone,
+  dateCompare,
+  formatDate,
+} from "../../helpers/dates";
 import { COLOURS } from "../../helpers/colours";
 import { auth } from "../../firebase";
 import TripItineraryItem from "../../components/TripItineraryItem";
@@ -262,10 +266,10 @@ const TripDetails = () => {
           <Box sx={{ marginTop: 2 }}>
             <EmptyTripCard
               id={trip.id}
-              startsAt={trip.startsAt}
+              startsAt={butcherDatetimeTimezone(trip.startsAt)}
               title={trip.title}
               location={trip.location}
-              endsAt={trip.endsAt}
+              endsAt={butcherDatetimeTimezone(trip.endsAt)}
               public={trip.public}
             />
           </Box>

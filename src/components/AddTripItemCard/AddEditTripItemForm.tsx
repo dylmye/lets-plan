@@ -35,6 +35,7 @@ import { useCustomTheme } from "../../contexts/CustomTheme";
 import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
 import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
 import styles from "./styles.module.css";
+import { butcherDatetimeTimezone } from "../../helpers/dates";
 
 export interface AddEditTripItemFormProps {
   showCancel?: boolean;
@@ -143,8 +144,8 @@ const AddEditTripItemForm = ({
                   helperText: "'All day' option coming soon",
                   fullWidth: true,
                 }}
-                minDate={dayjs(tripDetails?.startsAt)}
-                maxDate={dayjs(tripDetails?.endsAt)}
+                minDate={dayjs(butcherDatetimeTimezone(tripDetails?.startsAt))}
+                maxDate={dayjs(butcherDatetimeTimezone(tripDetails?.endsAt))}
                 validate={(value: string) => {
                   const requireCheck = fieldIsRequired(value);
                   const startsAtAfterTripStart = dayjs

@@ -37,7 +37,7 @@ export const formatDate = (
 };
 
 export const formatTime = (date: string | dayjs.Dayjs, compact = true) => {
-  let value: dayjs.Dayjs | string = dayjs.utc(date);
+  let value: dayjs.Dayjs | string = dayjs(date);
   value = value.format("LT");
   if (compact) {
     return value.toLocaleLowerCase().replace(" ", "");
@@ -57,10 +57,13 @@ export const formatDateTime = (
 };
 
 export const formatFirebaseDateTime = (date: string | Timestamp): string => {
+  if (!date) {
+    return "<InvalidDate>";
+  }
   if (typeof date === "string") {
     return dayjs(date).format();
   }
-  return dayjs.unix(date.seconds).format();
+  return dayjs.unix(date.seconds).utc().format();
 };
 
 export const tripIsInState = (

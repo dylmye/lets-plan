@@ -17,11 +17,7 @@ import TripDraft from "../../../types/TripDraft";
 import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
 import { getTripItemTypeLabel } from "../../../helpers/tripItems";
-import {
-  butcherDatetimeTimezone,
-  dateCompare,
-  tripIsInState,
-} from "../../../helpers/dates";
+import { dateCompare, tripIsInState } from "../../../helpers/dates";
 import SliceNames from "../../../enums/SliceNames";
 import exampleTrip from "../../../data/exampleTrip";
 import { RootState } from "../../../app/store";
@@ -116,11 +112,9 @@ const tripSlice = createSlice({
         title: filteredPayload?.title?.length
           ? filteredPayload.title
           : getTripItemTypeLabel(filteredPayload.type),
-        startsAt: butcherDatetimeTimezone(filteredPayload.startsAt)!,
-        endsAt: butcherDatetimeTimezone(filteredPayload.endsAt!),
+        startsAt: filteredPayload.startsAt,
+        endsAt: filteredPayload.endsAt,
       };
-
-      console.log(newTripItem);
 
       const items: TripItem[] = [...(trip?.items || []), newTripItem];
 
@@ -155,11 +149,9 @@ const tripSlice = createSlice({
       const newDataFormatted: TripItem = {
         ...newData,
         id: newData.id!,
-        startsAt: butcherDatetimeTimezone(newData.startsAt)!,
-        endsAt: butcherDatetimeTimezone(newData.endsAt!),
+        startsAt: newData.startsAt,
+        endsAt: newData.endsAt,
       };
-
-      console.log(newDataFormatted);
 
       const items: TripItem[] = [...allOtherItems, newDataFormatted];
 

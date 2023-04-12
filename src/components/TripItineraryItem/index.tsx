@@ -29,7 +29,7 @@ import {
   getTripItemTypeLabel,
   renderExtraText,
 } from "../../helpers/tripItems";
-import { forceDateInUserTimezone, formatTime } from "../../helpers/dates";
+import { formatTime } from "../../helpers/dates";
 import styles from "./styles.module.css";
 
 export interface TripItineraryItemProps {
@@ -204,10 +204,6 @@ const TripItineraryItem = ({
                   initialValues={{
                     ...item,
                     category: getTripItemCategory(item),
-                    startsAt: forceDateInUserTimezone(item.startsAt).format(),
-                    endsAt:
-                      item.endsAt &&
-                      forceDateInUserTimezone(item.endsAt)?.format(),
                   }}
                   onSubmit={onUpdateTripItem}>
                   <AddEditTripItemForm

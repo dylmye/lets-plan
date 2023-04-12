@@ -6,7 +6,6 @@ import { TripItemType } from "../../types/TripItemType";
 import TripItemDraft from "../../types/TripItemDraft";
 import { useAddTripItem } from "../../store/features/trips";
 import { getTripItemCategory } from "../../helpers/tripItems";
-import { forceDateInUserTimezone } from "../../helpers/dates";
 import AddEditTripItemForm from "./AddEditTripItemForm";
 import { AddTripItemCardProps } from ".";
 
@@ -44,9 +43,7 @@ const AddTripItemCardContents = ({
         category: getTripItemCategory(initialValues as { type: TripItemType }),
         type: (initialValues.type as TripItemType) ?? null,
         title: "",
-        startsAt: forceDateInUserTimezone(
-          initialValues.date as string
-        ).format(),
+        startsAt: initialValues.date as string,
         endsAt: null,
       }}
       onSubmit={onSubmit}
