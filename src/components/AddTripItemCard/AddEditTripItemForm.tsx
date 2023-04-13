@@ -95,7 +95,7 @@ const AddEditTripItemForm = ({
           </Field>
         </Grid>
         <Grid item xs={12} md={6}>
-          <FastField
+          <Field
             component={AutocompleteField}
             options={values.category === "travel" ? TravelTypes : ActivityTypes}
             renderOption={(
@@ -213,7 +213,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasOrigin && (
               <Grid item xs={12} md={6}>
-                <FastField
+                <Field
                   component={GooglePlacesAutocompleteField}
                   name={
                     values.category === "travel" ? "originLocation" : "location"
@@ -230,7 +230,7 @@ const AddEditTripItemForm = ({
             )}
             {values.category === "travel" && (
               <Grid item xs={12} md={6}>
-                <FastField
+                <Field
                   component={GooglePlacesAutocompleteField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
