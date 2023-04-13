@@ -213,7 +213,7 @@ const AddEditTripItemForm = ({
             </Grid>
             {currentFieldSettings.hasOrigin && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={GooglePlacesAutocompleteField}
                   name={
                     values.category === "travel" ? "originLocation" : "location"
