@@ -10,9 +10,18 @@ jobs:
     steps:
       - name: Calculate Short SHA for REACT_APP_RELEASE_VERSION
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+
       - name: Create .env file
-        uses: SpicyPizza/create-envfile@v1.2
+        uses: SpicyPizza/create-envfile@v1.3.1
         with:
           envkey_REACT_APP_GMAP_JS_API_KEY: ${{ secrets.GMAP_JS_API_KEY }}
           envkey_REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
@@ -26,14 +35,17 @@ jobs:
           envkey_REACT_APP_RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           envkey_NODE_ENV: 'production'
           envkey_REACT_APP_RELEASE_VERSION: ${SHORT_SHA}
+
       - name: install yarn dependencies
-        uses: borales/actions-yarn@v3.0.0
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: install --frozen-lockfile
+
       - name: create production build
-        uses: borales/actions-yarn@v3.0.0
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: build
+
       - name: deploy production build to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -41,3 +53,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LETS_PLAN_FIREBASE }}'
           channelId: live
           projectId: lets-plan-firebase
+
