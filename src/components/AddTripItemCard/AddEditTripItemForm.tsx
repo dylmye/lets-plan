@@ -212,13 +212,14 @@ const AddEditTripItemForm = ({
             )}
             {values.category === "travel" && (
               <Grid item xs={12} md={6}>
-                <Field
+                <FastField
                   component={LocationField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
-                  disabled={
-                    (!values.originLocation && !values.destinationLocation) ||
-                    isSubmitting
+                  autocompletionRequest={
+                    values.type === TripItemType.Plane && {
+                      types: ["airport"],
+                    }
                   }
                   inputProps={
                     errors && {
