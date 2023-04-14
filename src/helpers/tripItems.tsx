@@ -27,7 +27,6 @@ import {
   Theaters,
   Tour,
 } from "@mui/icons-material";
-import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import {
   ActivityTypes,
@@ -38,6 +37,7 @@ import TripItem from "../types/Tripitem";
 import GoogleMapsTravelMode from "../types/GoogleMapsTravelMode";
 import ExtraText from "../types/ExtraText";
 import CustomFieldSettings from "../types/CustomFieldSettings";
+import LocationField from "../components/fields/LocationField";
 import BetterSwitchField from "../components/fields/BetterSwitchField";
 import AirlineAutocompleteField from "../components/fields/AirlineAutocompleteField";
 import CopyToClipboardButton from "../components/CopyToClipboardButton";
@@ -442,7 +442,7 @@ export const renderExtraField = (
     case "connected-dropdown:places": {
       return (
         <FastField
-          component={GooglePlacesAutocompleteField}
+          component={LocationField}
           name={field}
           label={fieldNameToLabel(field)}
         />

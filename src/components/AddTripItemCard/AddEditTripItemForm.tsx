@@ -9,12 +9,11 @@ import {
   CardActions,
   Divider,
   Grid,
-  TextFieldProps,
   ToggleButton,
 } from "@mui/material";
-import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
 import TripItemTypeAdornment from "../TripItemTypeAdornment";
+import LocationField from "../fields/LocationField";
 import IntlPriceField from "../fields/IntlPriceField";
 import AutocompleteField from "../fields/AutocompleteField";
 import {
@@ -32,9 +31,6 @@ import {
   tripItemExtraFields,
 } from "../../helpers/tripItems";
 import { butcherDatetimeTimezone } from "../../helpers/dates";
-import { useCustomTheme } from "../../contexts/CustomTheme";
-import poweredByGoogleLightMode from "../../assets/images/powered_by_google_light_mode.png";
-import poweredByGoogleDarkMode from "../../assets/images/powered_by_google_dark_mode.png";
 import styles from "./styles.module.css";
 
 export interface AddEditTripItemFormProps {
@@ -53,20 +49,7 @@ const AddEditTripItemForm = ({
 }: AddEditTripItemFormProps) => {
   const { isSubmitting, setFieldValue, values, errors } =
     useFormikContext<TripItemDraft>();
-  const { theme } = useCustomTheme();
   const currentFieldSettings = customFieldSettings(values.type);
-
-  const googleAttributionHelperText: TextFieldProps = {
-    helperText: (
-      <img
-        src={
-          theme === "light" ? poweredByGoogleLightMode : poweredByGoogleDarkMode
-        }
-        alt="This location search field uses Google APIs."
-        className={styles.googleAttribution}
-      />
-    ),
-  };
 
   const fieldIsRequired = (value: string): string | null =>
     !value ? "This field is required" : null;
@@ -214,12 +197,11 @@ const AddEditTripItemForm = ({
             {currentFieldSettings.hasOrigin && (
               <Grid item xs={12} md={6}>
                 <FastField
-                  component={GooglePlacesAutocompleteField}
+                  component={LocationField}
                   name={
                     values.category === "travel" ? "originLocation" : "location"
                   }
                   label={currentFieldSettings.originLocationLabel ?? "Location"}
-                  inputProps={googleAttributionHelperText}
                   autocompletionRequest={
                     values.type === TripItemType.Plane && {
                       types: ["airport"],
@@ -231,19 +213,19 @@ const AddEditTripItemForm = ({
             {values.category === "travel" && (
               <Grid item xs={12} md={6}>
                 <Field
-                  component={GooglePlacesAutocompleteField}
+                  component={LocationField}
                   name="destinationLocation"
                   label={currentFieldSettings.destinationLocationLabel}
                   disabled={
                     (!values.originLocation && !values.destinationLocation) ||
                     isSubmitting
                   }
-                  inputProps={{
-                    helperText:
-                      errors?.destinationLocation ??
-                      googleAttributionHelperText.helperText,
-                    error: !!errors?.destinationLocation,
-                  }}
+                  inputProps={
+                    errors && {
+                      helperText: errors?.destinationLocation,
+                      error: !!errors?.destinationLocation,
+                    }
+                  }
                   validate={(value: string) => {
                     if (!!values.originLocation && !value) {
                       return "Destination required";

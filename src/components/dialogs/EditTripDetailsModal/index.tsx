@@ -7,13 +7,14 @@ import dayjs from "dayjs";
 import CardActions from "@mui/material/CardActions";
 import { Box, Button, Modal, SxProps, Theme, Typography } from "@mui/material";
 import { Check } from "@mui/icons-material";
-import { GooglePlacesAutocompleteField } from "@dylmye/mui-google-places-autocomplete";
 
+import LocationField from "../../fields/LocationField";
 import BetterSwitchField from "../../fields/BetterSwitchField";
 import TripDetails from "../../../types/TripDetails";
 import ModalProps from "../../../types/ModalProps";
 import { useUpdateTrip } from "../../../store/features/trips";
 import { useIsLoggedIn } from "../../../store/features/auth";
+import { useOnlineStatus } from "../../../contexts/OnlineStatus";
 import styles from "./styles.module.css";
 
 export interface EditTripDetailsModalProps extends ModalProps {
@@ -42,6 +43,7 @@ const EditTripDetailsModal = ({
   const updateTrip = useUpdateTrip();
   const { enqueueSnackbar } = useSnackbar();
   const isLoggedIn = useIsLoggedIn();
+  const { online: isOnline } = useOnlineStatus();
   const {
     title,
     location,
@@ -86,7 +88,7 @@ const EditTripDetailsModal = ({
                 fullWidth
               />
               <FastField
-                component={GooglePlacesAutocompleteField}
+                component={LocationField}
                 name="location"
                 label="Location"
               />
@@ -122,9 +124,13 @@ const EditTripDetailsModal = ({
                 component={BetterSwitchField}
                 name="public"
                 label={`Share this trip with others${
-                  !isLoggedIn ? " (requires an account)" : ""
+                  !isLoggedIn
+                    ? " (requires an account)"
+                    : !isOnline
+                    ? " (go online to change)"
+                    : ""
                 }`}
-                disabled={!isLoggedIn}
+                disabled={!isLoggedIn || !isOnline}
               />
               <CardActions sx={{ justifyContent: "right" }}>
                 <Button
