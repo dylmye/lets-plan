@@ -1,25 +1,132 @@
 {
   "short_name": "Let's Plan",
   "name": "Let's Plan - Travel Planner",
+  "lang": "en-GB",
+  "description": "Travel planning without the headaches! Let's Plan is a free, easy to use travel planner app that's smart and intuitive. It's designed to work offline and in rough data patches. It's open source and actively maintained, feel free to contribute!",
+  "categories": ["travel", "utilities", "social"],
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
     },
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "maskable-icon.png",
+      "type": "image/png",
+      "sizes": "196x196",
+      "purpose": "maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#1C6DD0",
-  "background_color": "#FFF8F3"
+  "background_color": "#FFF8F3",
+  "screenshots": [
+    {
+      "src": "/screenshots/andr-dark-001.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "The homepage shows your upcoming and past trips."
+    },
+    {
+      "src": "/screenshots/andr-dark-002.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "The trip detail page shows all the information you need to know about your trip."
+    },
+    {
+      "src": "/screenshots/andr-dark-003.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "You can add a wide range of activities and trips by default."
+    },
+    {
+      "src": "/screenshots/andr-light-001.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "The homepage shows your upcoming and past trips."
+    },
+    {
+      "src": "/screenshots/andr-light-002.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "The trip detail page shows all the information you need to know about your trip."
+    },
+    {
+      "src": "/screenshots/andr-light-003.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2264",
+      "form_factor": "narrow",
+      "label": "You can add a wide range of activities and trips by default."
+    },
+    {
+      "src": "/screenshots/mac-dark-001.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "The homepage shows your upcoming and past trips."
+    },
+    {
+      "src": "/screenshots/mac-dark-002.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "The trip detail page shows all the information you need to know about your trip."
+    },
+    {
+      "src": "/screenshots/mac-dark-003.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "You can add a wide range of activities and trips by default."
+    },
+    {
+      "src": "/screenshots/mac-light-001.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "The homepage shows your upcoming and past trips."
+    },
+    {
+      "src": "/screenshots/mac-light-002.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "The trip detail page shows all the information you need to know about your trip."
+    },
+    {
+      "src": "/screenshots/mac-light-003.jpg",
+      "type": "image/jpg",
+      "sizes": "3808x2414",
+      "form_factor": "wide",
+      "label": "You can add a wide range of activities and trips by default."
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "List your trips",
+      "short_name": "My Trips",
+      "description": "See all your upcoming and previous trips",
+      "url": "/trips"
+    }
+  ]
 }
