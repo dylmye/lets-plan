@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dylmye.letsplan",
+      "sha256_cert_fingerprints": [
+        "4A:86:5C:D7:23:27:B6:8A:AC:C9:D8:06:AC:0D:0F:2B:F8:35:75:0F:AA:87:24:15:57:D1:52:86:C1:03:35:27",
+        "3F:6A:DD:E7:B7:E6:89:FF:A0:3D:39:BD:10:CB:AD:6A:07:73:18:89:30:27:2D:1F:A9:2D:F8:AA:29:E1:0E:FA"
+      ]
+    }
+  }
+]
