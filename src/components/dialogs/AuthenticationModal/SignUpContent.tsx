@@ -43,7 +43,7 @@ import { AuthModalContentProps } from ".";
 // @ts-ignore it only applies to string
 YupPassword({ string: yString, addMethod });
 
-type SignupEmailForm = {
+interface SignupEmailForm {
   /** user id */
   email: string;
   /** pw to use */
@@ -52,7 +52,7 @@ type SignupEmailForm = {
   checkedPrivacy: boolean;
   /** hcaptcha token */
   verify?: string;
-};
+}
 
 /** Firebase Auth-linked Formik form for creating a new account */
 const SignUpContent = ({ onClose }: AuthModalContentProps) => {
@@ -121,7 +121,10 @@ const SignUpContent = ({ onClose }: AuthModalContentProps) => {
         )}
         <GoogleSignInButton
           alreadyHasAccount={false}
-          onClick={() => signInWithGoogle([])}
+          onClick={() => {
+            signInWithGoogle([]);
+            onClose(true);
+          }}
         />
       </Stack>
       <Divider>

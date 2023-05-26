@@ -76,7 +76,10 @@ const SignInContent = ({ onClose }: AuthModalContentProps) => {
         )}
         <GoogleSignInButton
           alreadyHasAccount
-          onClick={() => signInWithGoogle([])}
+          onClick={() => {
+            signInWithGoogle([]);
+            onClose(true);
+          }}
           disabled={formLoading}
         />
       </Stack>
