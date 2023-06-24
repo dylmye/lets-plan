@@ -33,7 +33,7 @@ export const formatDate = (
     format === "short"
       ? `${withDayName ? "ddd " : ""}l`
       : `${withDayName ? "dddd " : ""}LL`;
-  return dayjs.utc(date).format(formatCode);
+  return dayjs(date).utc(true).format(formatCode);
 };
 
 export const formatTime = (date: string | dayjs.Dayjs, compact = true) => {

@@ -19,7 +19,7 @@ export interface TripListItemCardProps {
   trip: Trip;
 }
 
-const now = dayjs();
+const now = dayjs().startOf("day").format();
 
 /** Index item with a preview of the trip */
 const TripListItemCard = ({ trip }: TripListItemCardProps) => (
