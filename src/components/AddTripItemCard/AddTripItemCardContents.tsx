@@ -43,7 +43,7 @@ const AddTripItemCardContents = ({
         category: getTripItemCategory(initialValues as { type: TripItemType }),
         type: (initialValues.type as TripItemType) ?? null,
         title: "",
-        startsAt: initialValues.date as string,
+        startsAt: initialValues.date!,
         endsAt: null,
       }}
       onSubmit={onSubmit}

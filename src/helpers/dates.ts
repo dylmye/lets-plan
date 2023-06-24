@@ -63,7 +63,7 @@ export const formatFirebaseDateTime = (date: string | Timestamp): string => {
   if (typeof date === "string") {
     return dayjs(date).format();
   }
-  return dayjs.unix(date.seconds).utc().format();
+  return dayjs.utc(date.toDate()).format();
 };
 
 export const tripIsInState = (

@@ -52,12 +52,22 @@ export const convertTripDocument: FirestoreDataConverter<Trip> = {
     return {
       ...data,
       id,
-      startsAt: data.startsAt && formatFirebaseDateTime(data.startsAt),
-      endsAt: data.endsAt && formatFirebaseDateTime(data.endsAt),
+      startsAt:
+        data.startsAt &&
+        forceDateInUserTimezone(formatFirebaseDateTime(data.startsAt)).format(),
+      endsAt:
+        data.endsAt &&
+        forceDateInUserTimezone(formatFirebaseDateTime(data.endsAt)).format(),
       createdAtUtc:
-        data.createdAtUtc && formatFirebaseDateTime(data.createdAtUtc),
+        data.createdAtUtc &&
+        forceDateInUserTimezone(
+          formatFirebaseDateTime(data.createdAtUtc)
+        ).format(),
       updatedAtUtc:
-        data.updatedAtUtc && formatFirebaseDateTime(data.updatedAtUtc),
+        data.updatedAtUtc &&
+        forceDateInUserTimezone(
+          formatFirebaseDateTime(data.updatedAtUtc)
+        ).format(),
     };
   },
 };
