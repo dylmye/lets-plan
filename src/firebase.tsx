@@ -2,8 +2,10 @@ import { getStorage } from "firebase/storage";
 import {
   CollectionReference,
   collection,
-  enableMultiTabIndexedDbPersistence,
   getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { FirebaseOptions, initializeApp } from "firebase/app";
@@ -27,10 +29,14 @@ export const storage = getStorage(firebaseApp);
 
 export const auth = getAuth(firebaseApp);
 
-export const firestore = getFirestore(firebaseApp);
-
 // modern offline support, might not be supported by some mobile browsers
-enableMultiTabIndexedDbPersistence(firestore).catch(console.error);
+initializeFirestore(firebaseApp, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
+
+export const firestore = getFirestore(firebaseApp);
 
 // firestore collections
 export const tripsRef = collection(

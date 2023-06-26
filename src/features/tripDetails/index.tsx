@@ -128,7 +128,14 @@ const TripDetails = () => {
         <Collapse
           in={activeAddTripItemCardDay === day}
           key={`add-trip-item-card-${day}`}
-          unmountOnExit>
+          unmountOnExit
+          onEnter={(node) =>
+            node.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          // 64px (header height) + 32px (day header height) + rounding
+          sx={{ scrollMargin: "100px" }}>
           <AddTripItemCard
             initialValues={{ date: day }}
             tripDetails={{
@@ -280,7 +287,9 @@ const TripDetails = () => {
             ) : (
               Object.keys(groupedItems)
                 .sort(dateCompare)
-                .map((k) => renderItemDay(k, groupedItems[k]))
+                .map((day) => {
+                  return renderItemDay(day, groupedItems[day]);
+                })
             )}
           </Box>
         )}
