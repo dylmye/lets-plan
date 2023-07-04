@@ -190,7 +190,7 @@ const AddTripModal = (props: ModalProps) => {
             title: "",
             location: "",
             startsAt: today.format("YYYY-MM-DD"),
-            endsAt: today.add(7, "day").format("YYYY-MM-DD"),
+            endsAt: null,
             coverImageBlob: null,
           }}
           onSubmit={onFormSubmit}

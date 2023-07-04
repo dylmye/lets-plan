@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { setLogLevel } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { Container, Stack } from "@mui/material";
+import { Container, Skeleton, Stack } from "@mui/material";
 import { Loader } from "@googlemaps/js-api-loader";
 
 import "./App.css";
@@ -105,10 +105,9 @@ const App = () => {
           </Container>
           <Suspense
             fallback={
-              <div>
-                Loading... If you see this for more than 30 seconds, try
-                refreshing the page.
-              </div>
+              <Container maxWidth="md">
+                <Skeleton variant="rectangular" height={450} />
+              </Container>
             }>
             <Routes>
               <Route path="/" element={<TripList />} />

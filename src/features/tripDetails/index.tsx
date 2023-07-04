@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Collapse,
   Container,
@@ -53,6 +54,8 @@ const TripDetails = () => {
   const [itemEditModeState, setEditModeState] = useState<
     Record<string, boolean>
   >({});
+  const [isPublicAlertHidden, setIsPublicAlertHidden] =
+    useState<boolean>(false);
 
   const groupedItems = groupTripItemsByDay(trip?.items ?? []);
   const theme = useTheme();
@@ -206,8 +209,8 @@ const TripDetails = () => {
         <Typography variant="h3">Trip not found</Typography>
         <p>
           If you created this trip, you may have deleted it, or migrated it to
-          your account. If the trip was shared by someone else, the owner may
-          have made it private or deleted it.
+          your account. If the trip was shared by someone else, please check
+          that they have set it to 'public'.
         </p>
       </Container>
     );
@@ -261,6 +264,14 @@ const TripDetails = () => {
           </Typography>
         </Box>
       )}
+      <Collapse in={trip?.public && isOwned && !isPublicAlertHidden}>
+        <Alert
+          severity="warning"
+          sx={{ marginTop: 2 }}
+          onClose={() => setIsPublicAlertHidden(true)}>
+          Anyone with the link to this trip can see the details below.
+        </Alert>
+      </Collapse>
       {trip?.details && (
         <Typography
           variant="body1"
@@ -269,7 +280,7 @@ const TripDetails = () => {
         </Typography>
       )}
       <Stack spacing={2}>
-        {isEmptyTrip && trip ? (
+        {isOwned && trip && isEmptyTrip ? (
           <Box sx={{ marginTop: 2 }}>
             <EmptyTripCard
               id={trip.id}
