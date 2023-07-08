@@ -22,6 +22,7 @@ import TripDetails from "../../../types/TripDetails";
 import Trip from "../../../types/Trip";
 import {
   convertJsonStringToBase64Download,
+  convertReduxTrip,
   convertTripDocument,
   convertTripItemDocuments,
 } from "../../../helpers/converters";
@@ -40,6 +41,7 @@ export const useAddTrip: TripHooks["useAddTrip"] = () => {
   return useCallback(
     async (data) => {
       if (activeProvider === "redux") {
+        // @TODO: data.startsAt is a dayjs non-serializable object which is a no-no for passing
         dispatch(
           providerRedux.actions.addTrip(data) as PayloadAction<TripDraft>
         );
@@ -279,6 +281,8 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
 
   useEffect(() => {
     if (activeProvider === "redux") {
+      // why is firestore here? because logged out people can view public
+      // trips :)
       // firestore trip IDs are a completely different format to local trips
       // so we can safely assume if no trip is returned and a firebase object
       // is that the user is a) not logged in and b) trying to view a public trip.
@@ -288,7 +292,7 @@ export const useGetTripById: TripHooks["useGetTripById"] = (tripId) => {
               ...firestoreTripValue,
               items: firestoreItemValues ?? [],
             }
-          : (trip as Trip),
+          : convertReduxTrip(trip as Trip),
         // @TODO: set this to true if firebase loading ONLY if there's no trip
         loading: false,
       });

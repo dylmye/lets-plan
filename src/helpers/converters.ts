@@ -138,3 +138,46 @@ export const convertJsonStringToBase64Download = (json: string): string => {
   const b64Encoded = Buffer.from(json).toString("base64");
   return `data:application/json;base64,${b64Encoded}`;
 };
+
+export const convertReduxTripItem = (tripItem: TripItem): TripItem => {
+  const formattedTripItem: TripItem = { ...tripItem };
+
+  Object.keys(tripItem)
+    .filter<keyof TripItem>((k: string): k is keyof TripItem =>
+      tripItemTimestampKeys.includes(k as keyof TripItem)
+    )
+    .forEach((k) => {
+      // value is either unset, an ISO date string, or a Firestore Timestamp object
+      if (
+        !formattedTripItem[k] ||
+        !dayjs(formattedTripItem[k] as string).isValid()
+      ) {
+        return;
+      }
+      console.log("converting", formattedTripItem);
+      // @ts-ignore this works stfu typescript
+      formattedTripItem[k] = forceDateInUserTimezone(
+        formattedTripItem[k] as string
+      ).format();
+    });
+
+  return {
+    ...tripItem,
+    startsAt: forceDateInUserTimezone(tripItem.startsAt).format(),
+  };
+};
+
+/**
+ * Conversion for trips from redux datastore
+ * @param trip The raw trip
+ */
+export const convertReduxTrip = (trip: Trip): Trip => {
+  return {
+    ...trip,
+    startsAt: forceDateInUserTimezone(trip.startsAt!).format(),
+    endsAt: trip.endsAt && forceDateInUserTimezone(trip.endsAt).format(),
+    createdAtUtc: forceDateInUserTimezone(trip.createdAtUtc).format(),
+    updatedAtUtc: forceDateInUserTimezone(trip.updatedAtUtc).format(),
+    items: (trip.items ?? []).map(convertReduxTripItem),
+  };
+};

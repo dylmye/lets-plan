@@ -60,8 +60,8 @@ const tripSlice = createSlice({
         id: payload.id,
         title: payload.title,
         location: payload.location,
-        startsAt: payload.startsAt,
-        endsAt: payload.endsAt,
+        startsAt: dayjs(payload.startsAt).utc(true).format(),
+        endsAt: payload.endsAt && dayjs(payload.endsAt).utc(true).format(),
         createdAtUtc: dayjs.utc().format(),
         updatedAtUtc: dayjs.utc().format(),
         image: payload.image,
@@ -82,8 +82,8 @@ const tripSlice = createSlice({
         // be set otherwise on cloud storage trips
         userId: undefined,
         public: false,
-        startsAt: dayjs(payload.startsAt).format("YYYY-MM-DD"),
-        endsAt: payload.endsAt && dayjs(payload.endsAt).format("YYYY-MM-DD"),
+        startsAt: dayjs(payload.startsAt).utc(true).format(),
+        endsAt: payload.endsAt && dayjs(payload.endsAt).utc(true).format(),
         updatedAtUtc: dayjs.utc().format(),
       };
 
@@ -112,8 +112,10 @@ const tripSlice = createSlice({
         title: filteredPayload?.title?.length
           ? filteredPayload.title
           : getTripItemTypeLabel(filteredPayload.type),
-        startsAt: filteredPayload.startsAt,
-        endsAt: filteredPayload.endsAt,
+        startsAt: dayjs(filteredPayload.startsAt).utc(true).format(),
+        endsAt:
+          filteredPayload.endsAt &&
+          dayjs(filteredPayload.endsAt).utc(true).format(),
       };
 
       const items: TripItem[] = [...(trip?.items || []), newTripItem];
@@ -149,8 +151,8 @@ const tripSlice = createSlice({
       const newDataFormatted: TripItem = {
         ...newData,
         id: newData.id!,
-        startsAt: newData.startsAt,
-        endsAt: newData.endsAt,
+        startsAt: dayjs(newData.startsAt).utc(true).format(),
+        endsAt: newData.endsAt && dayjs(newData.endsAt).utc(true).format(),
       };
 
       const items: TripItem[] = [...allOtherItems, newDataFormatted];
