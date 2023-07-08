@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/dylmye/lets-plan/actions/workflows/firebase-hosting-merge.yml"><img alt="The status badge for this project's build" src="https://img.shields.io/github/actions/workflow/status/dylmye/lets-plan/firebase-hosting-merge.yml?logo=github"></a>
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fdylmye%2Flets-plan?ref=badge_shield"><img alt="FOSSA status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdylmye%2Flets-plan.svg?type=shield"></a>
-  <a href="https://snyk.io"><img alt="The status badge for the Snyk-detected vulnerabilities count for this project" src="https://img.shields.io/snyk/vulnerabilities/github/dylmye/lets-plan?logo=snyk"></a>
+  <a href="https://snyk.io"><img alt="This project is scanned by Snyk" src="https://snyk.io/test/github/dylmye/lets-plan/badge.svg"></a>
 </p>
 
 <p align="center">

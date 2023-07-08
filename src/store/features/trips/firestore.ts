@@ -68,11 +68,13 @@ const deleteTripById: TripActions["deleteTripById"] = async (id) => {
 };
 
 const updateTripById: TripActions["updateTripById"] = async (data) => {
+  const startsAt = data.startsAt && dayjs(data.startsAt).utc(true).format();
+  const endsAt = data.endsAt && dayjs(data.endsAt).utc(true).format();
   try {
     await updateDoc(doc(tripsRef, data.id), {
       ...data,
-      startsAt: convertDateStringToTimestamp(data.startsAt as string),
-      endsAt: convertDateStringToTimestamp(data.endsAt as string),
+      startsAt: convertDateStringToTimestamp(startsAt!),
+      endsAt: convertDateStringToTimestamp(endsAt!),
       updatedAtUtc: serverTimestamp(),
     });
   } catch (e) {

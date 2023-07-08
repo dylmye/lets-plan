@@ -32,8 +32,9 @@ export const convertDateStringToTimestamp = (date: string): Timestamp =>
 export const convertTripDocument: FirestoreDataConverter<Trip> = {
   toFirestore(trip: Trip): TripSnapshot {
     const startsAt =
-      trip.startsAt && dayjs.utc(trip.startsAt).startOf("day").format();
-    const endsAt = trip.endsAt && dayjs.utc(trip.endsAt).endOf("day").format();
+      trip.startsAt && dayjs(trip.startsAt).utc(true).startOf("day").format();
+    const endsAt =
+      trip.endsAt && dayjs(trip.endsAt).utc(true).endOf("day").format();
 
     return {
       ...trip,
@@ -91,11 +92,13 @@ export const convertTripItemDocuments: FirestoreDataConverter<TripItem> = {
         tripItem[k] =
           !!tripItem[k as keyof TripItem] &&
           convertDateStringToTimestamp(
-            dayjs.utc(tripItem[k as keyof TripItem] as string).format()
+            dayjs(tripItem[k as keyof TripItem] as string)
+              .utc(true)
+              .format()
           );
       });
 
-    const startsAt = dayjs.utc(tripItem.startsAt).format();
+    const startsAt = dayjs(tripItem.startsAt).utc(true).format();
 
     return {
       ...tripItem,

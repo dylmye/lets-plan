@@ -165,8 +165,8 @@ const TripItineraryItem = ({
     updateTripItem(trip.id, {
       ...values,
       id: item.id,
-      startsAt: dayjs(values.startsAt).utc(true).toISOString(),
-      endsAt: values?.endsAt && dayjs(values.endsAt).utc(true).toISOString(),
+      startsAt: dayjs(values.startsAt).format(),
+      endsAt: values?.endsAt && dayjs(values.endsAt).format(),
     });
     onToggleEditTripItem(item.id, false);
   };
