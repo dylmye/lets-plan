@@ -20,7 +20,7 @@
     "axios": "^1.6.5",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.7",
-    "firebase": "^10.7.2",
+    "firebase": "^10.8.1",
     "firebaseui": "^6.1.0",
     "formik": "^2.2.9",
     "formik-mui": "^4.0.0",
